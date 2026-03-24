@@ -25,9 +25,15 @@ export async function persistHistory(options: PersistHistoryOptions): Promise<Pe
     })
   );
 
-  const sorted = filesWithMeta.sort((a, b) => b.mtime - a.mtime || b.filename.localeCompare(a.filename));
-  const toDelete = sorted.slice(keep);
+  // Retain newest by snapshot/date encoded in filename (e.g., YYYY-MM-DD.json).
+  // When names tie, fall back to mtime to avoid nondeterminism.
+  const sorted = filesWithMeta.sort((a, b) => {
+    const nameOrder = b.filename.localeCompare(a.filename);
+    if (nameOrder !== 0) return nameOrder;
+    return b.mtime - a.mtime;
+  });
 
+  const toDelete = sorted.slice(keep);
   await Promise.all(toDelete.map(async (file) => rm(file.filePath)));
 
   return {

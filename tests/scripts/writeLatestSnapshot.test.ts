@@ -3,7 +3,7 @@ import path from "node:path";
 import { describe, expect, it, beforeEach } from "vitest";
 import { writeLatestSnapshot } from "../../scripts/writeLatestSnapshot";
 
-const targetPath = "tests/tmp/latest.json";
+const targetPath = "tests/tmp/writeLatest/latest.json";
 
 describe("writeLatestSnapshot", () => {
   beforeEach(async () => {
