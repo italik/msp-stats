@@ -24,17 +24,37 @@ type HaloPsaMetrics = {
   };
 };
 
+function assertNumericField(
+  payload: HaloAggregateResponse,
+  field: keyof HaloAggregateResponse
+): number {
+  const value = payload[field];
+
+  if (typeof value !== "number" || Number.isNaN(value)) {
+    throw new Error(`HaloPSA payload missing or invalid numeric field "${String(field)}"`);
+  }
+
+  return value;
+}
+
 export function mapHaloPsaMetrics(payload: HaloAggregateResponse): HaloPsaMetrics {
+  const ticketVolume = assertNumericField(payload, "ticketVolume");
+  const ticketsClosed = assertNumericField(payload, "ticketsClosed");
+  const ticketsResolved = assertNumericField(payload, "ticketsResolved");
+  const slaMetPercent = assertNumericField(payload, "slaMetPercent");
+  const firstResponseMedianMinutes = assertNumericField(payload, "firstResponseMedianMinutes");
+  const resolutionMedianHours = assertNumericField(payload, "resolutionMedianHours");
+
   return {
     summary: {
-      ticketsHandled: { value: String(payload.ticketsClosed) },
-      slaAttainment: { value: `${payload.slaMetPercent.toFixed(1)}%` }
+      ticketsHandled: { value: String(ticketsClosed) },
+      slaAttainment: { value: `${slaMetPercent.toFixed(1)}%` }
     },
     service: {
-      ticketVolume: { value: String(payload.ticketVolume) },
-      resolvedTickets: { value: String(payload.ticketsResolved) },
-      firstResponseMedian: { value: `${payload.firstResponseMedianMinutes}m` },
-      resolutionMedian: { value: `${payload.resolutionMedianHours}h` }
+      ticketVolume: { value: String(ticketVolume) },
+      resolvedTickets: { value: String(ticketsResolved) },
+      firstResponseMedian: { value: `${firstResponseMedianMinutes}m` },
+      resolutionMedian: { value: `${resolutionMedianHours}h` }
     }
   };
 }
