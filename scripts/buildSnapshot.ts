@@ -19,8 +19,15 @@ async function readPreviousSnapshot(previousSnapshotPath?: string): Promise<Snap
   }
 
   const resolved = path.resolve(previousSnapshotPath);
-  const raw = await readFile(resolved, "utf-8");
-  return JSON.parse(raw) as Snapshot;
+  try {
+    const raw = await readFile(resolved, "utf-8");
+    return JSON.parse(raw) as Snapshot;
+  } catch (error: unknown) {
+    if ((error as NodeJS.ErrnoException)?.code === "ENOENT") {
+      return null;
+    }
+    throw error;
+  }
 }
 
 function buildSourceStatus(options: {
@@ -60,59 +67,91 @@ function buildSourceStatus(options: {
   };
 }
 
-function selectSection<K extends keyof Snapshot>(
-  key: K,
-  previous: Snapshot,
-  source?: SourceResult<Partial<Snapshot>>
-): Snapshot[K] {
-  if (source && source.status === "current" && source.data && key in source.data) {
-    return (source.data[key] as Snapshot[K]) ?? previous[key];
+function isRecord(value: unknown): value is Record<string, unknown> {
+  return Boolean(value) && typeof value === "object" && !Array.isArray(value);
+}
+
+function mergeDeep<T>(previous: T, patch?: Partial<T>): T {
+  if (patch === undefined) return previous;
+  if (!isRecord(previous) || !isRecord(patch)) {
+    return (patch as T) ?? previous;
   }
 
-  return previous[key];
+  const result: Record<string, unknown> = { ...previous };
+  const keys = new Set([...Object.keys(previous), ...Object.keys(patch)]);
+
+  for (const key of keys) {
+    const prevValue = (previous as Record<string, unknown>)[key];
+    const patchValue = (patch as Record<string, unknown>)[key];
+
+    if (Array.isArray(patchValue)) {
+      result[key] = patchValue;
+      continue;
+    }
+
+    if (patchValue === undefined) {
+      result[key] = prevValue;
+      continue;
+    }
+
+    if (isRecord(prevValue) && isRecord(patchValue)) {
+      result[key] = mergeDeep(prevValue, patchValue);
+    } else {
+      result[key] = patchValue;
+    }
+  }
+
+  return result as T;
 }
 
 export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snapshot> {
   const generatedAt = options.generatedAt ?? new Date().toISOString();
-  const previous =
-    (await readPreviousSnapshot(options.previousSnapshotPath)) ??
-    ({
-      generatedAt,
-      overall: { lastUpdated: generatedAt },
-      summary: { title: "", kpis: [] },
-      service: {
-        current: {
-          slaAttainment: { label: "SLA Attainment", value: 0, context: "" },
-          resolvedTickets: { label: "Resolved Tickets", value: 0, context: "" }
-        },
-        metrics: [],
-        trends: {}
-      },
-      security: {
-        current: {
-          patchCompliance: { label: "Patch Compliance", value: 0, context: "" },
-          devicesFullyPatched: { label: "Devices Fully Patched", value: 0, context: "" }
-        },
-        metrics: [],
-        trends: {}
-      },
-      sources: []
-    } as Snapshot);
-
-  const { halopsa, qualys, dattoRmm } = options.sources;
-
-  const snapshot: Snapshot = {
+  const seed: Snapshot = {
     generatedAt,
-    overall: selectSection("overall", previous, dattoRmm ?? qualys ?? halopsa),
-    summary: selectSection("summary", previous, dattoRmm ?? qualys ?? halopsa),
-    service: selectSection("service", previous, halopsa),
-    security: selectSection("security", previous, qualys),
-    sources: [
-      buildSourceStatus({ name: "HaloPSA", source: halopsa, previous }),
-      buildSourceStatus({ name: "Qualys", source: qualys, previous }),
-      buildSourceStatus({ name: "Datto RMM", source: dattoRmm, previous })
-    ]
+    overall: { lastUpdated: generatedAt },
+    summary: { title: "", kpis: [] },
+    service: {
+      current: {
+        slaAttainment: { label: "SLA Attainment", value: 0, context: "" },
+        resolvedTickets: { label: "Resolved Tickets", value: 0, context: "" }
+      },
+      metrics: [],
+      trends: {}
+    },
+    security: {
+      current: {
+        patchCompliance: { label: "Patch Compliance", value: 0, context: "" },
+        devicesFullyPatched: { label: "Devices Fully Patched", value: 0, context: "" }
+      },
+      metrics: [],
+      trends: {}
+    },
+    sources: []
   };
 
-  return snapshot;
+  const previous = (await readPreviousSnapshot(options.previousSnapshotPath)) ?? seed;
+  const { halopsa, qualys, dattoRmm } = options.sources;
+
+  let merged = { ...previous } as Snapshot;
+  const orderedSources: Array<SourceResult<Partial<Snapshot>> | undefined> = [
+    halopsa,
+    qualys,
+    dattoRmm
+  ];
+
+  for (const source of orderedSources) {
+    if (source?.status === "current" && source.data) {
+      merged = mergeDeep(merged, source.data);
+    }
+  }
+
+  merged.generatedAt = generatedAt;
+
+  merged.sources = [
+    buildSourceStatus({ name: "HaloPSA", source: halopsa, previous }),
+    buildSourceStatus({ name: "Qualys", source: qualys, previous }),
+    buildSourceStatus({ name: "Datto RMM", source: dattoRmm, previous })
+  ];
+
+  return merged;
 }

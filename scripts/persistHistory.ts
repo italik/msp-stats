@@ -1,9 +1,13 @@
-import { mkdir, readdir, rm, stat } from "node:fs/promises";
+import { mkdir, readdir, rm, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 type PersistHistoryOptions = {
   directory: string;
   keep: number;
+  file?: {
+    name: string;
+    contents: string;
+  };
 };
 
 type PersistHistoryResult = {
@@ -13,8 +17,13 @@ type PersistHistoryResult = {
 };
 
 export async function persistHistory(options: PersistHistoryOptions): Promise<PersistHistoryResult> {
-  const { directory, keep } = options;
+  const { directory, keep, file } = options;
   await mkdir(directory, { recursive: true });
+
+  if (file) {
+    const target = path.join(directory, file.name);
+    await writeFile(target, file.contents, "utf-8");
+  }
 
   const entries = await readdir(directory);
   const filesWithMeta = await Promise.all(

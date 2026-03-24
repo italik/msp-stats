@@ -27,4 +27,24 @@ describe("persistHistory", () => {
     expect(files.length).toBeLessThanOrEqual(30);
     expect(files).not.toContain("2026-03-01.json");
   });
+
+  it("writes the new history file before pruning to the keep limit", async () => {
+    const existing = ["2026-03-01.json", "2026-03-02.json"];
+    for (const name of existing) {
+      await writeFile(path.join(historyDir, name), JSON.stringify({ name }));
+    }
+
+    const result = await persistHistory({
+      directory: historyDir,
+      keep: 2,
+      file: { name: "2026-03-03.json", contents: JSON.stringify({ id: 3 }) }
+    });
+
+    const files = await readdir(historyDir);
+
+    expect(files).toContain("2026-03-03.json");
+    expect(files.length).toBeLessThanOrEqual(2);
+    expect(files).not.toContain("2026-03-01.json");
+    expect(result.retained).toBe(files.length);
+  });
 });
