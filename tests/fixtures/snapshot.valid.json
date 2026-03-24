@@ -30,7 +30,8 @@
         "id": "incident-response",
         "label": "Incident Response",
         "value": "98%",
-        "direction": "up"
+        "direction": "up",
+        "context": "90-day average"
       },
       {
         "id": "critical-vulnerability-trend",
@@ -49,7 +50,8 @@
         "id": "security-coverage",
         "label": "Security Coverage",
         "value": "100%",
-        "direction": "steady"
+        "direction": "steady",
+        "context": "Protection across the portfolio"
       }
     ]
   },
@@ -67,7 +69,8 @@
       },
       "meanTimeToDetect": {
         "label": "Mean Time to Detect",
-        "value": "12m"
+        "value": "12m",
+        "context": "Time since detection"
       }
     },
     "metrics": [

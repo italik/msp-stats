@@ -13,7 +13,7 @@ const kpiSchema = z.object({
   id: z.string(),
   label: z.string(),
   value: numericString,
-  context: z.string().optional(),
+  context: z.string(),
   direction: z.enum(["up", "down", "steady"]).optional()
 });
 
@@ -21,14 +21,14 @@ const metricSchema = z.object({
   id: z.string(),
   label: z.string(),
   value: numericString,
-  context: z.string().optional(),
+  context: z.string(),
   direction: z.enum(["up", "down", "steady"]).optional()
 });
 
 const currentEntrySchema = z.object({
   label: z.string(),
   value: numericString,
-  context: z.string().optional()
+  context: z.string()
 });
 
 const serviceCurrentSchema = z
@@ -70,7 +70,7 @@ export const snapshotSchema = z.object({
     z.object({
       name: z.string(),
       status: statusSchema,
-      lastSuccessfulRefresh: z.string().optional(),
+      lastSuccessfulRefresh: z.string(),
       note: z.string().optional()
     })
   )
