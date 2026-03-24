@@ -89,7 +89,29 @@ function mergeDeep<T>(previous: T, patch?: Partial<T>): T {
     const patchValue = (patch as Record<string, unknown>)[key];
 
     if (Array.isArray(patchValue)) {
-      result[key] = patchValue;
+      if (Array.isArray(prevValue)) {
+        const prevArray = prevValue as Array<unknown>;
+        const patchArray = patchValue as Array<unknown>;
+
+        const arraysContainObjectsWithId =
+          prevArray.every((item) => isRecord(item) && "id" in item) &&
+          patchArray.every((item) => isRecord(item) && "id" in item);
+
+        if (arraysContainObjectsWithId) {
+          const mergedById = new Map<string, unknown>();
+          for (const item of prevArray as Array<Record<string, unknown>>) {
+            mergedById.set(String(item.id), item);
+          }
+          for (const item of patchArray as Array<Record<string, unknown>>) {
+            mergedById.set(String(item.id), item);
+          }
+          result[key] = Array.from(mergedById.values());
+        } else {
+          result[key] = patchArray;
+        }
+      } else {
+        result[key] = patchValue;
+      }
       continue;
     }
 

@@ -72,4 +72,41 @@ describe("buildSnapshot", () => {
     expect(snapshot.service.current.resolvedTickets.value).toBe(999);
     expect(snapshot.service.current.slaAttainment.value).toBe("99.8%");
   });
+
+  it("retains security metrics from multiple sources instead of overwriting", async () => {
+    const sources: BuildSources = {
+      halopsa: { status: "stale", fetchedAt: staleTimestamp },
+      qualys: {
+        status: "current",
+        fetchedAt: staleTimestamp,
+        data: {
+          security: {
+            metrics: [
+              { id: "vuln-critical", label: "Critical Vulnerabilities", value: 12, context: "" }
+            ]
+          }
+        }
+      },
+      dattoRmm: {
+        status: "current",
+        fetchedAt: staleTimestamp,
+        data: {
+          security: {
+            metrics: [
+              { id: "devices-fully-patched", label: "Devices Fully Patched", value: 1200, context: "" }
+            ]
+          }
+        }
+      }
+    };
+
+    const snapshot = await buildSnapshot({
+      sources,
+      generatedAt: staleTimestamp
+    });
+
+    const metricIds = snapshot.security.metrics.map((metric) => metric.id);
+    expect(metricIds).toContain("vuln-critical");
+    expect(metricIds).toContain("devices-fully-patched");
+  });
 });
