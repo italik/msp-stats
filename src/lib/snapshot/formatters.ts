@@ -3,9 +3,17 @@ export function parseNumericValue(value: string | number): number {
     return value;
   }
 
-  const normalized = value.replace(/[^0-9.-]/g, "");
-  const parsed = Number(normalized);
+  const normalized = value.trim();
+  if (!normalized) {
+    throw new Error(`Unable to parse numeric value from "${value}"`);
+  }
 
+  const digits = normalized.replace(/[^0-9.-]/g, "");
+  if (!digits) {
+    throw new Error(`Unable to parse numeric value from "${value}"`);
+  }
+
+  const parsed = Number(digits);
   if (Number.isNaN(parsed)) {
     throw new Error(`Unable to parse numeric value from "${value}"`);
   }

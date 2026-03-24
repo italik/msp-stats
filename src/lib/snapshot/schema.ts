@@ -9,12 +9,14 @@ const trendPointSchema = z.object({
 
 const trendMapSchema = z.object({}).catchall(z.array(trendPointSchema));
 
+const directionEnum = z.enum(["up", "down", "flat"]);
+
 const kpiSchema = z.object({
   id: z.string(),
   label: z.string(),
   value: numericString,
   context: z.string(),
-  direction: z.enum(["up", "down", "steady"]).optional()
+  direction: directionEnum.optional()
 });
 
 const metricSchema = z.object({
@@ -22,7 +24,7 @@ const metricSchema = z.object({
   label: z.string(),
   value: numericString,
   context: z.string(),
-  direction: z.enum(["up", "down", "steady"]).optional()
+  direction: directionEnum.optional()
 });
 
 const currentEntrySchema = z.object({
