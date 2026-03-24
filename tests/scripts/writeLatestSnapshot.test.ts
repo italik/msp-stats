@@ -3,12 +3,14 @@ import path from "node:path";
 import { describe, expect, it, beforeEach } from "vitest";
 import { writeLatestSnapshot } from "../../scripts/writeLatestSnapshot";
 
-const targetPath = "tests/tmp/writeLatest/latest.json";
+const targetPath = "tests/tmp/latest.json";
 
 describe("writeLatestSnapshot", () => {
   beforeEach(async () => {
-    await rm(path.dirname(targetPath), { recursive: true, force: true });
-    await mkdir(path.dirname(targetPath), { recursive: true });
+    // isolate per-test by recreating only the target directory, leaving sibling fixtures untouched
+    const dir = path.dirname(targetPath);
+    await rm(targetPath, { force: true });
+    await mkdir(dir, { recursive: true });
   });
 
   it("writes the latest normalized snapshot to disk", async () => {
