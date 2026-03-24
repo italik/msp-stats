@@ -1,0 +1,7 @@
+{
+  "patchCompliance": 0.942,
+  "devices": {
+    "fullyPatched": 1228,
+    "missingCriticalPatches": 42
+  }
+}

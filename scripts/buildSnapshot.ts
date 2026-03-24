@@ -152,6 +152,7 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
   }
 
   merged.generatedAt = generatedAt;
+  merged.overall = { ...(merged.overall ?? {}), lastUpdated: generatedAt };
 
   merged.sources = [
     buildSourceStatus({ name: "HaloPSA", source: halopsa, previous, hasPrevious }),

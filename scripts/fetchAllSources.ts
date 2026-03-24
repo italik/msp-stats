@@ -1,12 +1,17 @@
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import type { Snapshot } from "../src/lib/snapshot/types";
+import { mapDattoRmmMetrics, type DattoRmmResponse } from "./sources/dattoRmm";
+import { mapQualysMetrics, type QualysResponse } from "./sources/qualys";
 import type { SourceResult } from "./sources/types";
 
 type FetchAllSourcesResult = {
-  halopsa: SourceResult<unknown>;
-  qualys: SourceResult<unknown>;
-  dattoRmm: SourceResult<unknown>;
+  halopsa: SourceResult<Partial<Snapshot>>;
+  qualys: SourceResult<Partial<Snapshot>>;
+  dattoRmm: SourceResult<Partial<Snapshot>>;
 };
 
-export async function fetchHaloPsaMetrics(): Promise<SourceResult<unknown>> {
+export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
   return {
     status: "stale",
     fetchedAt: new Date(0).toISOString(),
@@ -15,21 +20,112 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<unknown>> {
   };
 }
 
-export async function fetchQualysMetrics(): Promise<SourceResult<unknown>> {
+async function loadFixture<T>(filename: string): Promise<T> {
+  const filePath = path.resolve("tests/fixtures", filename);
+  const raw = await readFile(filePath, "utf-8");
+  return JSON.parse(raw) as T;
+}
+
+export async function fetchQualysMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
+  const fetchedAt = new Date().toISOString();
+  const payload = await loadFixture<QualysResponse>("qualys.response.json");
+  const metrics = mapQualysMetrics(payload);
+
   return {
-    status: "stale",
-    fetchedAt: new Date(0).toISOString(),
-    note: "Qualys metrics fetch not implemented",
-    data: undefined
+    status: "current",
+    fetchedAt,
+    note: "Using Qualys fixture payload",
+    data: {
+      security: {
+        current: {
+          openCriticalVulnerabilities: {
+            label: "Open Critical Vulnerabilities",
+            value: metrics.summary.openCriticalVulnerabilities.value,
+            context: "Current open critical findings",
+            direction: metrics.summary.criticalVulnerabilityTrend.direction
+          },
+          criticalVulnerabilityTrend: {
+            label: "Critical Vulnerability Trend",
+            value: metrics.summary.criticalVulnerabilityTrend.value,
+            context: "Delta vs previous period",
+            direction: metrics.summary.criticalVulnerabilityTrend.direction
+          }
+        },
+        metrics: [
+          {
+            id: "vulnerability-critical",
+            label: "Critical Vulnerabilities",
+            value: metrics.security.vulnerabilityBySeverity.critical,
+            context: "Open"
+          },
+          {
+            id: "vulnerability-high",
+            label: "High Vulnerabilities",
+            value: metrics.security.vulnerabilityBySeverity.high,
+            context: "Open"
+          },
+          {
+            id: "vulnerability-medium",
+            label: "Medium Vulnerabilities",
+            value: metrics.security.vulnerabilityBySeverity.medium,
+            context: "Open"
+          },
+          {
+            id: "vulnerability-low",
+            label: "Low Vulnerabilities",
+            value: metrics.security.vulnerabilityBySeverity.low,
+            context: "Open"
+          }
+        ]
+      }
+    }
   };
 }
 
-export async function fetchDattoRmmMetrics(): Promise<SourceResult<unknown>> {
+export async function fetchDattoRmmMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
+  const fetchedAt = new Date().toISOString();
+  const payload = await loadFixture<DattoRmmResponse>("datto-rmm.response.json");
+  const metrics = mapDattoRmmMetrics(payload);
+
   return {
-    status: "stale",
-    fetchedAt: new Date(0).toISOString(),
-    note: "Datto RMM metrics fetch not implemented",
-    data: undefined
+    status: "current",
+    fetchedAt,
+    note: "Using Datto RMM fixture payload",
+    data: {
+      security: {
+        current: {
+          patchCompliance: {
+            label: "Patch Compliance",
+            value: metrics.summary.patchCompliance.value,
+            context: "Fleet-wide"
+          },
+          devicesFullyPatched: {
+            label: "Devices Fully Patched",
+            value: metrics.security.devicesFullyPatched,
+            context: "Across managed fleet"
+          },
+          devicesMissingCriticalPatches: {
+            label: "Devices Missing Critical Patches",
+            value: metrics.security.devicesMissingCriticalPatches,
+            context: "Across managed fleet"
+          }
+        },
+        metrics: [
+          {
+            id: "devices-fully-patched",
+            label: "Devices Fully Patched",
+            value: metrics.security.devicesFullyPatched,
+            context: "Across managed fleet"
+          },
+          {
+            id: "devices-missing-critical",
+            label: "Devices Missing Critical Patches",
+            value: metrics.security.devicesMissingCriticalPatches,
+            context: "Across managed fleet"
+          }
+        ]
+      }
+    }
   };
 }
 

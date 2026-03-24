@@ -9,7 +9,7 @@
     "preview": "astro preview",
     "test": "vitest run",
     "check": "astro check",
-    "publish:daily": "npm run build"
+    "publish:daily": "tsx scripts/runDailyPublish.ts"
   },
   "dependencies": {
     "zod": "^4.3.6"

@@ -1,0 +1,13 @@
+{
+  "vulnerabilities": {
+    "open": {
+      "critical": 12,
+      "high": 21,
+      "medium": 33,
+      "low": 4
+    },
+    "trend": {
+      "criticalDelta": -3
+    }
+  }
+}
