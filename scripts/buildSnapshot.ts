@@ -34,8 +34,9 @@ function buildSourceStatus(options: {
   name: string;
   source?: SourceResult<Partial<Snapshot>>;
   previous?: Snapshot;
+  hasPrevious: boolean;
 }): Snapshot["sources"][number] {
-  const { name, source, previous } = options;
+  const { name, source, previous, hasPrevious } = options;
   const previousStatus = previous?.sources?.find((entry) => entry.name === name);
   const previousLastUpdated = previous?.overall?.lastUpdated;
 
@@ -54,7 +55,10 @@ function buildSourceStatus(options: {
       name,
       status: "stale",
       lastSuccessfulRefresh:
-        previousStatus?.lastSuccessfulRefresh ?? previousLastUpdated ?? source.fetchedAt,
+        previousStatus?.lastSuccessfulRefresh ??
+        (hasPrevious ? previousLastUpdated : undefined) ??
+        source.fetchedAt ??
+        new Date(0).toISOString(),
       note: source.note ?? "Previous known-good values carried forward"
     };
   }
@@ -129,7 +133,9 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
     sources: []
   };
 
-  const previous = (await readPreviousSnapshot(options.previousSnapshotPath)) ?? seed;
+  const loadedPrevious = await readPreviousSnapshot(options.previousSnapshotPath);
+  const previous = loadedPrevious ?? seed;
+  const hasPrevious = Boolean(loadedPrevious);
   const { halopsa, qualys, dattoRmm } = options.sources;
 
   let merged = { ...previous } as Snapshot;
@@ -148,9 +154,9 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
   merged.generatedAt = generatedAt;
 
   merged.sources = [
-    buildSourceStatus({ name: "HaloPSA", source: halopsa, previous }),
-    buildSourceStatus({ name: "Qualys", source: qualys, previous }),
-    buildSourceStatus({ name: "Datto RMM", source: dattoRmm, previous })
+    buildSourceStatus({ name: "HaloPSA", source: halopsa, previous, hasPrevious }),
+    buildSourceStatus({ name: "Qualys", source: qualys, previous, hasPrevious }),
+    buildSourceStatus({ name: "Datto RMM", source: dattoRmm, previous, hasPrevious })
   ];
 
   return merged;

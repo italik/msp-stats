@@ -43,6 +43,8 @@ describe("buildSnapshot", () => {
 
     expect(snapshot.overall.lastUpdated).toBeDefined();
     expect(snapshot.service.current.slaAttainment.label).toBe("SLA Attainment");
+    const haloStatus = snapshot.sources.find((source) => source.name === "HaloPSA");
+    expect(haloStatus?.lastSuccessfulRefresh).toBe(staleTimestamp);
   });
 
   it("merges partial current source fragments without wiping existing fields", async () => {
