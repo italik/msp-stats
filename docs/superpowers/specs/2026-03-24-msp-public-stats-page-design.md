@@ -97,7 +97,7 @@ The browser must not have direct access to vendor credentials or vendor APIs.
 - Each section must display a visible freshness timestamp
 - The page-level header should also display a "last updated" timestamp
 
-The system should keep a small historical series so the UI can render short 30-day or 90-day trend charts without querying source systems at runtime.
+The system should keep a small historical series so the UI can render short 30-day trend charts without querying source systems at runtime.
 
 ## Information Architecture
 
@@ -140,7 +140,7 @@ This section should cover:
 - Median first response time
 - Median resolution time
 - Backlog trend
-- A short 30-day or 90-day trend view
+- A short 30-day trend view
 
 The emphasis should be on customer-visible outcomes, not internal queue mechanics.
 
@@ -279,8 +279,8 @@ Build in a single initial phase with these boundaries:
 
 - Public aggregate dashboard only
 - Daily refresh only
-- One summary section plus two detail sections
-- Lightweight trend views only
+- Full approved page structure: hero summary, methodology band, service performance, security posture, and trust reinforcement footer
+- Lightweight 30-day trend views only
 
 Future expansion can add more data sources or richer history, but those are out of scope for the first implementation plan.
 
@@ -293,4 +293,3 @@ Future expansion can add more data sources or richer history, but those are out 
 - Headline KPI mix should combine scale and trust signals
 - Include short trends, not a trend-heavy analytics experience
 - Static site plus scheduled data build is the selected architecture
-
