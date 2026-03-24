@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
+import { fileURLToPath } from "node:url";
 import { readSnapshot } from "../../src/lib/snapshot/readSnapshot";
 
-const fixturePath = new URL("../fixtures/snapshot.valid.json", import.meta.url).pathname;
+const fixturePath = fileURLToPath(new URL("../fixtures/snapshot.valid.json", import.meta.url));
 
 describe("readSnapshot", () => {
   it("returns the normalized snapshot when given a fixture path", async () => {
