@@ -1,0 +1,7 @@
+node_modules/
+.astro/
+dist/
+.env.local
+.env.*.local
+.DS_Store
+info.log
