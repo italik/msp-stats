@@ -1,0 +1,8 @@
+{
+  "ticketVolume": 312,
+  "ticketsClosed": 285,
+  "ticketsResolved": 279,
+  "slaMetPercent": 98.6,
+  "firstResponseMedianMinutes": 14,
+  "resolutionMedianHours": 5.2
+}
