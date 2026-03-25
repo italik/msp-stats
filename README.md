@@ -38,3 +38,10 @@ Deployment steps:
 2. Enable GitHub Pages for the repository and set the source to GitHub Actions.
 3. Allow the scheduled workflow to run daily, or trigger it manually with `workflow_dispatch`.
 4. Review the generated `data/snapshots/latest.json` and deployed page after the first successful run.
+
+## Before launch
+
+1. Add production vendor API secrets to GitHub Actions.
+2. Run one manual `workflow_dispatch`.
+3. Verify `Last updated` and source freshness timestamps on the deployed site.
+4. Point the final public hostname to GitHub Pages.
