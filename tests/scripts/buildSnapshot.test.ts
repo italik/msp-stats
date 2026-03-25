@@ -44,7 +44,7 @@ describe("buildSnapshot", () => {
     }
   ];
 
-  it("carries forward stale source values instead of zeroing them", async () => {
+  it("carries forward stale source values from a partial previous snapshot", async () => {
     const sources: BuildSources = {
       halopsa: { status: "stale", fetchedAt: staleTimestamp },
       qualys: { status: "current", fetchedAt: staleTimestamp, data: {} },
@@ -52,7 +52,7 @@ describe("buildSnapshot", () => {
     };
 
     const snapshot = await buildSnapshot({
-      previousSnapshotPath: "tests/fixtures/snapshot.valid.json",
+      previousSnapshotPath: "tests/fixtures/snapshot.partial.json",
       sources: toBuildSnapshotSources(sources)
     });
 
@@ -61,6 +61,9 @@ describe("buildSnapshot", () => {
     expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.status).toBe("stale");
     expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.note).toContain(
       "Previous known-good values carried forward"
+    );
+    expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.lastSuccessfulRefresh).toBe(
+      "2026-03-24T12:20:00Z"
     );
   });
 

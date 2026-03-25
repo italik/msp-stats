@@ -18,6 +18,8 @@ test('index page renders key dashboard sections', async () => {
   expect(html).toContain('Service Performance');
   expect(html).toContain('Security Posture');
   expect(html).toContain('Last updated');
+  expect(html).toContain('Current/stale state');
+  expect(html).toContain('Last successful update');
   expect(html).toContain('Tickets handled');
   expect(html).toContain('Ticket volume');
   expect(html).toContain('Resolved tickets');

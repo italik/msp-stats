@@ -1,0 +1,67 @@
+{
+  "generatedAt": "2026-03-24T12:20:00.000Z",
+  "overall": {
+    "lastUpdated": "2026-03-24T12:20:00.000Z"
+  },
+  "summary": {
+    "title": "Trust, measured daily",
+    "kpis": [
+      {
+        "id": "trust-index",
+        "label": "Trust Index",
+        "value": "91%",
+        "context": "Weighted composite"
+      }
+    ]
+  },
+  "service": {
+    "current": {
+      "slaAttainment": {
+        "label": "SLA attainment",
+        "value": "99.8%",
+        "context": "Rolling 30 days"
+      },
+      "resolvedTickets": {
+        "label": "Resolved tickets",
+        "value": "276",
+        "context": "Resolved in period"
+      }
+    },
+    "metrics": [],
+    "trends": {}
+  },
+  "security": {
+    "current": {
+      "patchCompliance": {
+        "label": "Patch Compliance",
+        "value": "93.5%",
+        "context": "Fleet-wide"
+      },
+      "devicesFullyPatched": {
+        "label": "Devices Fully Patched",
+        "value": 1200,
+        "context": "Across managed fleet"
+      }
+    },
+    "metrics": [],
+    "trends": {}
+  },
+  "sources": [
+    {
+      "name": "HaloPSA",
+      "status": "current",
+      "lastSuccessfulRefresh": "2026-03-24T12:20:00Z",
+      "note": "Synced every hour"
+    },
+    {
+      "name": "Qualys",
+      "status": "stale",
+      "lastSuccessfulRefresh": "2026-03-24T08:00:00Z"
+    },
+    {
+      "name": "Datto RMM",
+      "status": "stale",
+      "lastSuccessfulRefresh": "2026-03-24T08:00:00Z"
+    }
+  ]
+}

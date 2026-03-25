@@ -22,7 +22,10 @@ const snapshot = await readSnapshot('data/snapshots/latest.json');
   <SecurityPostureSection snapshot={snapshot} />
 
   <section class="section-shell">
-    <SectionHeading title="Source status" intro="Latest refresh across each data source." />
+    <SectionHeading
+      title="Source status"
+      intro="Current/stale state and last successful update across each data source."
+    />
     <div class="hero-meta">
       {snapshot.sources.map((source) => (
         <SourceStatusPill
