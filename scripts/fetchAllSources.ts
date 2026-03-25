@@ -41,14 +41,12 @@ export async function fetchQualysMetrics(): Promise<SourceResult<Partial<Snapsho
           openCriticalVulnerabilities: {
             label: "Open Critical Vulnerabilities",
             value: metrics.summary.openCriticalVulnerabilities.value,
-            context: "Current open critical findings",
-            direction: metrics.summary.criticalVulnerabilityTrend.direction
+            context: "Current open critical findings"
           },
           criticalVulnerabilityTrend: {
             label: "Critical Vulnerability Trend",
             value: metrics.summary.criticalVulnerabilityTrend.value,
-            context: "Delta vs previous period",
-            direction: metrics.summary.criticalVulnerabilityTrend.direction
+            context: "Delta vs previous period"
           }
         },
         metrics: [

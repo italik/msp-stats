@@ -130,6 +130,16 @@ function mergeDeep<T>(previous: T, patch?: Partial<T>): T {
   return result as T;
 }
 
+function stripDirectionFromSecurityCurrent(current: Snapshot["security"]["current"]): void {
+  for (const key of Object.keys(current)) {
+    const entry = current[key as keyof Snapshot["security"]["current"]];
+    if (!isRecord(entry)) {
+      continue;
+    }
+    delete (entry as Record<string, unknown>).direction;
+  }
+}
+
 export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snapshot> {
   const generatedAt = options.generatedAt ?? new Date().toISOString();
   const seed: Snapshot = {
@@ -181,6 +191,8 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
     buildSourceStatus({ name: "Qualys", source: qualys, previous, hasPrevious }),
     buildSourceStatus({ name: "Datto RMM", source: dattoRmm, previous, hasPrevious })
   ];
+
+  stripDirectionFromSecurityCurrent(merged.security.current);
 
   return merged;
 }
