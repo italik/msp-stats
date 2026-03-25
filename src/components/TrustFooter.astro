@@ -1,0 +1,64 @@
+---
+import { yearsSupportingBusinesses } from "../lib/snapshot/formatters";
+
+const years = yearsSupportingBusinesses(1999);
+---
+<section class="trust-footer">
+  <div class="trust-heading">
+    <p class="eyebrow">Years supporting businesses</p>
+    <h2>{years} years since 1999</h2>
+  </div>
+  <p class="trust-copy">
+    Methodology blends HaloPSA service operations, Qualys vulnerability scanning, and Datto RMM patch
+    telemetry to present a daily, normalized trust snapshot.
+  </p>
+  <a class="trust-link" href="https://italik.support" rel="noreferrer">italik.support</a>
+</section>
+
+<style>
+  .trust-footer {
+    background: linear-gradient(135deg, rgba(20, 32, 51, 0.06), rgba(217, 140, 43, 0.08));
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    border-radius: var(--radius-l);
+    padding: 28px;
+    display: grid;
+    gap: 12px;
+    box-shadow: var(--shadow-soft);
+  }
+
+  .trust-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: rgba(20, 32, 51, 0.6);
+  }
+
+  .trust-footer h2 {
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  .trust-copy {
+    margin: 0;
+    color: rgba(20, 32, 51, 0.75);
+  }
+
+  .trust-link {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 10px 14px;
+    border-radius: 999px;
+    background: rgba(20, 32, 51, 0.08);
+    font-weight: 700;
+    text-decoration: none;
+    border: 1px solid rgba(20, 32, 51, 0.1);
+  }
+</style>

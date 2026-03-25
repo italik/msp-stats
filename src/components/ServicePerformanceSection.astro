@@ -1,0 +1,78 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import KpiCard from "./KpiCard.astro";
+import Sparkline from "./Sparkline.astro";
+import type { Snapshot } from "../lib/snapshot/types";
+import { buildServiceMetrics, formatAsOf, resolveSourceFreshness } from "../lib/snapshot/formatters";
+
+interface Props {
+  snapshot: Snapshot;
+}
+
+const { snapshot } = Astro.props as Props;
+
+const metrics = buildServiceMetrics(snapshot);
+const haloFreshness = resolveSourceFreshness(snapshot.sources, "HaloPSA", snapshot.overall.lastUpdated);
+
+const slaTrend = snapshot.service.trends.slaAttainment ?? [];
+const backlogTrend = snapshot.service.trends.backlog ?? [];
+const hasTrends = slaTrend.length > 0 || backlogTrend.length > 0;
+---
+<section class="section-shell">
+  <SectionHeading title="Service Performance" intro="Availability, response, and experience signals." />
+  <div class="section-meta">
+    <span class="meta-pill">Data current as of {formatAsOf(haloFreshness)}</span>
+  </div>
+  <div class="kpi-grid">
+    {metrics.map((metric) => (
+      <KpiCard
+        label={metric.label}
+        value={metric.value}
+        context={metric.context}
+        direction={metric.direction}
+      />
+    ))}
+  </div>
+  <div class="trend-block">
+    <p class="trend-title">30-day trend</p>
+    <div class="sparkline-grid">
+      {slaTrend.length ? <Sparkline label="SLA attainment" points={slaTrend} /> : null}
+      {backlogTrend.length ? <Sparkline label="Backlog" points={backlogTrend} /> : null}
+      {!hasTrends && <p class="trend-placeholder">Trend data will appear once available.</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .trend-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .trend-title {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: rgba(20, 32, 51, 0.85);
+  }
+
+  .sparkline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .trend-placeholder {
+    margin: 0;
+    color: rgba(20, 32, 51, 0.6);
+    font-style: italic;
+  }
+</style>

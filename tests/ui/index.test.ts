@@ -18,5 +18,13 @@ test('index page renders key dashboard sections', async () => {
   expect(html).toContain('Service Performance');
   expect(html).toContain('Security Posture');
   expect(html).toContain('Last updated');
+  expect(html).toContain('Tickets handled');
+  expect(html).toContain('Ticket volume');
+  expect(html).toContain('Resolved tickets');
+  expect(html).toContain('Patch compliance');
+  expect(html).toContain('Devices fully patched');
+  expect(html).toContain('30-day trend');
+  expect(html).toContain('Years supporting businesses');
+  expect(html).toContain('Data current as of');
   await rm(buildDir, { recursive: true, force: true });
 });

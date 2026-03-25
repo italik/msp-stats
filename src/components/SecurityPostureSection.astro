@@ -1,0 +1,80 @@
+---
+import SectionHeading from "./SectionHeading.astro";
+import KpiCard from "./KpiCard.astro";
+import Sparkline from "./Sparkline.astro";
+import type { Snapshot } from "../lib/snapshot/types";
+import { buildSecurityMetrics, formatAsOf, resolveSourceFreshness } from "../lib/snapshot/formatters";
+
+interface Props {
+  snapshot: Snapshot;
+}
+
+const { snapshot } = Astro.props as Props;
+
+const metrics = buildSecurityMetrics(snapshot);
+const qualysFreshness = resolveSourceFreshness(snapshot.sources, "Qualys", snapshot.overall.lastUpdated);
+
+const openCriticalTrend = snapshot.security.trends.openCriticalVulnerabilities ?? [];
+const openHighTrend = snapshot.security.trends.openHighVulnerabilities ?? [];
+const hasTrends = openCriticalTrend.length > 0 || openHighTrend.length > 0;
+---
+<section class="section-shell">
+  <SectionHeading title="Security Posture" intro="Detection, remediation, and coverage across the fleet." />
+  <div class="section-meta">
+    <span class="meta-pill">Data current as of {formatAsOf(qualysFreshness)}</span>
+  </div>
+  <div class="kpi-grid">
+    {metrics.map((metric) => (
+      <KpiCard
+        label={metric.label}
+        value={metric.value}
+        context={metric.context}
+        direction={metric.direction}
+      />
+    ))}
+  </div>
+  <div class="trend-block">
+    <p class="trend-title">30-day trend</p>
+    <div class="sparkline-grid">
+      {openCriticalTrend.length ? (
+        <Sparkline label="Open critical vulnerabilities" points={openCriticalTrend} />
+      ) : null}
+      {openHighTrend.length ? <Sparkline label="Open high vulnerabilities" points={openHighTrend} /> : null}
+      {!hasTrends && <p class="trend-placeholder">Trend data will appear once available.</p>}
+    </div>
+  </div>
+</section>
+
+<style>
+  .section-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .trend-block {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .trend-title {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    color: rgba(20, 32, 51, 0.85);
+  }
+
+  .sparkline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .trend-placeholder {
+    margin: 0;
+    color: rgba(20, 32, 51, 0.6);
+    font-style: italic;
+  }
+</style>

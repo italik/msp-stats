@@ -4,6 +4,9 @@ import SummaryHero from '../components/SummaryHero.astro';
 import MethodologyBand from '../components/MethodologyBand.astro';
 import SectionHeading from '../components/SectionHeading.astro';
 import SourceStatusPill from '../components/SourceStatusPill.astro';
+import ServicePerformanceSection from '../components/ServicePerformanceSection.astro';
+import SecurityPostureSection from '../components/SecurityPostureSection.astro';
+import TrustFooter from '../components/TrustFooter.astro';
 import { readSnapshot } from '../lib/snapshot/readSnapshot';
 
 const title = import.meta.env.PUBLIC_SITE_TITLE ?? 'Italik Trust Report';
@@ -14,15 +17,9 @@ const snapshot = await readSnapshot('data/snapshots/latest.json');
 
   <MethodologyBand />
 
-  <section class="section-shell">
-    <SectionHeading title="Service Performance" intro="Availability, response, and experience signals." />
-    <div class="meta-pill">Operational detail coming next</div>
-  </section>
+  <ServicePerformanceSection snapshot={snapshot} />
 
-  <section class="section-shell">
-    <SectionHeading title="Security Posture" intro="Detection, remediation, and coverage across the fleet." />
-    <div class="meta-pill">Security detail coming next</div>
-  </section>
+  <SecurityPostureSection snapshot={snapshot} />
 
   <section class="section-shell">
     <SectionHeading title="Source status" intro="Latest refresh across each data source." />
@@ -37,4 +34,6 @@ const snapshot = await readSnapshot('data/snapshots/latest.json');
       ))}
     </div>
   </section>
+
+  <TrustFooter />
 </BaseLayout>

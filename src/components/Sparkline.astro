@@ -1,0 +1,112 @@
+---
+import { formatAsOf } from "../lib/snapshot/formatters";
+
+interface TrendPoint {
+  date: string;
+  value: number;
+}
+
+interface Props {
+  label: string;
+  points: TrendPoint[];
+}
+
+const { label, points } = Astro.props as Props;
+const hasPoints = points?.length > 0;
+
+const values = hasPoints ? points.map((p) => p.value) : [];
+const min = hasPoints ? Math.min(...values) : 0;
+const max = hasPoints ? Math.max(...values) : 0;
+const range = max - min || 1;
+
+const polylinePoints = hasPoints
+  ? points
+      .map((point, idx) => {
+        const x = points.length === 1 ? 0 : (idx / (points.length - 1)) * 100;
+        const y = 40 - ((point.value - min) / range) * 40;
+        return `${x},${y}`;
+      })
+      .join(" ")
+  : "";
+
+const latest = hasPoints ? points[points.length - 1] : undefined;
+const first = hasPoints ? points[0] : undefined;
+---
+<article class="sparkline-card">
+  <div class="sparkline-heading">
+    <p class="sparkline-eyebrow">30-day trend</p>
+    <p class="sparkline-title">{label}</p>
+  </div>
+  {hasPoints ? (
+    <>
+      <svg class="sparkline-chart" viewBox="0 0 100 40" role="img" aria-label={`${label} trend`}>
+        <polyline points={polylinePoints} />
+      </svg>
+      <div class="sparkline-meta">
+        {latest && <span>Latest: {latest.value}</span>}
+        {first && <span>Since {formatAsOf(first.date)}</span>}
+      </div>
+    </>
+  ) : (
+    <p class="sparkline-empty">No trend data yet</p>
+  )}
+</article>
+
+<style>
+  .sparkline-card {
+    background: var(--color-panel);
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    border-radius: var(--radius-m);
+    padding: 18px 18px 16px;
+    box-shadow: var(--shadow-soft);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .sparkline-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .sparkline-eyebrow {
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: rgba(20, 32, 51, 0.55);
+    font-size: 0.8rem;
+  }
+
+  .sparkline-title {
+    margin: 0;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+  }
+
+  .sparkline-chart {
+    width: 100%;
+    height: auto;
+  }
+
+  .sparkline-chart polyline {
+    fill: none;
+    stroke: var(--color-accent);
+    stroke-width: 2;
+  }
+
+  .sparkline-meta {
+    display: flex;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: rgba(20, 32, 51, 0.75);
+    flex-wrap: wrap;
+  }
+
+  .sparkline-empty {
+    margin: 0;
+    color: rgba(20, 32, 51, 0.55);
+    font-style: italic;
+  }
+</style>
