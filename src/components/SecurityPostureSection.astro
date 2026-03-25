@@ -3,7 +3,7 @@ import SectionHeading from "./SectionHeading.astro";
 import KpiCard from "./KpiCard.astro";
 import Sparkline from "./Sparkline.astro";
 import type { Snapshot } from "../lib/snapshot/types";
-import { buildSecurityMetrics, formatAsOf, resolveSourceFreshness } from "../lib/snapshot/formatters";
+import { formatAsOf, resolveSourceFreshness } from "../lib/snapshot/formatters";
 
 interface Props {
   snapshot: Snapshot;
@@ -11,12 +11,11 @@ interface Props {
 
 const { snapshot } = Astro.props as Props;
 
-const metrics = buildSecurityMetrics(snapshot);
+const metrics = snapshot.security.metrics;
 const qualysFreshness = resolveSourceFreshness(snapshot.sources, "Qualys", snapshot.overall.lastUpdated);
 
-const openCriticalTrend = snapshot.security.trends.openCriticalVulnerabilities ?? [];
-const openHighTrend = snapshot.security.trends.openHighVulnerabilities ?? [];
-const hasTrends = openCriticalTrend.length > 0 || openHighTrend.length > 0;
+const vulnerabilityTrend = snapshot.security.trends.vulnerabilities ?? [];
+const hasTrends = vulnerabilityTrend.length > 0;
 ---
 <section class="section-shell">
   <SectionHeading title="Security Posture" intro="Detection, remediation, and coverage across the fleet." />
@@ -36,10 +35,7 @@ const hasTrends = openCriticalTrend.length > 0 || openHighTrend.length > 0;
   <div class="trend-block">
     <p class="trend-title">30-day trend</p>
     <div class="sparkline-grid">
-      {openCriticalTrend.length ? (
-        <Sparkline label="Open critical vulnerabilities" points={openCriticalTrend} />
-      ) : null}
-      {openHighTrend.length ? <Sparkline label="Open high vulnerabilities" points={openHighTrend} /> : null}
+      {vulnerabilityTrend.length ? <Sparkline label="Vulnerabilities" points={vulnerabilityTrend} /> : null}
       {!hasTrends && <p class="trend-placeholder">Trend data will appear once available.</p>}
     </div>
   </div>

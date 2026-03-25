@@ -6,7 +6,8 @@ const years = yearsSupportingBusinesses(1999);
 <section class="trust-footer">
   <div class="trust-heading">
     <p class="eyebrow">Years supporting businesses</p>
-    <h2>{years} years since 1999</h2>
+    <h2>Years supporting businesses since 1999</h2>
+    <p class="trust-metric">{years} years of partnership</p>
   </div>
   <p class="trust-copy">
     Methodology blends HaloPSA service operations, Qualys vulnerability scanning, and Datto RMM patch
@@ -43,6 +44,12 @@ const years = yearsSupportingBusinesses(1999);
   .trust-footer h2 {
     margin: 0;
     letter-spacing: -0.01em;
+  }
+
+  .trust-metric {
+    margin: 0;
+    font-weight: 700;
+    color: rgba(20, 32, 51, 0.8);
   }
 
   .trust-copy {
