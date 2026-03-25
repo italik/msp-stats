@@ -14,8 +14,9 @@ const { snapshot } = Astro.props as Props;
 const metrics = snapshot.security.metrics;
 const qualysFreshness = resolveSourceFreshness(snapshot.sources, "Qualys", snapshot.overall.lastUpdated);
 
-const vulnerabilityTrend = snapshot.security.trends.vulnerabilities ?? [];
-const hasTrends = vulnerabilityTrend.length > 0;
+const criticalTrend = snapshot.security.trends.openCriticalVulnerabilities ?? [];
+const highTrend = snapshot.security.trends.openHighVulnerabilities ?? [];
+const hasTrends = criticalTrend.length > 0 || highTrend.length > 0;
 ---
 <section class="section-shell">
   <SectionHeading title="Security Posture" intro="Detection, remediation, and coverage across the fleet." />
@@ -35,7 +36,10 @@ const hasTrends = vulnerabilityTrend.length > 0;
   <div class="trend-block">
     <p class="trend-title">30-day trend</p>
     <div class="sparkline-grid">
-      {vulnerabilityTrend.length ? <Sparkline label="Vulnerabilities" points={vulnerabilityTrend} /> : null}
+      {criticalTrend.length ? (
+        <Sparkline label="Open critical vulnerabilities" points={criticalTrend} />
+      ) : null}
+      {highTrend.length ? <Sparkline label="Open high vulnerabilities" points={highTrend} /> : null}
       {!hasTrends && <p class="trend-placeholder">Trend data will appear once available.</p>}
     </div>
   </div>

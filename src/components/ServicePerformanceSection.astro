@@ -14,8 +14,9 @@ const { snapshot } = Astro.props as Props;
 const metrics = snapshot.service.metrics;
 const haloFreshness = resolveSourceFreshness(snapshot.sources, "HaloPSA", snapshot.overall.lastUpdated);
 
-const incidentTrend = snapshot.service.trends.incidents ?? [];
-const hasTrends = incidentTrend.length > 0;
+const slaTrend = snapshot.service.trends.slaAttainment ?? [];
+const backlogTrend = snapshot.service.trends.backlog ?? [];
+const hasTrends = slaTrend.length > 0 || backlogTrend.length > 0;
 ---
 <section class="section-shell">
   <SectionHeading title="Service Performance" intro="Availability, response, and experience signals." />
@@ -35,8 +36,11 @@ const hasTrends = incidentTrend.length > 0;
   <div class="trend-block">
     <p class="trend-title">30-day trend</p>
     <div class="sparkline-grid">
-      {incidentTrend.length ? <Sparkline label="Incidents" points={incidentTrend} /> : null}
-      {!hasTrends && <p class="trend-placeholder">Trend data will appear once incident data is available.</p>}
+      {slaTrend.length ? (
+        <Sparkline label="SLA attainment" points={slaTrend} />
+      ) : null}
+      {backlogTrend.length ? <Sparkline label="Backlog" points={backlogTrend} /> : null}
+      {!hasTrends && <p class="trend-placeholder">Trend data will appear once service history is available.</p>}
     </div>
   </div>
 </section>

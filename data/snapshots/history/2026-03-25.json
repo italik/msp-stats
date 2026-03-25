@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-25T09:02:51.422Z",
+  "generatedAt": "2026-03-25T11:19:01.771Z",
   "overall": {
-    "lastUpdated": "2026-03-25T09:02:51.422Z"
+    "lastUpdated": "2026-03-25T11:19:01.771Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -22,9 +22,9 @@
       },
       {
         "id": "sla-attainment",
-        "label": "SLA Attainment",
-        "value": "99.8%",
-        "context": "Rolling 30d"
+        "label": "SLA attainment",
+        "value": "98.6%",
+        "context": "Rolling 30 days"
       },
       {
         "id": "incident-response",
@@ -58,38 +58,93 @@
         "label": "Open Critical Vulnerabilities",
         "value": "12",
         "context": "Current open critical findings"
+      },
+      {
+        "id": "tickets-handled",
+        "label": "Tickets handled",
+        "value": "285",
+        "context": "Closed in period"
+      },
+      {
+        "id": "ticket-volume",
+        "label": "Ticket volume",
+        "value": "312",
+        "context": "Opened in period"
       }
     ]
   },
   "service": {
     "current": {
       "slaAttainment": {
-        "label": "SLA Attainment",
-        "value": "99.8%",
+        "label": "SLA attainment",
+        "value": "98.6%",
         "context": "Rolling 30 days"
       },
       "resolvedTickets": {
-        "label": "Resolved Tickets",
-        "value": 128,
-        "context": "YTD"
+        "label": "Resolved tickets",
+        "value": "279",
+        "context": "Resolved in period"
       },
       "meanTimeToDetect": {
         "label": "Mean Time to Detect",
         "value": "12m",
         "context": "Time since detection"
+      },
+      "ticketsHandled": {
+        "label": "Tickets handled",
+        "value": "285",
+        "context": "Closed in period"
+      },
+      "ticketVolume": {
+        "label": "Ticket volume",
+        "value": "312",
+        "context": "Opened in period"
       }
     },
     "metrics": [
       {
-        "id": "service-sla-trend",
-        "label": "Service SLA Trend",
-        "value": "99.7%",
-        "context": "Last 90 days",
-        "direction": "up"
+        "id": "tickets-handled",
+        "label": "Tickets handled",
+        "value": "285",
+        "context": "Closed in period"
+      },
+      {
+        "id": "ticket-volume",
+        "label": "Ticket volume",
+        "value": "312",
+        "context": "Opened in period"
+      },
+      {
+        "id": "resolved-tickets",
+        "label": "Resolved tickets",
+        "value": "279",
+        "context": "Resolved in period"
+      },
+      {
+        "id": "first-response-median",
+        "label": "Median first response",
+        "value": "14m",
+        "context": "Across all tickets"
+      },
+      {
+        "id": "resolution-median",
+        "label": "Median time to resolution",
+        "value": "5.2h",
+        "context": "Across all tickets"
       }
     ],
     "trends": {
-      "incidents": [
+      "slaAttainment": [
+        {
+          "date": "2026-03-20",
+          "value": 98.4
+        },
+        {
+          "date": "2026-03-21",
+          "value": 98.6
+        }
+      ],
+      "backlog": [
         {
           "date": "2026-03-20",
           "value": 42
@@ -132,25 +187,25 @@
     "metrics": [
       {
         "id": "vulnerability-critical",
-        "label": "Critical Vulnerabilities",
+        "label": "Open critical vulnerabilities",
         "value": 12,
         "context": "Open"
       },
       {
         "id": "vulnerability-high",
-        "label": "High Vulnerabilities",
+        "label": "Open high vulnerabilities",
         "value": 21,
         "context": "Open"
       },
       {
         "id": "vulnerability-medium",
-        "label": "Medium Vulnerabilities",
+        "label": "Open medium vulnerabilities",
         "value": 33,
         "context": "Open"
       },
       {
         "id": "vulnerability-low",
-        "label": "Low Vulnerabilities",
+        "label": "Open low vulnerabilities",
         "value": 4,
         "context": "Open"
       },
@@ -168,7 +223,17 @@
       }
     ],
     "trends": {
-      "vulnerabilities": [
+      "openCriticalVulnerabilities": [
+        {
+          "date": "2026-03-20",
+          "value": 18
+        },
+        {
+          "date": "2026-03-21",
+          "value": 15
+        }
+      ],
+      "openHighVulnerabilities": [
         {
           "date": "2026-03-20",
           "value": 18
@@ -183,20 +248,20 @@
   "sources": [
     {
       "name": "HaloPSA",
-      "status": "stale",
-      "lastSuccessfulRefresh": "2026-03-24T12:00:00Z",
-      "note": "HaloPSA metrics fetch not implemented"
+      "status": "current",
+      "lastSuccessfulRefresh": "2026-03-25T11:19:01.768Z",
+      "note": "Using HaloPSA fixture payload"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-25T09:02:51.420Z",
+      "lastSuccessfulRefresh": "2026-03-25T11:19:01.770Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-25T09:02:51.422Z",
+      "lastSuccessfulRefresh": "2026-03-25T11:19:01.771Z",
       "note": "Using Datto RMM fixture payload"
     }
   ]

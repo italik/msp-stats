@@ -18,12 +18,12 @@ test('index page renders key dashboard sections', async () => {
   expect(html).toContain('Service Performance');
   expect(html).toContain('Security Posture');
   expect(html).toContain('Last updated');
-  expect(html).toContain('Service SLA Trend');
-  expect(html).toContain('Critical Vulnerabilities');
-  expect(html).toContain('High Vulnerabilities');
+  expect(html).toContain('Tickets handled');
+  expect(html).toContain('Ticket volume');
+  expect(html).toContain('Resolved tickets');
   expect(html).toContain('Devices Fully Patched');
-  expect(html).toContain('Incidents');
-  expect(html).toContain('Vulnerabilities');
+  expect(html).toContain('Open critical vulnerabilities');
+  expect(html).toContain('Open high vulnerabilities');
   expect(html).toContain('30-day trend');
   expect(html).toContain('Years supporting businesses since 1999');
   expect(html).toContain('Data current as of');

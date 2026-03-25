@@ -212,6 +212,17 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
     merged.security.metrics = [];
   }
 
+  const sourceProvidesTrends = (key: "service" | "security") =>
+    orderedSources.some((source) => source?.status === "current" && isRecord((source.data as any)?.[key]?.trends));
+
+  if (sourceProvidesTrends("service")) {
+    merged.service.trends = {};
+  }
+
+  if (sourceProvidesTrends("security")) {
+    merged.security.trends = {};
+  }
+
   for (const source of orderedSources) {
     if (source?.status === "current" && source.data) {
       merged = mergeDeep(merged, source.data);
