@@ -140,6 +140,10 @@ export async function fetchQualysMetrics(): Promise<SourceResult<Partial<Snapsho
     { date: "2026-03-20", value: 18 },
     { date: "2026-03-21", value: 15 }
   ];
+  const highVulnerabilityTrend = [
+    { date: "2026-03-20", value: 24 },
+    { date: "2026-03-21", value: metrics.security.vulnerabilityBySeverity.high }
+  ];
 
   return {
     status: "current",
@@ -204,7 +208,7 @@ export async function fetchQualysMetrics(): Promise<SourceResult<Partial<Snapsho
         ],
         trends: {
           openCriticalVulnerabilities: vulnerabilityTrend,
-          openHighVulnerabilities: vulnerabilityTrend
+          openHighVulnerabilities: highVulnerabilityTrend
         }
       }
     }

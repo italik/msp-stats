@@ -13,17 +13,30 @@ describe("snapshot schema", () => {
   it("parses the fixture and exposes the required kpis", async () => {
     const parsed = await loadParsedSnapshot();
 
-    expect(parsed.summary.kpis.length).toBeGreaterThanOrEqual(8);
+    expect(parsed.summary.kpis.length).toBeGreaterThanOrEqual(7);
     expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("managed-endpoints");
     expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("critical-vulnerability-trend");
     expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("open-critical-vulnerabilities");
-    expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("tickets-handled");
-    expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("ticket-volume");
     expect(parsed.overall.lastUpdated).toMatch(/T/);
 
     expect(parsed.service.current.slaAttainment.value).toBeDefined();
     expect(parsed.service.current.resolvedTickets.value).toBeDefined();
     expect(parsed.security.current.patchCompliance.value).toBeDefined();
     expect(parsed.security.current.devicesFullyPatched.value).toBeDefined();
+  });
+
+  it("supports the task7 extended fixture fields", async () => {
+    const raw = await readFile(new URL("../fixtures/snapshot.task7.json", import.meta.url), "utf-8");
+    const parsed = snapshotSchema.parse(JSON.parse(raw));
+
+    const kpiIds = parsed.summary.kpis.map((kpi) => kpi.id);
+    expect(kpiIds).toContain("tickets-handled");
+    expect(kpiIds).toContain("ticket-volume");
+
+    expect(parsed.security.trends.openCriticalVulnerabilities.length).toBeGreaterThan(0);
+    expect(parsed.security.trends.openHighVulnerabilities.length).toBeGreaterThan(0);
+    expect(parsed.security.trends.openHighVulnerabilities).not.toEqual(
+      parsed.security.trends.openCriticalVulnerabilities
+    );
   });
 });
