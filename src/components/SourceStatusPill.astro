@@ -1,0 +1,12 @@
+---
+const { name, status, lastSuccessfulRefresh, note } = Astro.props;
+
+const statusLabel = status === 'current' ? 'Current' : 'Stale';
+const statusClass = status === 'current' ? 'pill-accent' : '';
+---
+<div class={`meta-pill ${statusClass}`}>
+  <strong>{name}</strong>
+  <span>• {statusLabel}</span>
+  {lastSuccessfulRefresh && <span>• {new Date(lastSuccessfulRefresh).toLocaleDateString()}</span>}
+  {note && <span>• {note}</span>}
+</div>

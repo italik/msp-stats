@@ -1,0 +1,25 @@
+---
+import KpiCard from './KpiCard.astro';
+
+const { snapshot } = Astro.props;
+const summary = snapshot.summary;
+const lastUpdated = snapshot.overall.lastUpdated;
+---
+<section class="hero">
+  <span class="hero-eyebrow">Public trust report</span>
+  <h1 class="hero-title">{summary.title}</h1>
+  <div class="hero-meta">
+    <span class="meta-pill">Last updated {lastUpdated}</span>
+    <span class="meta-pill">Prepared for clients and partners</span>
+  </div>
+  <div class="kpi-grid">
+    {summary.kpis.map((kpi) => (
+      <KpiCard
+        label={kpi.label}
+        value={kpi.value}
+        context={kpi.context}
+        direction={kpi.direction}
+      />
+    ))}
+  </div>
+</section>

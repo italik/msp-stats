@@ -1,0 +1,15 @@
+---
+const { label, value, context, direction } = Astro.props;
+
+const arrow = {
+  up: '▲',
+  down: '▼',
+  flat: '■'
+}[direction ?? 'flat'];
+---
+<article class="kpi-card">
+  <p class="kpi-label">{label}</p>
+  <p class="kpi-value">{value}</p>
+  <p class="kpi-context">{context}</p>
+  {direction && <span class={`direction ${direction}`}>{arrow} {direction}</span>}
+</article>

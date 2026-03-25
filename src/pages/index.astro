@@ -1,31 +1,41 @@
 ---
-const title = import.meta.env.PUBLIC_SITE_TITLE ?? 'MSP Trust Dashboard';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SummaryHero from '../components/SummaryHero.astro';
+import MethodologyBand from '../components/MethodologyBand.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import SourceStatusPill from '../components/SourceStatusPill.astro';
+import { readSnapshot } from '../lib/snapshot/readSnapshot';
+
+const title = import.meta.env.PUBLIC_SITE_TITLE ?? 'Italik Trust Report';
+const snapshot = await readSnapshot('data/snapshots/latest.json');
 ---
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{title}</title>
-  </head>
-  <body>
-    <main>
-      <header>
-        <h1>{title}</h1>
-        <p>Modern trust signals for IT service providers.</p>
-      </header>
-      <section>
-        <h2>Italik</h2>
-        <p>Service ownership pillars and measurement framing.</p>
-      </section>
-      <section>
-        <h2>Service Performance</h2>
-        <p>Latency and reliability roll-ups across shared services.</p>
-      </section>
-      <section>
-        <h2>Security Posture</h2>
-        <p>Compliance readiness and attack surface health.</p>
-      </section>
-    </main>
-  </body>
-</html>
+---
+<BaseLayout {title}>
+  <SummaryHero snapshot={snapshot} />
+
+  <MethodologyBand />
+
+  <section class="section-shell">
+    <SectionHeading title="Service Performance" intro="Availability, response, and experience signals." />
+    <div class="meta-pill">Operational detail coming next</div>
+  </section>
+
+  <section class="section-shell">
+    <SectionHeading title="Security Posture" intro="Detection, remediation, and coverage across the fleet." />
+    <div class="meta-pill">Security detail coming next</div>
+  </section>
+
+  <section class="section-shell">
+    <SectionHeading title="Source status" intro="Latest refresh across each data source." />
+    <div class="hero-meta">
+      {snapshot.sources.map((source) => (
+        <SourceStatusPill
+          name={source.name}
+          status={source.status}
+          lastSuccessfulRefresh={source.lastSuccessfulRefresh}
+          note={source.note}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,41 @@
+---
+import '../styles/global.css';
+
+const { title = 'Italik Trust Report' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page-shell">
+      <header class="brand-bar">
+        <div class="brand-mark">
+          <div class="brand-glyph" aria-hidden="true"></div>
+          <div class="brand-text">
+            <span class="brand-name">Italik</span>
+            <span class="brand-tag">Trust Office</span>
+          </div>
+        </div>
+        <div class="brand-actions">
+          <span class="pill pill-accent">Public</span>
+        </div>
+      </header>
+      <main>
+        <slot />
+      </main>
+      <footer class="footer-note">
+        <p>Prepared by the Italik Trust Office • Updated daily</p>
+      </footer>
+    </div>
+  </body>
+</html>

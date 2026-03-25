@@ -13,8 +13,10 @@ test('index page renders key dashboard sections', async () => {
   await rm(buildDir, { recursive: true, force: true });
   await execFileAsync('npm', ['run', 'build', '--', '--outDir', buildDir], { cwd: repoRoot });
   const html = await readFile(path.join(buildDir, 'index.html'), 'utf-8');
-  expect(html).toContain('Italik');
+  expect(html).toContain('Trust, measured daily');
+  expect(html).toContain('How we measure ourselves');
   expect(html).toContain('Service Performance');
   expect(html).toContain('Security Posture');
+  expect(html).toContain('Last updated');
   await rm(buildDir, { recursive: true, force: true });
 });
