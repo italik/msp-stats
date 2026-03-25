@@ -30,6 +30,18 @@ async function readPreviousSnapshot(previousSnapshotPath?: string): Promise<Snap
   }
 }
 
+const SOURCE_NAME_ALIASES: Record<string, string[]> = {
+  HaloPSA: ["Ticketing API"],
+  "Datto RMM": ["Endpoint Manager"],
+  Qualys: [],
+};
+
+function findPreviousSourceStatus(previous: Snapshot | undefined, name: string) {
+  const aliases = SOURCE_NAME_ALIASES[name] ?? [];
+  const candidates = new Set([name, ...aliases]);
+  return previous?.sources?.find((entry) => candidates.has(entry.name));
+}
+
 function buildSourceStatus(options: {
   name: string;
   source?: SourceResult<Partial<Snapshot>>;
@@ -37,7 +49,7 @@ function buildSourceStatus(options: {
   hasPrevious: boolean;
 }): Snapshot["sources"][number] {
   const { name, source, previous, hasPrevious } = options;
-  const previousStatus = previous?.sources?.find((entry) => entry.name === name);
+  const previousStatus = findPreviousSourceStatus(previous, name);
   const previousLastUpdated = previous?.overall?.lastUpdated;
 
   if (!source) {
@@ -176,6 +188,28 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
     qualys,
     dattoRmm
   ];
+
+  const sourceProvidesArray = (
+    key: "service" | "security" | "summary",
+    property: "metrics" | "kpis"
+  ) =>
+    orderedSources.some(
+      (source) =>
+        source?.status === "current" &&
+        Array.isArray((source.data as any)?.[key]?.[property])
+    );
+
+  if (sourceProvidesArray("service", "metrics")) {
+    merged.service.metrics = [];
+  }
+
+  if (sourceProvidesArray("security", "metrics")) {
+    merged.security.metrics = [];
+  }
+
+  if (sourceProvidesArray("summary", "kpis")) {
+    merged.summary.kpis = [];
+  }
 
   for (const source of orderedSources) {
     if (source?.status === "current" && source.data) {

@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-25T08:19:07.528Z",
+  "generatedAt": "2026-03-25T08:43:04.490Z",
   "overall": {
-    "lastUpdated": "2026-03-25T08:19:07.528Z"
+    "lastUpdated": "2026-03-25T08:43:04.490Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -125,18 +125,6 @@
     },
     "metrics": [
       {
-        "id": "devices-fully-patched",
-        "label": "Devices Fully Patched",
-        "value": 1228,
-        "context": "Across managed fleet"
-      },
-      {
-        "id": "devices-missing-critical",
-        "label": "Devices Missing Critical Patches",
-        "value": 42,
-        "context": "Across managed fleet"
-      },
-      {
         "id": "vulnerability-critical",
         "label": "Critical Vulnerabilities",
         "value": 12,
@@ -159,6 +147,18 @@
         "label": "Low Vulnerabilities",
         "value": 4,
         "context": "Open"
+      },
+      {
+        "id": "devices-fully-patched",
+        "label": "Devices Fully Patched",
+        "value": 1228,
+        "context": "Across managed fleet"
+      },
+      {
+        "id": "devices-missing-critical",
+        "label": "Devices Missing Critical Patches",
+        "value": 42,
+        "context": "Across managed fleet"
       }
     ],
     "trends": {
@@ -184,13 +184,13 @@
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-25T08:19:07.527Z",
+      "lastSuccessfulRefresh": "2026-03-25T08:43:04.489Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-25T08:19:07.528Z",
+      "lastSuccessfulRefresh": "2026-03-25T08:43:04.490Z",
       "note": "Using Datto RMM fixture payload"
     }
   ]
