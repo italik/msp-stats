@@ -20,19 +20,31 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, "..");
 const resolveRepoPath = (...segments: string[]) => path.resolve(repoRoot, ...segments);
 
+function formatTrendDate(date: Date): string {
+  return date.toISOString().slice(0, 10);
+}
+
+function buildTwoPointTrendDates(fetchedAt: string): [string, string] {
+  const latest = new Date(fetchedAt);
+  const previous = new Date(latest);
+  previous.setUTCDate(previous.getUTCDate() - 1);
+  return [formatTrendDate(previous), formatTrendDate(latest)];
+}
+
 export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
   const fetchedAt = new Date().toISOString();
   const payload = await loadFixture<HaloAggregateResponse>("halopsa.response.json");
   const metrics = mapHaloPsaMetrics(payload);
+  const [priorDate, currentDate] = buildTwoPointTrendDates(fetchedAt);
 
   const slaTrend = [
-    { date: "2026-03-20", value: 98.4 },
-    { date: "2026-03-21", value: Number(metrics.summary.slaAttainment.value.replace("%", "")) }
+    { date: priorDate, value: 98.4 },
+    { date: currentDate, value: Number(metrics.summary.slaAttainment.value.replace("%", "")) }
   ];
 
   const backlogTrend = [
-    { date: "2026-03-20", value: 42 },
-    { date: "2026-03-21", value: 37 }
+    { date: priorDate, value: 42 },
+    { date: currentDate, value: 37 }
   ];
 
   return {
@@ -136,13 +148,14 @@ export async function fetchQualysMetrics(): Promise<SourceResult<Partial<Snapsho
   const fetchedAt = new Date().toISOString();
   const payload = await loadFixture<QualysResponse>("qualys.response.json");
   const metrics = mapQualysMetrics(payload);
+  const [priorDate, currentDate] = buildTwoPointTrendDates(fetchedAt);
   const vulnerabilityTrend = [
-    { date: "2026-03-20", value: 18 },
-    { date: "2026-03-21", value: 15 }
+    { date: priorDate, value: 18 },
+    { date: currentDate, value: 15 }
   ];
   const highVulnerabilityTrend = [
-    { date: "2026-03-20", value: 24 },
-    { date: "2026-03-21", value: metrics.security.vulnerabilityBySeverity.high }
+    { date: priorDate, value: 24 },
+    { date: currentDate, value: metrics.security.vulnerabilityBySeverity.high }
   ];
 
   return {

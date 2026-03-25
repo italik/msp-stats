@@ -41,6 +41,14 @@ const SOURCE_NAME_ALIASES: Record<string, string[]> = {
   Qualys: [],
 };
 
+const STATIC_SUMMARY_KPI_IDS = new Set([
+  "trust-index",
+  "managed-endpoints",
+  "incident-response",
+  "patch-cadence",
+  "security-coverage"
+]);
+
 function findPreviousSourceStatus(previous: Snapshot | undefined, name: string) {
   const aliases = SOURCE_NAME_ALIASES[name] ?? [];
   const candidates = new Set([name, ...aliases]);
@@ -210,6 +218,10 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
 
   if (sourceProvidesArray("security", "metrics")) {
     merged.security.metrics = [];
+  }
+
+  if (sourceProvidesArray("summary", "kpis")) {
+    merged.summary.kpis = previous.summary.kpis.filter((kpi) => STATIC_SUMMARY_KPI_IDS.has(kpi.id));
   }
 
   const sourceProvidesTrends = (key: "service" | "security") =>

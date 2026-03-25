@@ -12,6 +12,7 @@ interface Props {
 const { snapshot } = Astro.props as Props;
 
 const metrics = snapshot.security.metrics;
+const patchCompliance = snapshot.security.current.patchCompliance;
 const qualysFreshness = resolveSourceFreshness(snapshot.sources, "Qualys", snapshot.overall.lastUpdated);
 
 const criticalTrend = snapshot.security.trends.openCriticalVulnerabilities ?? [];
@@ -24,6 +25,11 @@ const hasTrends = criticalTrend.length > 0 || highTrend.length > 0;
     <span class="meta-pill">Data current as of {formatAsOf(qualysFreshness)}</span>
   </div>
   <div class="kpi-grid">
+    <KpiCard
+      label="Patch compliance"
+      value={patchCompliance.value}
+      context={patchCompliance.context}
+    />
     {metrics.map((metric) => (
       <KpiCard
         label={metric.label}

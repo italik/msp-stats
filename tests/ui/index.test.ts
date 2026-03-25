@@ -21,6 +21,7 @@ test('index page renders key dashboard sections', async () => {
   expect(html).toContain('Tickets handled');
   expect(html).toContain('Ticket volume');
   expect(html).toContain('Resolved tickets');
+  expect(html).toContain('Patch compliance');
   expect(html).toContain('Devices Fully Patched');
   expect(html).toContain('Open critical vulnerabilities');
   expect(html).toContain('Open high vulnerabilities');

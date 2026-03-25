@@ -250,4 +250,43 @@ describe("buildSnapshot", () => {
     expect(openCrit?.value).toBe("10");
     expect(trustIndex?.value).toBe("92%");
   });
+
+  it("drops stale source-driven summary KPIs while preserving static summary cards", async () => {
+    const sources: BuildSources = {
+      halopsa: {
+        status: "current",
+        fetchedAt: staleTimestamp,
+        data: {
+          summary: {
+            kpis: [
+              {
+                id: "ticket-volume",
+                label: "Ticket volume",
+                value: "312",
+                context: "Opened in period"
+              }
+            ]
+          }
+        }
+      },
+      qualys: { status: "stale", fetchedAt: staleTimestamp },
+      dattoRmm: { status: "stale", fetchedAt: staleTimestamp }
+    };
+
+    const snapshot = await buildSnapshot({
+      previousSnapshotPath: "tests/fixtures/snapshot.task7.json",
+      sources: toBuildSnapshotSources(sources),
+      generatedAt: staleTimestamp
+    });
+
+    const kpiIds = snapshot.summary.kpis.map((kpi) => kpi.id);
+
+    expect(kpiIds).toContain("trust-index");
+    expect(kpiIds).toContain("managed-endpoints");
+    expect(kpiIds).toContain("ticket-volume");
+    expect(kpiIds).not.toContain("tickets-handled");
+    expect(kpiIds).not.toContain("sla-attainment");
+    expect(kpiIds).not.toContain("open-critical-vulnerabilities");
+    expect(kpiIds).not.toContain("critical-vulnerability-trend");
+  });
 });

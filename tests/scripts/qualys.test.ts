@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import fixture from "../fixtures/qualys.response.json" assert { type: "json" };
 import { fetchQualysMetrics } from "../../scripts/fetchAllSources";
 import { mapQualysMetrics, type QualysResponse } from "../../scripts/sources/qualys";
@@ -15,6 +15,10 @@ describe("mapQualysMetrics", () => {
 });
 
 describe("fetchQualysMetrics", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
   it("omits direction on security.current entries", async () => {
     const result = await fetchQualysMetrics();
     const current = result.data?.security?.current;
@@ -41,5 +45,17 @@ describe("fetchQualysMetrics", () => {
     expect(openCritical?.direction).toBeUndefined();
     expect(trend?.value).toBe(current?.criticalVulnerabilityTrend?.value);
     expect(trend?.direction).toBeDefined();
+  });
+
+  it("anchors vulnerability trend dates to the current publish day", async () => {
+    vi.useFakeTimers();
+    vi.setSystemTime(new Date("2026-04-05T09:00:00.000Z"));
+
+    const result = await fetchQualysMetrics();
+    const criticalTrend = result.data?.security?.trends?.openCriticalVulnerabilities ?? [];
+    const highTrend = result.data?.security?.trends?.openHighVulnerabilities ?? [];
+
+    expect(criticalTrend.map((point) => point.date)).toEqual(["2026-04-04", "2026-04-05"]);
+    expect(highTrend.map((point) => point.date)).toEqual(["2026-04-04", "2026-04-05"]);
   });
 });
