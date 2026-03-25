@@ -1,12 +1,24 @@
 import { describe, expect, it } from "vitest";
 import { buildSnapshot } from "../../scripts/buildSnapshot";
+import type { Snapshot } from "../../src/lib/snapshot/types";
 import type { SourceResult } from "../../scripts/sources/types";
 
+type DeepPartial<T> = T extends Array<infer U>
+  ? Array<DeepPartial<U>>
+  : T extends object
+  ? { [K in keyof T]?: DeepPartial<T[K]> }
+  : T;
+
+type BuildSnapshotOptions = Parameters<typeof buildSnapshot>[0];
+
 type BuildSources = {
-  halopsa: SourceResult<unknown>;
-  qualys: SourceResult<unknown>;
-  dattoRmm: SourceResult<unknown>;
+  halopsa: SourceResult<DeepPartial<Snapshot>>;
+  qualys: SourceResult<DeepPartial<Snapshot>>;
+  dattoRmm: SourceResult<DeepPartial<Snapshot>>;
 };
+
+const toBuildSnapshotSources = (sources: BuildSources): BuildSnapshotOptions["sources"] =>
+  sources as unknown as BuildSnapshotOptions["sources"];
 
 describe("buildSnapshot", () => {
   const staleTimestamp = "2026-03-24T12:20:00.000Z";
@@ -26,7 +38,7 @@ describe("buildSnapshot", () => {
 
     const snapshot = await buildSnapshot({
       previousSnapshotPath: "tests/fixtures/snapshot.valid.json",
-      sources
+      sources: toBuildSnapshotSources(sources)
     });
 
     const carriedForward = snapshot.service.current.slaAttainment.value;
@@ -38,13 +50,15 @@ describe("buildSnapshot", () => {
   });
 
   it("does not throw when previous snapshot file is missing", async () => {
+    const sources: BuildSources = {
+      halopsa: { status: "stale", fetchedAt: staleTimestamp },
+      qualys: { status: "stale", fetchedAt: staleTimestamp },
+      dattoRmm: { status: "stale", fetchedAt: staleTimestamp }
+    };
+
     const snapshot = await buildSnapshot({
       previousSnapshotPath: "tests/fixtures/does-not-exist.json",
-      sources: {
-        halopsa: { status: "stale", fetchedAt: staleTimestamp },
-        qualys: { status: "stale", fetchedAt: staleTimestamp },
-        dattoRmm: { status: "stale", fetchedAt: staleTimestamp }
-      }
+      sources: toBuildSnapshotSources(sources)
     });
 
     expect(snapshot.overall.lastUpdated).toBeDefined();
@@ -72,7 +86,7 @@ describe("buildSnapshot", () => {
 
     const snapshot = await buildSnapshot({
       previousSnapshotPath: "tests/fixtures/snapshot.valid.json",
-      sources
+      sources: toBuildSnapshotSources(sources)
     });
 
     expect(snapshot.service.current.resolvedTickets.value).toBe(999);
@@ -96,7 +110,7 @@ describe("buildSnapshot", () => {
 
     const snapshot = await buildSnapshot({
       previousSnapshotPath: "tests/fixtures/snapshot.valid.json",
-      sources,
+      sources: toBuildSnapshotSources(sources),
       generatedAt: staleTimestamp
     });
 
@@ -131,7 +145,7 @@ describe("buildSnapshot", () => {
     };
 
     const snapshot = await buildSnapshot({
-      sources,
+      sources: toBuildSnapshotSources(sources),
       generatedAt: staleTimestamp
     });
 
@@ -149,7 +163,7 @@ describe("buildSnapshot", () => {
 
     const snapshot = await buildSnapshot({
       previousSnapshotPath: "tests/fixtures/snapshot.valid.json",
-      sources
+      sources: toBuildSnapshotSources(sources)
     });
 
     const haloStatus = snapshot.sources.find((source) => source.name === "HaloPSA");
