@@ -1,12 +1,29 @@
 ---
-const { name, status, lastSuccessfulRefresh, note } = Astro.props;
+type Status = 'current' | 'stale';
+
+interface Props {
+  name: string;
+  status: Status;
+  lastSuccessfulRefresh?: string;
+  note?: string;
+}
+
+const { name, status, lastSuccessfulRefresh, note } = Astro.props as Props;
 
 const statusLabel = status === 'current' ? 'Current' : 'Stale';
 const statusClass = status === 'current' ? 'pill-accent' : '';
+const formattedDate =
+  lastSuccessfulRefresh &&
+  new Intl.DateTimeFormat('en-GB', {
+    timeZone: 'UTC',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  }).format(new Date(lastSuccessfulRefresh));
 ---
 <div class={`meta-pill ${statusClass}`}>
   <strong>{name}</strong>
   <span>• {statusLabel}</span>
-  {lastSuccessfulRefresh && <span>• {new Date(lastSuccessfulRefresh).toLocaleDateString()}</span>}
+  {formattedDate && <span>• {formattedDate}</span>}
   {note && <span>• {note}</span>}
 </div>

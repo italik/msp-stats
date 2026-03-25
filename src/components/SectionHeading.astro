@@ -1,5 +1,10 @@
 ---
-const { title, intro } = Astro.props;
+interface Props {
+  title: string;
+  intro?: string;
+}
+
+const { title, intro } = Astro.props as Props;
 ---
 <div class="section-heading">
   <div>

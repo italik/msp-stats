@@ -1,5 +1,14 @@
 ---
-const { label, value, context, direction } = Astro.props;
+type Direction = 'up' | 'down' | 'flat' | undefined;
+
+interface Props {
+  label: string;
+  value: string | number;
+  context: string;
+  direction?: Direction;
+}
+
+const { label, value, context, direction } = Astro.props as Props;
 
 const arrow = {
   up: '▲',

@@ -1,7 +1,12 @@
 ---
 import KpiCard from './KpiCard.astro';
+import type { Snapshot } from '../lib/snapshot/types';
 
-const { snapshot } = Astro.props;
+interface Props {
+  snapshot: Snapshot;
+}
+
+const { snapshot } = Astro.props as Props;
 const summary = snapshot.summary;
 const lastUpdated = snapshot.overall.lastUpdated;
 ---
