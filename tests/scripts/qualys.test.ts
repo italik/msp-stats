@@ -28,4 +28,18 @@ describe("fetchQualysMetrics", () => {
     expect(hasDirection(current.openCriticalVulnerabilities)).toBe(false);
     expect(hasDirection(current.criticalVulnerabilityTrend)).toBe(false);
   });
+
+  it("populates summary KPIs consistent with security details", async () => {
+    const result = await fetchQualysMetrics();
+    const current = result.data?.security?.current;
+    const summaryKpis = result.data?.summary?.kpis ?? [];
+
+    const openCritical = summaryKpis.find((kpi) => kpi.id === "open-critical-vulnerabilities");
+    const trend = summaryKpis.find((kpi) => kpi.id === "critical-vulnerability-trend");
+
+    expect(openCritical?.value).toBe(current?.openCriticalVulnerabilities?.value);
+    expect(openCritical?.direction).toBeUndefined();
+    expect(trend?.value).toBe(current?.criticalVulnerabilityTrend?.value);
+    expect(trend?.direction).toBeDefined();
+  });
 });

@@ -34,6 +34,12 @@
         "context": "90-day average"
       },
       {
+        "id": "open-critical-vulnerabilities",
+        "label": "Open Critical Vulnerabilities",
+        "value": "12",
+        "context": "Current open critical findings"
+      },
+      {
         "id": "critical-vulnerability-trend",
         "label": "Critical Vulnerability Trend",
         "value": "-5",
@@ -106,6 +112,16 @@
         "label": "Devices Fully Patched",
         "value": "1,228",
         "context": "Fleet total"
+      },
+      "openCriticalVulnerabilities": {
+        "label": "Open Critical Vulnerabilities",
+        "value": "12",
+        "context": "Current open critical findings"
+      },
+      "criticalVulnerabilityTrend": {
+        "label": "Critical Vulnerability Trend",
+        "value": "-5",
+        "context": "Delta vs previous period"
       }
     },
     "metrics": [

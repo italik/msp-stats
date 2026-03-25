@@ -13,9 +13,10 @@ describe("snapshot schema", () => {
   it("parses the fixture and exposes the required kpis", async () => {
     const parsed = await loadParsedSnapshot();
 
-    expect(parsed.summary.kpis.length).toBe(7);
+    expect(parsed.summary.kpis.length).toBe(8);
     expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("managed-endpoints");
     expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("critical-vulnerability-trend");
+    expect(parsed.summary.kpis.map((kpi) => kpi.id)).toContain("open-critical-vulnerabilities");
     expect(parsed.overall.lastUpdated).toMatch(/T/);
 
     expect(parsed.service.current.slaAttainment.value).toBeDefined();

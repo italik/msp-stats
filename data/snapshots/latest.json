@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-25T08:43:04.490Z",
+  "generatedAt": "2026-03-25T09:02:51.422Z",
   "overall": {
-    "lastUpdated": "2026-03-25T08:43:04.490Z"
+    "lastUpdated": "2026-03-25T09:02:51.422Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -36,9 +36,9 @@
       {
         "id": "critical-vulnerability-trend",
         "label": "Critical Vulnerability Trend",
-        "value": "-5",
-        "context": "Points YoY",
-        "direction": "down"
+        "value": "-3",
+        "direction": "down",
+        "context": "Delta vs previous period"
       },
       {
         "id": "patch-cadence",
@@ -52,6 +52,12 @@
         "value": "100%",
         "direction": "flat",
         "context": "Protection across the portfolio"
+      },
+      {
+        "id": "open-critical-vulnerabilities",
+        "label": "Open Critical Vulnerabilities",
+        "value": "12",
+        "context": "Current open critical findings"
       }
     ]
   },
@@ -184,13 +190,13 @@
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-25T08:43:04.489Z",
+      "lastSuccessfulRefresh": "2026-03-25T09:02:51.420Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-25T08:43:04.490Z",
+      "lastSuccessfulRefresh": "2026-03-25T09:02:51.422Z",
       "note": "Using Datto RMM fixture payload"
     }
   ]

@@ -1,12 +1,17 @@
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { buildSnapshot } from "./buildSnapshot";
 import { fetchAllSources } from "./fetchAllSources";
 import { persistHistory } from "./persistHistory";
 import { writeLatestSnapshot } from "./writeLatestSnapshot";
 
 async function run(): Promise<void> {
-  const latestPath = path.resolve("data/snapshots/latest.json");
-  const historyDir = path.resolve("data/snapshots/history");
+  const __dirname = path.dirname(fileURLToPath(import.meta.url));
+  const repoRoot = path.resolve(__dirname, "..");
+  const resolveRepoPath = (...segments: string[]) => path.resolve(repoRoot, ...segments);
+
+  const latestPath = resolveRepoPath("data/snapshots/latest.json");
+  const historyDir = resolveRepoPath("data/snapshots/history");
 
   const sources = await fetchAllSources();
   const snapshot = await buildSnapshot({

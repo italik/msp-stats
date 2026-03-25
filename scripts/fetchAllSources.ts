@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Snapshot } from "../src/lib/snapshot/types";
 import { mapDattoRmmMetrics, type DattoRmmResponse } from "./sources/dattoRmm";
 import { mapQualysMetrics, type QualysResponse } from "./sources/qualys";
@@ -11,6 +12,10 @@ type FetchAllSourcesResult = {
   dattoRmm: SourceResult<Partial<Snapshot>>;
 };
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, "..");
+const resolveRepoPath = (...segments: string[]) => path.resolve(repoRoot, ...segments);
+
 export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
   return {
     status: "stale",
@@ -21,7 +26,7 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
 }
 
 async function loadFixture<T>(filename: string): Promise<T> {
-  const filePath = path.resolve("tests/fixtures", filename);
+  const filePath = resolveRepoPath("tests/fixtures", filename);
   const raw = await readFile(filePath, "utf-8");
   return JSON.parse(raw) as T;
 }
@@ -36,6 +41,23 @@ export async function fetchQualysMetrics(): Promise<SourceResult<Partial<Snapsho
     fetchedAt,
     note: "Using Qualys fixture payload",
     data: {
+      summary: {
+        kpis: [
+          {
+            id: "open-critical-vulnerabilities",
+            label: "Open Critical Vulnerabilities",
+            value: metrics.summary.openCriticalVulnerabilities.value,
+            context: "Current open critical findings"
+          },
+          {
+            id: "critical-vulnerability-trend",
+            label: "Critical Vulnerability Trend",
+            value: metrics.summary.criticalVulnerabilityTrend.value,
+            direction: metrics.summary.criticalVulnerabilityTrend.direction,
+            context: "Delta vs previous period"
+          }
+        ]
+      },
       security: {
         current: {
           openCriticalVulnerabilities: {

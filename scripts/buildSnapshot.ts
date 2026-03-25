@@ -1,5 +1,6 @@
 import { readFile } from "node:fs/promises";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import type { Snapshot } from "../src/lib/snapshot/types";
 import type { SourceResult } from "./sources/types";
 
@@ -13,12 +14,16 @@ type BuildSnapshotOptions = {
   };
 };
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const repoRoot = path.resolve(__dirname, "..");
+const resolveRepoPath = (...segments: string[]) => path.resolve(repoRoot, ...segments);
+
 async function readPreviousSnapshot(previousSnapshotPath?: string): Promise<Snapshot | null> {
   if (!previousSnapshotPath) {
     return null;
   }
 
-  const resolved = path.resolve(previousSnapshotPath);
+  const resolved = path.resolve(repoRoot, previousSnapshotPath);
   try {
     const raw = await readFile(resolved, "utf-8");
     return JSON.parse(raw) as Snapshot;
@@ -205,10 +210,6 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
 
   if (sourceProvidesArray("security", "metrics")) {
     merged.security.metrics = [];
-  }
-
-  if (sourceProvidesArray("summary", "kpis")) {
-    merged.summary.kpis = [];
   }
 
   for (const source of orderedSources) {
