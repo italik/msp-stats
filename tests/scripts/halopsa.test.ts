@@ -3,10 +3,13 @@ import fixture from "../fixtures/halopsa.response.json" assert { type: "json" };
 import report304Fixture from "../fixtures/halopsa.report304.json" assert { type: "json" };
 import report347Fixture from "../fixtures/halopsa.report347.json" assert { type: "json" };
 import report348Fixture from "../fixtures/halopsa.report348.json" assert { type: "json" };
+import report349Fixture from "../fixtures/halopsa.report349.json" assert { type: "json" };
+import report350Fixture from "../fixtures/halopsa.report350.json" assert { type: "json" };
 import { fetchHaloPsaMetrics } from "../../scripts/fetchAllSources";
 import {
   mapHaloPsaMetrics,
   mergeHaloAggregateWithOpenClosedReport,
+  mergeHaloAggregateWithSlaAttainmentReports,
   mergeHaloAggregateWithResponseTimeReport,
   mergeHaloAggregateWithResolutionTimeReport
 } from "../../scripts/sources/halopsa";
@@ -66,6 +69,17 @@ describe("mapHaloPsaMetrics", () => {
 
     expect(merged.resolutionMedianHours).toBe(0.87);
     expect(merged.ticketsClosed).toBe(fixture.ticketsClosed);
+  });
+
+  it("merges response and resolution SLA reports into a blended attainment percentage", () => {
+    const merged = mergeHaloAggregateWithSlaAttainmentReports(
+      fixture,
+      report349Fixture as HaloReportResponse,
+      report350Fixture as HaloReportResponse
+    );
+
+    expect(merged.slaMetPercent).toBe(98.91);
+    expect(merged.ticketVolume).toBe(fixture.ticketVolume);
   });
 });
 

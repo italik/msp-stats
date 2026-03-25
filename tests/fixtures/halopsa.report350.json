@@ -1,0 +1,19 @@
+{
+  "id": 350,
+  "name": "SLA Response % Attainment",
+  "report": {
+    "loaded": true,
+    "rows": [
+      {
+        "CountOfFaults": "55",
+        "WithinResponseSLAFaults": "53",
+        "PercentWithinResponseSLA": "96.36"
+      },
+      {
+        "CountOfFaults": "57",
+        "WithinResponseSLAFaults": "57",
+        "PercentWithinResponseSLA": "100.00"
+      }
+    ]
+  }
+}

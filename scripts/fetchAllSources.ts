@@ -6,6 +6,7 @@ import { env } from "./config";
 import { mapDattoRmmMetrics, type DattoRmmResponse } from "./sources/dattoRmm";
 import {
   mergeHaloAggregateWithOpenClosedReport,
+  mergeHaloAggregateWithSlaAttainmentReports,
   mergeHaloAggregateWithResolutionTimeReport,
   mergeHaloAggregateWithResponseTimeReport,
   mapHaloPsaMetrics,
@@ -105,13 +106,28 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
         accessToken,
         env.HALOPSA_REPORT_RESOLUTION_TIME_ID
       );
+      const slaResolutionReport = await fetchHaloReportOpenClosedToday(
+        baseUrl,
+        accessToken,
+        env.HALOPSA_REPORT_SLA_RESOLUTION_ID
+      );
+      const slaResponseReport = await fetchHaloReportOpenClosedToday(
+        baseUrl,
+        accessToken,
+        env.HALOPSA_REPORT_SLA_RESPONSE_ID
+      );
 
       payload = mergeHaloAggregateWithOpenClosedReport(fixturePayload, openClosedReport);
       payload = mergeHaloAggregateWithResponseTimeReport(payload, responseTimeReport);
       payload = mergeHaloAggregateWithResolutionTimeReport(payload, resolutionTimeReport);
+      payload = mergeHaloAggregateWithSlaAttainmentReports(
+        payload,
+        slaResolutionReport,
+        slaResponseReport
+      );
       firstResponseLabel = "Average first response";
       resolutionLabel = "Average time to resolution";
-      note = `HaloPSA reports ${env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID}, ${env.HALOPSA_REPORT_RESPONSE_TIME_ID}, and ${env.HALOPSA_REPORT_RESOLUTION_TIME_ID} live; SLA attainment remains fixture-backed`;
+      note = `HaloPSA reports ${env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID}, ${env.HALOPSA_REPORT_RESPONSE_TIME_ID}, ${env.HALOPSA_REPORT_RESOLUTION_TIME_ID}, ${env.HALOPSA_REPORT_SLA_RESOLUTION_ID}, and ${env.HALOPSA_REPORT_SLA_RESPONSE_ID} live`;
     } catch (error) {
       const reason = error instanceof Error ? error.message : "Unknown error";
       note = `Using HaloPSA fixture payload; live report fetch failed: ${reason}`;

@@ -129,6 +129,47 @@ export function mergeHaloAggregateWithResolutionTimeReport(
   };
 }
 
+function sumReportField(
+  reportPayload: HaloReportResponse,
+  countField: string,
+  withinField: string
+): { total: number; within: number } {
+  const rows = reportPayload.report?.rows;
+
+  if (!reportPayload.report?.loaded || !Array.isArray(rows) || rows.length === 0) {
+    throw new Error("HaloPSA report payload did not include loaded report rows");
+  }
+
+  return rows.reduce(
+    (acc, row) => ({
+      total: acc.total + parseReportNumber(row[countField as keyof HaloReportRow], countField),
+      within: acc.within + parseReportNumber(row[withinField as keyof HaloReportRow], withinField)
+    }),
+    { total: 0, within: 0 }
+  );
+}
+
+export function mergeHaloAggregateWithSlaAttainmentReports(
+  base: HaloAggregateResponse,
+  resolutionReport: HaloReportResponse,
+  responseReport: HaloReportResponse
+): HaloAggregateResponse {
+  const resolution = sumReportField(resolutionReport, "CountOfFaults", "WithinSLAFaults");
+  const response = sumReportField(responseReport, "CountOfFaults", "WithinResponseSLAFaults");
+  const total = resolution.total + response.total;
+
+  if (total === 0) {
+    throw new Error("HaloPSA SLA reports did not contain any faults to aggregate");
+  }
+
+  const within = resolution.within + response.within;
+
+  return {
+    ...base,
+    slaMetPercent: Number(((within / total) * 100).toFixed(2))
+  };
+}
+
 export function mapHaloPsaMetrics(payload: HaloAggregateResponse): HaloPsaMetrics {
   const ticketVolume = assertNumericField(payload, "ticketVolume");
   const ticketsClosed = assertNumericField(payload, "ticketsClosed");

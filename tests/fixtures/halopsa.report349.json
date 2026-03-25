@@ -1,0 +1,19 @@
+{
+  "id": 349,
+  "name": "SLA Resolution % Attainment",
+  "report": {
+    "loaded": true,
+    "rows": [
+      {
+        "CountOfFaults": "14",
+        "WithinSLAFaults": "14",
+        "PercentWithinSLA": "100.00"
+      },
+      {
+        "CountOfFaults": "57",
+        "WithinSLAFaults": "57",
+        "PercentWithinSLA": "100.00"
+      }
+    ]
+  }
+}
