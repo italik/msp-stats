@@ -9,7 +9,6 @@ import { readSnapshot } from '../lib/snapshot/readSnapshot';
 const title = import.meta.env.PUBLIC_SITE_TITLE ?? 'Italik Trust Report';
 const snapshot = await readSnapshot('data/snapshots/latest.json');
 ---
----
 <BaseLayout {title}>
   <SummaryHero snapshot={snapshot} />
 
