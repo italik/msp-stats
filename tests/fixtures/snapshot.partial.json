@@ -63,5 +63,38 @@
       "status": "stale",
       "lastSuccessfulRefresh": "2026-03-24T08:00:00Z"
     }
-  ]
+  ],
+  "serviceSource": {
+    "service": {
+      "current": {
+        "resolvedTickets": {
+          "label": "Resolved tickets",
+          "value": "276",
+          "context": "Resolved in period"
+        }
+      }
+    }
+  },
+  "qualysSource": {
+    "security": {
+      "current": {
+        "openCriticalVulnerabilities": {
+          "label": "Open Critical Vulnerabilities",
+          "value": "11",
+          "context": "Current open critical findings"
+        }
+      }
+    }
+  },
+  "dattoSource": {
+    "security": {
+      "current": {
+        "patchCompliance": {
+          "label": "Patch Compliance",
+          "value": "93.5%",
+          "context": "Fleet-wide"
+        }
+      }
+    }
+  }
 }

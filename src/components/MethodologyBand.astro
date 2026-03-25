@@ -1,3 +1,17 @@
+---
+import type { Snapshot } from "../lib/snapshot/types";
+
+interface Props {
+  sources?: Snapshot["sources"];
+}
+
+const { sources = [] } = Astro.props as Props;
+const staleSources = sources.filter((source) => source.status === "stale");
+const staleSummary =
+  staleSources.length > 0
+    ? `${staleSources.length} source${staleSources.length === 1 ? "" : "s"} currently carried forward`
+    : "All source feeds refreshed successfully in the latest publish";
+---
 <section class="methodology">
   <div class="section-heading">
     <div>
@@ -5,9 +19,18 @@
       <p>Simple, accountable metrics refreshed daily across service and security.</p>
     </div>
   </div>
+  <p class="freshness-callout">{staleSummary}</p>
   <ul>
     <li><strong>Sources:</strong> HaloPSA, Qualys, Datto RMM — aggregated into a single normalized snapshot.</li>
     <li><strong>Cadence:</strong> Daily publish with stale-source carry-forward to avoid zeroing trusted baselines.</li>
     <li><strong>Review:</strong> Trust office reconciles outliers before posting to this public view.</li>
   </ul>
 </section>
+
+<style>
+  .freshness-callout {
+    margin: 0 0 14px;
+    color: rgba(20, 32, 51, 0.72);
+    font-weight: 600;
+  }
+</style>

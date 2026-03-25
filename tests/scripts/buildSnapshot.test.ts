@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import partialSnapshot from "../fixtures/snapshot.partial.json" assert { type: "json" };
 import { buildSnapshot } from "../../scripts/buildSnapshot";
 import type { Snapshot } from "../../src/lib/snapshot/types";
 import type { SourceResult } from "../../scripts/sources/types";
@@ -291,5 +292,44 @@ describe("buildSnapshot", () => {
     expect(kpiIds).not.toContain("sla-attainment");
     expect(kpiIds).not.toContain("open-critical-vulnerabilities");
     expect(kpiIds).not.toContain("critical-vulnerability-trend");
+  });
+
+  it("carries forward prior values when current sources return only partial data", async () => {
+    const sources: BuildSources = {
+      halopsa: {
+        status: "stale",
+        fetchedAt: staleTimestamp,
+        note: "Incomplete payload",
+        data: partialSnapshot.serviceSource as DeepPartial<Snapshot>
+      },
+      qualys: {
+        status: "current",
+        fetchedAt: staleTimestamp,
+        data: partialSnapshot.qualysSource as DeepPartial<Snapshot>
+      },
+      dattoRmm: {
+        status: "current",
+        fetchedAt: staleTimestamp,
+        data: partialSnapshot.dattoSource as DeepPartial<Snapshot>
+      }
+    };
+
+    const snapshot = await buildSnapshot({
+      previousSnapshotPath: "tests/fixtures/snapshot.task7.json",
+      sources: toBuildSnapshotSources(sources),
+      generatedAt: staleTimestamp
+    });
+
+    expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.status).toBe("stale");
+    expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.note).toBe("Incomplete payload");
+    expect(snapshot.service.metrics.find((metric) => metric.id === "tickets-handled")?.value).toBe("285");
+    expect(snapshot.service.trends.backlog).toEqual([
+      { date: "2026-03-20", value: 42 },
+      { date: "2026-03-21", value: 37 }
+    ]);
+    expect(snapshot.security.trends.openHighVulnerabilities).toEqual([
+      { date: "2026-03-20", value: 24 },
+      { date: "2026-03-21", value: 21 }
+    ]);
   });
 });

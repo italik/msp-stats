@@ -15,7 +15,7 @@ const snapshot = await readSnapshot('data/snapshots/latest.json');
 <BaseLayout {title}>
   <SummaryHero snapshot={snapshot} />
 
-  <MethodologyBand />
+  <MethodologyBand sources={snapshot.sources} />
 
   <ServicePerformanceSection snapshot={snapshot} />
 
