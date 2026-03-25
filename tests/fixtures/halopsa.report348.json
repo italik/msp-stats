@@ -1,0 +1,18 @@
+{
+  "id": 348,
+  "name": "Ticket Resolution Times (Yesterday)",
+  "report": {
+    "loaded": true,
+    "rows": [
+      {
+        "Resolution Time (Hours)": "1.22"
+      },
+      {
+        "Resolution Time (Hours)": "0.95"
+      },
+      {
+        "Resolution Time (Hours)": "0.43"
+      }
+    ]
+  }
+}

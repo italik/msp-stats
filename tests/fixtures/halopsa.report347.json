@@ -1,0 +1,18 @@
+{
+  "id": 347,
+  "name": "Ticket Response Times (Yesterday)",
+  "report": {
+    "loaded": true,
+    "rows": [
+      {
+        "Response Time": "23"
+      },
+      {
+        "Response Time": "0"
+      },
+      {
+        "Response Time": "289"
+      }
+    ]
+  }
+}

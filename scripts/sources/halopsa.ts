@@ -87,7 +87,45 @@ export function mergeHaloAggregateWithOpenClosedReport(
   return {
     ...base,
     ticketVolume,
-    ticketsClosed
+    ticketsClosed,
+    ticketsResolved: ticketsClosed
+  };
+}
+
+function averageFromReportRows(
+  reportPayload: HaloReportResponse,
+  field: string,
+  digits: number
+): number {
+  const rows = reportPayload.report?.rows;
+
+  if (!reportPayload.report?.loaded || !Array.isArray(rows) || rows.length === 0) {
+    throw new Error("HaloPSA report payload did not include loaded report rows");
+  }
+
+  const total = rows.reduce((sum, row) => sum + parseReportNumber(row[field as keyof HaloReportRow], field), 0);
+  const average = total / rows.length;
+
+  return Number(average.toFixed(digits));
+}
+
+export function mergeHaloAggregateWithResponseTimeReport(
+  base: HaloAggregateResponse,
+  reportPayload: HaloReportResponse
+): HaloAggregateResponse {
+  return {
+    ...base,
+    firstResponseMedianMinutes: averageFromReportRows(reportPayload, "Response Time", 0)
+  };
+}
+
+export function mergeHaloAggregateWithResolutionTimeReport(
+  base: HaloAggregateResponse,
+  reportPayload: HaloReportResponse
+): HaloAggregateResponse {
+  return {
+    ...base,
+    resolutionMedianHours: averageFromReportRows(reportPayload, "Resolution Time (Hours)", 2)
   };
 }
 

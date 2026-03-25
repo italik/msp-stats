@@ -6,6 +6,8 @@ import { env } from "./config";
 import { mapDattoRmmMetrics, type DattoRmmResponse } from "./sources/dattoRmm";
 import {
   mergeHaloAggregateWithOpenClosedReport,
+  mergeHaloAggregateWithResolutionTimeReport,
+  mergeHaloAggregateWithResponseTimeReport,
   mapHaloPsaMetrics,
   type HaloAggregateResponse,
   type HaloReportResponse
@@ -52,8 +54,20 @@ function normalizeHaloBaseUrl(baseUrl: string): string {
 
 async function fetchHaloReportOpenClosedToday(
   baseUrl: string,
+  accessToken: string,
   reportId: string
 ): Promise<HaloReportResponse> {
+  return httpGet<HaloReportResponse>(
+    `${baseUrl}/api/Report/${encodeURIComponent(reportId)}?loadreport=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`
+      }
+    }
+  );
+}
+
+async function fetchHaloAccessToken(baseUrl: string): Promise<string> {
   const token = await httpPostForm<HaloTokenResponse>(`${baseUrl}/auth/token`, {
     grant_type: "client_credentials",
     client_id: env.HALOPSA_CLIENT_ID,
@@ -61,14 +75,7 @@ async function fetchHaloReportOpenClosedToday(
     scope: "all"
   });
 
-  return httpGet<HaloReportResponse>(
-    `${baseUrl}/api/Report/${encodeURIComponent(reportId)}?loadreport=true`,
-    {
-      headers: {
-        Authorization: `Bearer ${token.access_token}`
-      }
-    }
-  );
+  return token.access_token;
 }
 
 export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
@@ -76,16 +83,35 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
   const fixturePayload = await loadFixture<HaloAggregateResponse>("halopsa.response.json");
   let payload = fixturePayload;
   let note = "Using HaloPSA fixture payload";
+  let firstResponseLabel = "Median first response";
+  let resolutionLabel = "Median time to resolution";
 
   if (hasHaloLiveConfig()) {
     try {
       const baseUrl = normalizeHaloBaseUrl(env.HALOPSA_BASE_URL);
-      const reportPayload = await fetchHaloReportOpenClosedToday(
+      const accessToken = await fetchHaloAccessToken(baseUrl);
+      const openClosedReport = await fetchHaloReportOpenClosedToday(
         baseUrl,
+        accessToken,
         env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID
       );
-      payload = mergeHaloAggregateWithOpenClosedReport(fixturePayload, reportPayload);
-      note = `HaloPSA report ${env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID} live for opened/closed counts; remaining service metrics fixture-backed`;
+      const responseTimeReport = await fetchHaloReportOpenClosedToday(
+        baseUrl,
+        accessToken,
+        env.HALOPSA_REPORT_RESPONSE_TIME_ID
+      );
+      const resolutionTimeReport = await fetchHaloReportOpenClosedToday(
+        baseUrl,
+        accessToken,
+        env.HALOPSA_REPORT_RESOLUTION_TIME_ID
+      );
+
+      payload = mergeHaloAggregateWithOpenClosedReport(fixturePayload, openClosedReport);
+      payload = mergeHaloAggregateWithResponseTimeReport(payload, responseTimeReport);
+      payload = mergeHaloAggregateWithResolutionTimeReport(payload, resolutionTimeReport);
+      firstResponseLabel = "Average first response";
+      resolutionLabel = "Average time to resolution";
+      note = `HaloPSA reports ${env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID}, ${env.HALOPSA_REPORT_RESPONSE_TIME_ID}, and ${env.HALOPSA_REPORT_RESOLUTION_TIME_ID} live; SLA attainment remains fixture-backed`;
     } catch (error) {
       const reason = error instanceof Error ? error.message : "Unknown error";
       note = `Using HaloPSA fixture payload; live report fetch failed: ${reason}`;
@@ -176,13 +202,13 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
           },
           {
             id: "first-response-median",
-            label: "Median first response",
+            label: firstResponseLabel,
             value: metrics.service.firstResponseMedian.value,
             context: "Across all tickets"
           },
           {
             id: "resolution-median",
-            label: "Median time to resolution",
+            label: resolutionLabel,
             value: metrics.service.resolutionMedian.value,
             context: "Across all tickets"
           }

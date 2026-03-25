@@ -1,10 +1,14 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import fixture from "../fixtures/halopsa.response.json" assert { type: "json" };
 import report304Fixture from "../fixtures/halopsa.report304.json" assert { type: "json" };
+import report347Fixture from "../fixtures/halopsa.report347.json" assert { type: "json" };
+import report348Fixture from "../fixtures/halopsa.report348.json" assert { type: "json" };
 import { fetchHaloPsaMetrics } from "../../scripts/fetchAllSources";
 import {
   mapHaloPsaMetrics,
-  mergeHaloAggregateWithOpenClosedReport
+  mergeHaloAggregateWithOpenClosedReport,
+  mergeHaloAggregateWithResponseTimeReport,
+  mergeHaloAggregateWithResolutionTimeReport
 } from "../../scripts/sources/halopsa";
 import type { HaloAggregateResponse, HaloReportResponse } from "../../scripts/sources/halopsa";
 
@@ -38,10 +42,30 @@ describe("mapHaloPsaMetrics", () => {
 
     expect(merged.ticketVolume).toBe(559);
     expect(merged.ticketsClosed).toBe(553);
-    expect(merged.ticketsResolved).toBe(fixture.ticketsResolved);
+    expect(merged.ticketsResolved).toBe(553);
     expect(merged.slaMetPercent).toBe(fixture.slaMetPercent);
     expect(merged.firstResponseMedianMinutes).toBe(fixture.firstResponseMedianMinutes);
     expect(merged.resolutionMedianHours).toBe(fixture.resolutionMedianHours);
+  });
+
+  it("merges report 347 average response time into the aggregate payload", () => {
+    const merged = mergeHaloAggregateWithResponseTimeReport(
+      fixture,
+      report347Fixture as HaloReportResponse
+    );
+
+    expect(merged.firstResponseMedianMinutes).toBe(104);
+    expect(merged.ticketVolume).toBe(fixture.ticketVolume);
+  });
+
+  it("merges report 348 average resolution time into the aggregate payload", () => {
+    const merged = mergeHaloAggregateWithResolutionTimeReport(
+      fixture,
+      report348Fixture as HaloReportResponse
+    );
+
+    expect(merged.resolutionMedianHours).toBe(0.87);
+    expect(merged.ticketsClosed).toBe(fixture.ticketsClosed);
   });
 });
 
