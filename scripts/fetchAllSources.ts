@@ -2,11 +2,15 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Snapshot } from "../src/lib/snapshot/types";
+import { env } from "./config";
 import { mapDattoRmmMetrics, type DattoRmmResponse } from "./sources/dattoRmm";
 import {
+  mergeHaloAggregateWithOpenClosedReport,
   mapHaloPsaMetrics,
-  type HaloAggregateResponse
+  type HaloAggregateResponse,
+  type HaloReportResponse
 } from "./sources/halopsa";
+import { httpGet, httpPostForm } from "./sources/http";
 import { mapQualysMetrics, type QualysResponse } from "./sources/qualys";
 import type { SourceResult } from "./sources/types";
 
@@ -31,9 +35,63 @@ function buildTwoPointTrendDates(fetchedAt: string): [string, string] {
   return [formatTrendDate(previous), formatTrendDate(latest)];
 }
 
+type HaloTokenResponse = {
+  access_token: string;
+};
+
+function hasHaloLiveConfig(): boolean {
+  return Boolean(
+    env.HALOPSA_BASE_URL && env.HALOPSA_CLIENT_ID && env.HALOPSA_CLIENT_SECRET
+  );
+}
+
+function normalizeHaloBaseUrl(baseUrl: string): string {
+  const withProtocol = /^https?:\/\//i.test(baseUrl) ? baseUrl : `https://${baseUrl}`;
+  return withProtocol.replace(/\/+$/, "");
+}
+
+async function fetchHaloReportOpenClosedToday(
+  baseUrl: string,
+  reportId: string
+): Promise<HaloReportResponse> {
+  const token = await httpPostForm<HaloTokenResponse>(`${baseUrl}/auth/token`, {
+    grant_type: "client_credentials",
+    client_id: env.HALOPSA_CLIENT_ID,
+    client_secret: env.HALOPSA_CLIENT_SECRET,
+    scope: "all"
+  });
+
+  return httpGet<HaloReportResponse>(
+    `${baseUrl}/api/Report/${encodeURIComponent(reportId)}?loadreport=true`,
+    {
+      headers: {
+        Authorization: `Bearer ${token.access_token}`
+      }
+    }
+  );
+}
+
 export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapshot>>> {
   const fetchedAt = new Date().toISOString();
-  const payload = await loadFixture<HaloAggregateResponse>("halopsa.response.json");
+  const fixturePayload = await loadFixture<HaloAggregateResponse>("halopsa.response.json");
+  let payload = fixturePayload;
+  let note = "Using HaloPSA fixture payload";
+
+  if (hasHaloLiveConfig()) {
+    try {
+      const baseUrl = normalizeHaloBaseUrl(env.HALOPSA_BASE_URL);
+      const reportPayload = await fetchHaloReportOpenClosedToday(
+        baseUrl,
+        env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID
+      );
+      payload = mergeHaloAggregateWithOpenClosedReport(fixturePayload, reportPayload);
+      note = `HaloPSA report ${env.HALOPSA_REPORT_OPEN_CLOSED_TODAY_ID} live for opened/closed counts; remaining service metrics fixture-backed`;
+    } catch (error) {
+      const reason = error instanceof Error ? error.message : "Unknown error";
+      note = `Using HaloPSA fixture payload; live report fetch failed: ${reason}`;
+    }
+  }
+
   const metrics = mapHaloPsaMetrics(payload);
   const [priorDate, currentDate] = buildTwoPointTrendDates(fetchedAt);
 
@@ -50,7 +108,7 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
   return {
     status: "current",
     fetchedAt,
-    note: "Using HaloPSA fixture payload",
+    note,
     data: {
       summary: {
         kpis: [

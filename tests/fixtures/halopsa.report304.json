@@ -1,0 +1,57 @@
+{
+  "id": 304,
+  "name": "Summary of Tickets Opened or Closed Today",
+  "report": {
+    "loaded": true,
+    "rows": [
+      {
+        "Ticket Type": "Alert",
+        "Tickets Opened Today": "526",
+        "Tickets Closed Today": "518",
+        "Delta (Open - Closed)": "8"
+      },
+      {
+        "Ticket Type": "Incident",
+        "Tickets Opened Today": "13",
+        "Tickets Closed Today": "15",
+        "Delta (Open - Closed)": "-2"
+      },
+      {
+        "Ticket Type": "Project",
+        "Tickets Opened Today": "1",
+        "Tickets Closed Today": "0",
+        "Delta (Open - Closed)": "1"
+      },
+      {
+        "Ticket Type": "Project Task",
+        "Tickets Opened Today": "2",
+        "Tickets Closed Today": "4",
+        "Delta (Open - Closed)": "-2"
+      },
+      {
+        "Ticket Type": "Quick Quote",
+        "Tickets Opened Today": "1",
+        "Tickets Closed Today": "0",
+        "Delta (Open - Closed)": "1"
+      },
+      {
+        "Ticket Type": "Quick Time",
+        "Tickets Opened Today": "1",
+        "Tickets Closed Today": "1",
+        "Delta (Open - Closed)": "0"
+      },
+      {
+        "Ticket Type": "Scheduled Task",
+        "Tickets Opened Today": "1",
+        "Tickets Closed Today": "1",
+        "Delta (Open - Closed)": "0"
+      },
+      {
+        "Ticket Type": "Service Request",
+        "Tickets Opened Today": "14",
+        "Tickets Closed Today": "14",
+        "Delta (Open - Closed)": "0"
+      }
+    ]
+  }
+}

@@ -7,6 +7,20 @@ export type HaloAggregateResponse = {
   resolutionMedianHours: number;
 };
 
+type HaloReportRow = {
+  "Ticket Type"?: string;
+  "Tickets Opened Today"?: string | number;
+  "Tickets Closed Today"?: string | number;
+  "Delta (Open - Closed)"?: string | number;
+};
+
+export type HaloReportResponse = {
+  report?: {
+    loaded?: boolean;
+    rows?: HaloReportRow[];
+  };
+};
+
 type MetricValue = {
   value: string;
 };
@@ -35,6 +49,46 @@ function assertNumericField(
   }
 
   return value;
+}
+
+function parseReportNumber(value: string | number | undefined, field: string): number {
+  if (typeof value === "number" && !Number.isNaN(value)) {
+    return value;
+  }
+
+  if (typeof value === "string" && value.trim().length > 0) {
+    const parsed = Number(value);
+    if (!Number.isNaN(parsed)) {
+      return parsed;
+    }
+  }
+
+  throw new Error(`HaloPSA report payload missing or invalid numeric field "${field}"`);
+}
+
+export function mergeHaloAggregateWithOpenClosedReport(
+  base: HaloAggregateResponse,
+  reportPayload: HaloReportResponse
+): HaloAggregateResponse {
+  const rows = reportPayload.report?.rows;
+
+  if (!reportPayload.report?.loaded || !Array.isArray(rows)) {
+    throw new Error('HaloPSA report payload did not include loaded report rows');
+  }
+
+  let ticketVolume = 0;
+  let ticketsClosed = 0;
+
+  for (const row of rows) {
+    ticketVolume += parseReportNumber(row["Tickets Opened Today"], "Tickets Opened Today");
+    ticketsClosed += parseReportNumber(row["Tickets Closed Today"], "Tickets Closed Today");
+  }
+
+  return {
+    ...base,
+    ticketVolume,
+    ticketsClosed
+  };
 }
 
 export function mapHaloPsaMetrics(payload: HaloAggregateResponse): HaloPsaMetrics {
