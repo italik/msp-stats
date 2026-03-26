@@ -12,6 +12,10 @@ const { name, status, lastSuccessfulRefresh, note } = Astro.props as Props;
 
 const statusLabel = status === 'current' ? 'Current' : 'Stale';
 const statusClass = status === 'current' ? 'pill-accent' : '';
+const displayNote =
+  name === 'HaloPSA' && note?.startsWith('HaloPSA reports ')
+    ? 'Service metrics refreshed from HaloPSA'
+    : note;
 const formattedDate =
   lastSuccessfulRefresh &&
   new Intl.DateTimeFormat('en-GB', {
@@ -25,5 +29,5 @@ const formattedDate =
   <strong>{name}</strong>
   <span>• Status: {statusLabel}</span>
   {formattedDate && <span>• Last successful update {formattedDate}</span>}
-  {note && <span>• {note}</span>}
+  {displayNote && <span>• {displayNote}</span>}
 </div>

@@ -33,6 +33,7 @@ test('index page renders key dashboard sections', async () => {
     expect(html).toContain('Status: Current');
     expect(html).toContain('Live source status');
     expect(html).toContain('Data current as of');
+    expect(html).not.toContain('HaloPSA reports 304');
     expect(html).toContain('Coming Soon');
     expect(html).toContain('Qualys');
     expect(html).toContain('Datto RMM');
