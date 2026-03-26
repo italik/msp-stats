@@ -56,12 +56,14 @@
     {
       "name": "Qualys",
       "status": "stale",
-      "lastSuccessfulRefresh": "2026-03-24T08:00:00Z"
+      "lastSuccessfulRefresh": "2026-03-24T08:00:00Z",
+      "note": "Security integration pending"
     },
     {
       "name": "Datto RMM",
       "status": "stale",
-      "lastSuccessfulRefresh": "2026-03-24T08:00:00Z"
+      "lastSuccessfulRefresh": "2026-03-24T08:00:00Z",
+      "note": "Security integration pending"
     }
   ],
   "serviceSource": {

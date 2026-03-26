@@ -4,9 +4,10 @@ import type { Snapshot } from '../lib/snapshot/types';
 
 interface Props {
   snapshot: Snapshot;
+  kpis?: Snapshot["summary"]["kpis"];
 }
 
-const { snapshot } = Astro.props as Props;
+const { snapshot, kpis = snapshot.summary.kpis } = Astro.props as Props;
 const summary = snapshot.summary;
 const lastUpdated = snapshot.overall.lastUpdated;
 ---
@@ -18,7 +19,7 @@ const lastUpdated = snapshot.overall.lastUpdated;
     <span class="meta-pill">Prepared for clients and partners</span>
   </div>
   <div class="kpi-grid">
-    {summary.kpis.map((kpi) => (
+    {kpis.map((kpi) => (
       <KpiCard
         label={kpi.label}
         value={kpi.value}

@@ -11,23 +11,36 @@ import { readSnapshot } from '../lib/snapshot/readSnapshot';
 
 const title = import.meta.env.PUBLIC_SITE_TITLE ?? 'Italik Trust Report';
 const snapshot = await readSnapshot('data/snapshots/latest.json');
+const isFixtureBacked = (note?: string) => /fixture payload|integration pending/i.test(note ?? '');
+const publicSources = snapshot.sources.filter((source) => !isFixtureBacked(source.note));
+const hasLiveSecurity = ['Qualys', 'Datto RMM'].every((name) =>
+  publicSources.some((source) => source.name === name)
+);
+const securityIntegrationsPending = !hasLiveSecurity;
+const liveSummaryKpiIds = new Set(['tickets-handled', 'sla-attainment', 'ticket-volume']);
+const summaryKpis = hasLiveSecurity
+  ? snapshot.summary.kpis
+  : snapshot.summary.kpis.filter((kpi) => liveSummaryKpiIds.has(kpi.id));
 ---
 <BaseLayout {title}>
-  <SummaryHero snapshot={snapshot} />
+  <SummaryHero snapshot={snapshot} kpis={summaryKpis} />
 
-  <MethodologyBand sources={snapshot.sources} />
+  <MethodologyBand
+    sources={publicSources}
+    securityIntegrationsPending={securityIntegrationsPending}
+  />
 
   <ServicePerformanceSection snapshot={snapshot} />
 
-  <SecurityPostureSection snapshot={snapshot} />
+  {hasLiveSecurity ? <SecurityPostureSection snapshot={snapshot} /> : null}
 
   <section class="section-shell">
     <SectionHeading
-      title="Source status"
-      intro="Current/stale state and last successful update across each data source."
+      title="Live source status"
+      intro="Current/stale state and last successful update across published data sources."
     />
     <div class="hero-meta">
-      {snapshot.sources.map((source) => (
+      {publicSources.map((source) => (
         <SourceStatusPill
           name={source.name}
           status={source.status}
@@ -38,5 +51,5 @@ const snapshot = await readSnapshot('data/snapshots/latest.json');
     </div>
   </section>
 
-  <TrustFooter />
+  <TrustFooter securityIntegrationsPending={securityIntegrationsPending} />
 </BaseLayout>

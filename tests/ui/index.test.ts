@@ -22,14 +22,19 @@ test('index page renders key dashboard sections', async () => {
     expect(html).toContain('Trust, measured daily');
     expect(html).toContain('How we measure ourselves');
     expect(html).toContain('Service Performance');
-    expect(html).toContain('Security Posture');
+    expect(html).not.toContain('Security Posture');
+    expect(html).toContain('Security integrations are in progress');
     expect(html).toContain('Last updated');
     expect(html).toContain('Current');
-    expect(html).toContain('Stale');
     expect(html).toContain('Last successful update');
-    expect(html).toContain('Status: Stale');
     expect(html).toContain('Status: Current');
+    expect(html).toContain('Live source status');
     expect(html).toContain('Data current as of');
+    expect(html).not.toContain('Qualys');
+    expect(html).not.toContain('Datto RMM');
+    expect(html).not.toContain('Open Critical Vulnerabilities');
+    expect(html).not.toContain('Critical Vulnerability Trend');
+    expect(html).not.toContain('Trust Index');
     expect(html).toContain('Years supporting businesses since 1999');
   } finally {
     await writeFile(latestSnapshotPath, originalSnapshot);

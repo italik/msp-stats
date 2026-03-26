@@ -5,6 +5,7 @@ import report347Fixture from "../fixtures/halopsa.report347.json" assert { type:
 import report348Fixture from "../fixtures/halopsa.report348.json" assert { type: "json" };
 import report349Fixture from "../fixtures/halopsa.report349.json" assert { type: "json" };
 import report350Fixture from "../fixtures/halopsa.report350.json" assert { type: "json" };
+import { env } from "../../scripts/config";
 import { fetchHaloPsaMetrics } from "../../scripts/fetchAllSources";
 import {
   mapHaloPsaMetrics,
@@ -91,12 +92,20 @@ describe("fetchHaloPsaMetrics", () => {
   it("anchors service trend dates to the current publish day", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-04-05T09:00:00.000Z"));
+    const originalEnv = { ...env };
+    env.HALOPSA_BASE_URL = "";
+    env.HALOPSA_CLIENT_ID = "";
+    env.HALOPSA_CLIENT_SECRET = "";
 
-    const result = await fetchHaloPsaMetrics();
-    const trend = result.data?.service?.trends?.slaAttainment ?? [];
-    const backlog = result.data?.service?.trends?.backlog ?? [];
+    try {
+      const result = await fetchHaloPsaMetrics();
+      const trend = result.data?.service?.trends?.slaAttainment ?? [];
+      const backlog = result.data?.service?.trends?.backlog ?? [];
 
-    expect(trend.map((point) => point.date)).toEqual(["2026-04-04", "2026-04-05"]);
-    expect(backlog.map((point) => point.date)).toEqual(["2026-04-04", "2026-04-05"]);
+      expect(trend.map((point) => point.date)).toEqual(["2026-04-04", "2026-04-05"]);
+      expect(backlog.map((point) => point.date)).toEqual(["2026-04-04", "2026-04-05"]);
+    } finally {
+      Object.assign(env, originalEnv);
+    }
   });
 });

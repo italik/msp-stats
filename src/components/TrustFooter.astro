@@ -1,7 +1,15 @@
 ---
 import { yearsSupportingBusinesses } from "../lib/snapshot/formatters";
 
+interface Props {
+  securityIntegrationsPending?: boolean;
+}
+
+const { securityIntegrationsPending = false } = Astro.props as Props;
 const years = yearsSupportingBusinesses(1999);
+const trustCopy = securityIntegrationsPending
+  ? "Methodology currently publishes HaloPSA service operations daily. Security integrations will be added once their live feeds are validated."
+  : "Methodology blends HaloPSA service operations, Qualys vulnerability scanning, and Datto RMM patch telemetry to present a daily, normalized trust snapshot.";
 ---
 <section class="trust-footer">
   <div class="trust-heading">
@@ -9,10 +17,7 @@ const years = yearsSupportingBusinesses(1999);
     <h2>Years supporting businesses since 1999</h2>
     <p class="trust-metric">{years} years of partnership</p>
   </div>
-  <p class="trust-copy">
-    Methodology blends HaloPSA service operations, Qualys vulnerability scanning, and Datto RMM patch
-    telemetry to present a daily, normalized trust snapshot.
-  </p>
+  <p class="trust-copy">{trustCopy}</p>
   <a class="trust-link" href="https://italik.support" rel="noreferrer">italik.support</a>
 </section>
 
