@@ -155,22 +155,22 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
       summary: {
         kpis: [
           {
-            id: "tickets-handled",
-            label: "Tickets handled",
-            value: metrics.summary.ticketsHandled.value,
-            context: "Closed in period"
+            id: "ticket-volume",
+            label: "Tickets opened",
+            value: metrics.service.ticketVolume.value,
+            context: "Opened in period"
+          },
+          {
+            id: "resolved-tickets",
+            label: "Tickets resolved",
+            value: metrics.service.resolvedTickets.value,
+            context: "Resolved in period"
           },
           {
             id: "sla-attainment",
             label: "SLA attainment",
             value: metrics.summary.slaAttainment.value,
             context: "Rolling 30 days"
-          },
-          {
-            id: "ticket-volume",
-            label: "Ticket volume",
-            value: metrics.service.ticketVolume.value,
-            context: "Opened in period"
           }
         ]
       },
@@ -181,38 +181,27 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
             value: metrics.summary.slaAttainment.value,
             context: "Rolling 30 days"
           },
-          ticketsHandled: {
-            label: "Tickets handled",
-            value: metrics.summary.ticketsHandled.value,
-            context: "Closed in period"
-          },
           ticketVolume: {
-            label: "Ticket volume",
+            label: "Tickets opened",
             value: metrics.service.ticketVolume.value,
             context: "Opened in period"
           },
           resolvedTickets: {
-            label: "Resolved tickets",
+            label: "Tickets resolved",
             value: metrics.service.resolvedTickets.value,
             context: "Resolved in period"
           }
         },
         metrics: [
           {
-            id: "tickets-handled",
-            label: "Tickets handled",
-            value: metrics.summary.ticketsHandled.value,
-            context: "Closed in period"
-          },
-          {
             id: "ticket-volume",
-            label: "Ticket volume",
+            label: "Tickets opened",
             value: metrics.service.ticketVolume.value,
             context: "Opened in period"
           },
           {
             id: "resolved-tickets",
-            label: "Resolved tickets",
+            label: "Tickets resolved",
             value: metrics.service.resolvedTickets.value,
             context: "Resolved in period"
           },

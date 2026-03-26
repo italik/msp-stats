@@ -89,6 +89,28 @@ describe("fetchHaloPsaMetrics", () => {
     vi.useRealTimers();
   });
 
+  it("publishes opened and resolved ticket labels for the public snapshot", async () => {
+    const originalEnv = { ...env };
+    env.HALOPSA_BASE_URL = "";
+    env.HALOPSA_CLIENT_ID = "";
+    env.HALOPSA_CLIENT_SECRET = "";
+
+    try {
+      const result = await fetchHaloPsaMetrics();
+      const summaryLabels = result.data?.summary?.kpis?.map((kpi) => kpi.label) ?? [];
+      const serviceLabels = result.data?.service?.metrics?.map((metric) => metric.label) ?? [];
+
+      expect(summaryLabels).toContain("Tickets opened");
+      expect(summaryLabels).toContain("Tickets resolved");
+      expect(summaryLabels).not.toContain("Tickets handled");
+      expect(serviceLabels).toContain("Tickets opened");
+      expect(serviceLabels).toContain("Tickets resolved");
+      expect(serviceLabels).not.toContain("Tickets handled");
+    } finally {
+      Object.assign(env, originalEnv);
+    }
+  });
+
   it("anchors service trend dates to the current publish day", async () => {
     vi.useFakeTimers();
     vi.setSystemTime(new Date("2026-04-05T09:00:00.000Z"));

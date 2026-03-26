@@ -60,16 +60,16 @@
         "context": "Current open critical findings"
       },
       {
-        "id": "tickets-handled",
-        "label": "Tickets handled",
-        "value": "285",
-        "context": "Closed in period"
-      },
-      {
         "id": "ticket-volume",
-        "label": "Ticket volume",
+        "label": "Tickets opened",
         "value": "312",
         "context": "Opened in period"
+      },
+      {
+        "id": "resolved-tickets",
+        "label": "Tickets resolved",
+        "value": "279",
+        "context": "Resolved in period"
       }
     ]
   },
@@ -81,7 +81,7 @@
         "context": "Rolling 30 days"
       },
       "resolvedTickets": {
-        "label": "Resolved tickets",
+        "label": "Tickets resolved",
         "value": "279",
         "context": "Resolved in period"
       },
@@ -90,33 +90,22 @@
         "value": "12m",
         "context": "Time since detection"
       },
-      "ticketsHandled": {
-        "label": "Tickets handled",
-        "value": "285",
-        "context": "Closed in period"
-      },
       "ticketVolume": {
-        "label": "Ticket volume",
+        "label": "Tickets opened",
         "value": "312",
         "context": "Opened in period"
       }
     },
     "metrics": [
       {
-        "id": "tickets-handled",
-        "label": "Tickets handled",
-        "value": "285",
-        "context": "Closed in period"
-      },
-      {
         "id": "ticket-volume",
-        "label": "Ticket volume",
+        "label": "Tickets opened",
         "value": "312",
         "context": "Opened in period"
       },
       {
         "id": "resolved-tickets",
-        "label": "Resolved tickets",
+        "label": "Tickets resolved",
         "value": "279",
         "context": "Resolved in period"
       },

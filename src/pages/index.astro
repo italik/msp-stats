@@ -17,7 +17,7 @@ const hasLiveSecurity = ['Qualys', 'Datto RMM'].every((name) =>
   publicSources.some((source) => source.name === name)
 );
 const securityIntegrationsPending = !hasLiveSecurity;
-const liveSummaryKpiIds = new Set(['tickets-handled', 'sla-attainment', 'ticket-volume']);
+const liveSummaryKpiIds = new Set(['ticket-volume', 'resolved-tickets', 'sla-attainment']);
 const summaryKpis = hasLiveSecurity
   ? snapshot.summary.kpis
   : snapshot.summary.kpis.filter((kpi) => liveSummaryKpiIds.has(kpi.id));

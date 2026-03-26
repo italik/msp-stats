@@ -22,6 +22,9 @@ test('index page renders key dashboard sections', async () => {
     expect(html).toContain('Trust, measured daily');
     expect(html).toContain('How we measure ourselves');
     expect(html).toContain('Service Performance');
+    expect(html).toContain('Tickets opened');
+    expect(html).toContain('Tickets resolved');
+    expect(html).not.toContain('Tickets handled');
     expect(html).not.toContain('Security Posture');
     expect(html).toContain('Security integrations are in progress');
     expect(html).toContain('Last updated');

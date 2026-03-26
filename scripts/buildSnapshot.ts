@@ -241,6 +241,10 @@ export async function buildSnapshot(options: BuildSnapshotOptions): Promise<Snap
     }
   }
 
+  if (halopsa.status === "current" && isRecord(halopsa.data?.service?.current)) {
+    delete (merged.service.current as Record<string, unknown>).ticketsHandled;
+  }
+
   merged.generatedAt = generatedAt;
   merged.overall = { ...(merged.overall ?? {}), lastUpdated: generatedAt };
 

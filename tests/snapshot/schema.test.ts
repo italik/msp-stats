@@ -30,8 +30,9 @@ describe("snapshot schema", () => {
     const parsed = snapshotSchema.parse(JSON.parse(raw));
 
     const kpiIds = parsed.summary.kpis.map((kpi) => kpi.id);
-    expect(kpiIds).toContain("tickets-handled");
     expect(kpiIds).toContain("ticket-volume");
+    expect(kpiIds).toContain("resolved-tickets");
+    expect(kpiIds).not.toContain("tickets-handled");
 
     expect(parsed.security.trends.openCriticalVulnerabilities.length).toBeGreaterThan(0);
     expect(parsed.security.trends.openHighVulnerabilities.length).toBeGreaterThan(0);

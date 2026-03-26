@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-26T09:04:03.095Z",
+  "generatedAt": "2026-03-26T09:15:55.279Z",
   "overall": {
-    "lastUpdated": "2026-03-26T09:04:03.095Z"
+    "lastUpdated": "2026-03-26T09:15:55.279Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -13,22 +13,22 @@
         "context": "Weighted composite"
       },
       {
-        "id": "tickets-handled",
-        "label": "Tickets handled",
-        "value": "256",
-        "context": "Closed in period"
+        "id": "ticket-volume",
+        "label": "Tickets opened",
+        "value": "264",
+        "context": "Opened in period"
+      },
+      {
+        "id": "resolved-tickets",
+        "label": "Tickets resolved",
+        "value": "258",
+        "context": "Resolved in period"
       },
       {
         "id": "sla-attainment",
         "label": "SLA attainment",
         "value": "98.4%",
         "context": "Rolling 30 days"
-      },
-      {
-        "id": "ticket-volume",
-        "label": "Ticket volume",
-        "value": "258",
-        "context": "Opened in period"
       },
       {
         "id": "open-critical-vulnerabilities",
@@ -53,38 +53,27 @@
         "context": "Rolling 30 days"
       },
       "resolvedTickets": {
-        "label": "Resolved tickets",
-        "value": "256",
+        "label": "Tickets resolved",
+        "value": "258",
         "context": "Resolved in period"
       },
-      "ticketsHandled": {
-        "label": "Tickets handled",
-        "value": "256",
-        "context": "Closed in period"
-      },
       "ticketVolume": {
-        "label": "Ticket volume",
-        "value": "258",
+        "label": "Tickets opened",
+        "value": "264",
         "context": "Opened in period"
       }
     },
     "metrics": [
       {
-        "id": "tickets-handled",
-        "label": "Tickets handled",
-        "value": "256",
-        "context": "Closed in period"
-      },
-      {
         "id": "ticket-volume",
-        "label": "Ticket volume",
-        "value": "258",
+        "label": "Tickets opened",
+        "value": "264",
         "context": "Opened in period"
       },
       {
         "id": "resolved-tickets",
-        "label": "Resolved tickets",
-        "value": "256",
+        "label": "Tickets resolved",
+        "value": "258",
         "context": "Resolved in period"
       },
       {
@@ -216,19 +205,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-26T09:04:00.738Z",
+      "lastSuccessfulRefresh": "2026-03-26T09:15:53.531Z",
       "note": "HaloPSA reports 304, 352, 353, 349, and 350 live"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-26T09:04:03.094Z",
+      "lastSuccessfulRefresh": "2026-03-26T09:15:55.277Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-26T09:04:03.095Z",
+      "lastSuccessfulRefresh": "2026-03-26T09:15:55.278Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],

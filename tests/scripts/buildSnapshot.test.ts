@@ -1,5 +1,9 @@
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
+import os from "node:os";
+import path from "node:path";
 import { describe, expect, it } from "vitest";
 import partialSnapshot from "../fixtures/snapshot.partial.json" assert { type: "json" };
+import task7Snapshot from "../fixtures/snapshot.task7.json" assert { type: "json" };
 import { buildSnapshot } from "../../scripts/buildSnapshot";
 import type { Snapshot } from "../../src/lib/snapshot/types";
 import type { SourceResult } from "../../scripts/sources/types";
@@ -265,9 +269,15 @@ describe("buildSnapshot", () => {
             kpis: [
               {
                 id: "ticket-volume",
-                label: "Ticket volume",
+                label: "Tickets opened",
                 value: "312",
                 context: "Opened in period"
+              },
+              {
+                id: "resolved-tickets",
+                label: "Tickets resolved",
+                value: "312",
+                context: "Resolved in period"
               }
             ]
           }
@@ -288,7 +298,7 @@ describe("buildSnapshot", () => {
     expect(kpiIds).toContain("trust-index");
     expect(kpiIds).toContain("managed-endpoints");
     expect(kpiIds).toContain("ticket-volume");
-    expect(kpiIds).not.toContain("tickets-handled");
+    expect(kpiIds).toContain("resolved-tickets");
     expect(kpiIds).not.toContain("sla-attainment");
     expect(kpiIds).not.toContain("open-critical-vulnerabilities");
     expect(kpiIds).not.toContain("critical-vulnerability-trend");
@@ -322,7 +332,9 @@ describe("buildSnapshot", () => {
 
     expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.status).toBe("stale");
     expect(snapshot.sources.find((source) => source.name === "HaloPSA")?.note).toBe("Incomplete payload");
-    expect(snapshot.service.metrics.find((metric) => metric.id === "tickets-handled")?.value).toBe("285");
+    expect(snapshot.service.metrics.find((metric) => metric.id === "ticket-volume")?.value).toBe("312");
+    expect(snapshot.service.metrics.find((metric) => metric.id === "resolved-tickets")?.value).toBe("279");
+    expect(snapshot.service.metrics.find((metric) => metric.id === "tickets-handled")).toBeUndefined();
     expect(snapshot.service.trends.backlog).toEqual([
       { date: "2026-03-20", value: 42 },
       { date: "2026-03-21", value: 37 }
@@ -331,5 +343,51 @@ describe("buildSnapshot", () => {
       { date: "2026-03-20", value: 24 },
       { date: "2026-03-21", value: 21 }
     ]);
+  });
+
+  it("replaces stale service current fields when Halo publishes a fresh current block", async () => {
+    const tempDir = await mkdtemp(path.join(os.tmpdir(), "msp-stats-"));
+    const previousSnapshotPath = path.join(tempDir, "previous.json");
+    const legacySnapshot = structuredClone(task7Snapshot) as DeepPartial<Snapshot> & {
+      service: { current: Record<string, unknown> };
+    };
+    legacySnapshot.service.current.ticketsHandled = {
+      label: "Tickets handled",
+      value: "285",
+      context: "Closed in period"
+    };
+    await writeFile(previousSnapshotPath, JSON.stringify(legacySnapshot, null, 2));
+
+    const sources: BuildSources = {
+      halopsa: {
+        status: "current",
+        fetchedAt: staleTimestamp,
+        data: {
+          service: {
+            current: {
+              slaAttainment: { label: "SLA attainment", value: "99.1%", context: "Rolling 30 days" },
+              ticketVolume: { label: "Tickets opened", value: "312", context: "Opened in period" },
+              resolvedTickets: { label: "Tickets resolved", value: "279", context: "Resolved in period" }
+            }
+          }
+        }
+      },
+      qualys: { status: "stale", fetchedAt: staleTimestamp },
+      dattoRmm: { status: "stale", fetchedAt: staleTimestamp }
+    };
+
+    try {
+      const snapshot = await buildSnapshot({
+        previousSnapshotPath,
+        sources: toBuildSnapshotSources(sources),
+        generatedAt: staleTimestamp
+      });
+
+      expect(snapshot.service.current.ticketVolume.label).toBe("Tickets opened");
+      expect(snapshot.service.current.resolvedTickets.label).toBe("Tickets resolved");
+      expect("ticketsHandled" in snapshot.service.current).toBe(false);
+    } finally {
+      await rm(tempDir, { recursive: true, force: true });
+    }
   });
 });

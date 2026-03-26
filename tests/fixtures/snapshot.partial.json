@@ -7,10 +7,22 @@
     "title": "Trust, measured daily",
     "kpis": [
       {
-        "id": "trust-index",
-        "label": "Trust Index",
-        "value": "91%",
-        "context": "Weighted composite"
+        "id": "ticket-volume",
+        "label": "Tickets opened",
+        "value": "301",
+        "context": "Opened in period"
+      },
+      {
+        "id": "resolved-tickets",
+        "label": "Tickets resolved",
+        "value": "276",
+        "context": "Resolved in period"
+      },
+      {
+        "id": "sla-attainment",
+        "label": "SLA attainment",
+        "value": "99.8%",
+        "context": "Rolling 30 days"
       }
     ]
   },
@@ -22,12 +34,25 @@
         "context": "Rolling 30 days"
       },
       "resolvedTickets": {
-        "label": "Resolved tickets",
+        "label": "Tickets resolved",
         "value": "276",
         "context": "Resolved in period"
       }
     },
-    "metrics": [],
+    "metrics": [
+      {
+        "id": "ticket-volume",
+        "label": "Tickets opened",
+        "value": "301",
+        "context": "Opened in period"
+      },
+      {
+        "id": "resolved-tickets",
+        "label": "Tickets resolved",
+        "value": "276",
+        "context": "Resolved in period"
+      }
+    ],
     "trends": {}
   },
   "security": {
@@ -70,7 +95,7 @@
     "service": {
       "current": {
         "resolvedTickets": {
-          "label": "Resolved tickets",
+          "label": "Tickets resolved",
           "value": "276",
           "context": "Resolved in period"
         }
