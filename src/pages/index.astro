@@ -51,5 +51,59 @@ const summaryKpis = hasLiveSecurity
     </div>
   </section>
 
+  {securityIntegrationsPending ? (
+    <section class="section-shell coming-soon">
+      <SectionHeading
+        title="Coming Soon"
+        intro="Security integrations are being prepared for public reporting and will be published once their live feeds are validated."
+      />
+      <div class="coming-soon-grid">
+        <article class="coming-soon-card">
+          <h3>Qualys</h3>
+          <p>
+            Vulnerability posture, including open critical and high findings, plus trend visibility over
+            time.
+          </p>
+        </article>
+        <article class="coming-soon-card">
+          <h3>Datto RMM</h3>
+          <p>
+            Patch compliance, devices fully patched, devices missing critical patches, and how consistently
+            we keep customer estates up to date.
+          </p>
+        </article>
+      </div>
+    </section>
+  ) : null}
+
   <TrustFooter securityIntegrationsPending={securityIntegrationsPending} />
 </BaseLayout>
+
+<style>
+  .coming-soon {
+    gap: 18px;
+  }
+
+  .coming-soon-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .coming-soon-card {
+    padding: 22px;
+    border-radius: var(--radius-m);
+    border: 1px solid rgba(20, 32, 51, 0.08);
+    background: linear-gradient(180deg, rgba(20, 32, 51, 0.02), rgba(217, 140, 43, 0.05));
+    box-shadow: var(--shadow-soft);
+  }
+
+  .coming-soon-card h3 {
+    margin: 0 0 10px;
+  }
+
+  .coming-soon-card p {
+    margin: 0;
+    color: rgba(20, 32, 51, 0.74);
+  }
+</style>

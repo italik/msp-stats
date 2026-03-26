@@ -30,8 +30,13 @@ test('index page renders key dashboard sections', async () => {
     expect(html).toContain('Status: Current');
     expect(html).toContain('Live source status');
     expect(html).toContain('Data current as of');
-    expect(html).not.toContain('Qualys');
-    expect(html).not.toContain('Datto RMM');
+    expect(html).toContain('Coming Soon');
+    expect(html).toContain('Qualys');
+    expect(html).toContain('Datto RMM');
+    expect(html).toContain('Vulnerability posture, including open critical and high findings');
+    expect(html).toContain('Patch compliance, devices fully patched, devices missing critical patches');
+    expect(html).toContain('how consistently');
+    expect(html).toContain('we keep customer estates up to date');
     expect(html).not.toContain('Open Critical Vulnerabilities');
     expect(html).not.toContain('Critical Vulnerability Trend');
     expect(html).not.toContain('Trust Index');
