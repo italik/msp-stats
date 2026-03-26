@@ -40,7 +40,7 @@ const hasTrends = criticalTrend.length > 0 || highTrend.length > 0;
     ))}
   </div>
   <div class="trend-block">
-    <p class="trend-title">30-day trend</p>
+    <p class="trend-title">Recent trend</p>
     <div class="sparkline-grid">
       {criticalTrend.length ? (
         <Sparkline label="Open critical vulnerabilities" points={criticalTrend} />

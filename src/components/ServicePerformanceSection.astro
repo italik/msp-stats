@@ -15,8 +15,9 @@ const metrics = snapshot.service.metrics;
 const haloFreshness = resolveSourceFreshness(snapshot.sources, "HaloPSA", snapshot.overall.lastUpdated);
 
 const slaTrend = snapshot.service.trends.slaAttainment ?? [];
-const backlogTrend = snapshot.service.trends.backlog ?? [];
-const hasTrends = slaTrend.length > 0 || backlogTrend.length > 0;
+const openedTrend = snapshot.service.trends.ticketsOpened ?? [];
+const resolvedTrend = snapshot.service.trends.ticketsResolved ?? [];
+const hasTrends = slaTrend.length > 0 || openedTrend.length > 0 || resolvedTrend.length > 0;
 ---
 <section class="section-shell">
   <SectionHeading title="Service Performance" intro="Availability, response, and experience signals." />
@@ -34,12 +35,17 @@ const hasTrends = slaTrend.length > 0 || backlogTrend.length > 0;
     ))}
   </div>
   <div class="trend-block">
-    <p class="trend-title">30-day trend</p>
+    <p class="trend-title">Recent trend</p>
+    <p class="trend-note">
+      Tickets opened and tickets resolved reflect yesterday. SLA attainment reflects the rolling
+      30-day window captured on each publish day.
+    </p>
     <div class="sparkline-grid">
       {slaTrend.length ? (
         <Sparkline label="SLA attainment" points={slaTrend} />
       ) : null}
-      {backlogTrend.length ? <Sparkline label="Backlog" points={backlogTrend} /> : null}
+      {openedTrend.length ? <Sparkline label="Tickets opened" points={openedTrend} /> : null}
+      {resolvedTrend.length ? <Sparkline label="Tickets resolved" points={resolvedTrend} /> : null}
       {!hasTrends && <p class="trend-placeholder">Trend data will appear once service history is available.</p>}
     </div>
   </div>
@@ -70,6 +76,11 @@ const hasTrends = slaTrend.length > 0 || backlogTrend.length > 0;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 16px;
+  }
+
+  .trend-note {
+    margin: 0;
+    color: rgba(20, 32, 51, 0.68);
   }
 
   .trend-placeholder {

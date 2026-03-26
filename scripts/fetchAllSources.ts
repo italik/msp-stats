@@ -158,13 +158,13 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
             id: "ticket-volume",
             label: "Tickets opened",
             value: metrics.service.ticketVolume.value,
-            context: "Opened in period"
+            context: "Yesterday"
           },
           {
             id: "resolved-tickets",
             label: "Tickets resolved",
             value: metrics.service.resolvedTickets.value,
-            context: "Resolved in period"
+            context: "Yesterday"
           },
           {
             id: "sla-attainment",
@@ -184,12 +184,12 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
           ticketVolume: {
             label: "Tickets opened",
             value: metrics.service.ticketVolume.value,
-            context: "Opened in period"
+            context: "Yesterday"
           },
           resolvedTickets: {
             label: "Tickets resolved",
             value: metrics.service.resolvedTickets.value,
-            context: "Resolved in period"
+            context: "Yesterday"
           }
         },
         metrics: [
@@ -197,25 +197,25 @@ export async function fetchHaloPsaMetrics(): Promise<SourceResult<Partial<Snapsh
             id: "ticket-volume",
             label: "Tickets opened",
             value: metrics.service.ticketVolume.value,
-            context: "Opened in period"
+            context: "Yesterday"
           },
           {
             id: "resolved-tickets",
             label: "Tickets resolved",
             value: metrics.service.resolvedTickets.value,
-            context: "Resolved in period"
+            context: "Yesterday"
           },
           {
             id: "first-response-median",
             label: firstResponseLabel,
             value: metrics.service.firstResponseMedian.value,
-            context: "Across all tickets"
+            context: "Rolling 30 days"
           },
           {
             id: "resolution-median",
             label: resolutionLabel,
             value: metrics.service.resolutionMedian.value,
-            context: "Across all tickets"
+            context: "Rolling 30 days"
           }
         ],
         trends: {

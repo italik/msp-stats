@@ -1,6 +1,7 @@
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { buildSnapshot } from "./buildSnapshot";
+import { applyHistoricalTrends, readHistorySnapshots } from "./buildHistoricalTrends";
 import { fetchAllSources } from "./fetchAllSources";
 import { persistHistory } from "./persistHistory";
 import { writeLatestSnapshot } from "./writeLatestSnapshot";
@@ -18,14 +19,20 @@ async function run(): Promise<void> {
     previousSnapshotPath: latestPath,
     sources
   });
+  const historySnapshots = await readHistorySnapshots(historyDir);
+  const snapshotWithTrends = applyHistoricalTrends({
+    historySnapshots,
+    currentSnapshot: snapshot,
+    keep: 30
+  });
 
-  await writeLatestSnapshot({ path: latestPath, snapshot });
+  await writeLatestSnapshot({ path: latestPath, snapshot: snapshotWithTrends });
 
-  const historyName = `${snapshot.generatedAt.slice(0, 10)}.json`;
+  const historyName = `${snapshotWithTrends.generatedAt.slice(0, 10)}.json`;
   await persistHistory({
     directory: historyDir,
     keep: 30,
-    file: { name: historyName, contents: JSON.stringify(snapshot, null, 2) }
+    file: { name: historyName, contents: JSON.stringify(snapshotWithTrends, null, 2) }
   });
 }
 

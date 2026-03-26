@@ -99,6 +99,7 @@ describe("fetchHaloPsaMetrics", () => {
       const result = await fetchHaloPsaMetrics();
       const summaryLabels = result.data?.summary?.kpis?.map((kpi) => kpi.label) ?? [];
       const serviceLabels = result.data?.service?.metrics?.map((metric) => metric.label) ?? [];
+      const serviceContexts = result.data?.service?.metrics?.map((metric) => metric.context) ?? [];
 
       expect(summaryLabels).toContain("Tickets opened");
       expect(summaryLabels).toContain("Tickets resolved");
@@ -106,6 +107,8 @@ describe("fetchHaloPsaMetrics", () => {
       expect(serviceLabels).toContain("Tickets opened");
       expect(serviceLabels).toContain("Tickets resolved");
       expect(serviceLabels).not.toContain("Tickets handled");
+      expect(serviceContexts).toContain("Yesterday");
+      expect(serviceContexts).toContain("Rolling 30 days");
     } finally {
       Object.assign(env, originalEnv);
     }

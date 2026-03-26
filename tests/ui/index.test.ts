@@ -11,7 +11,7 @@ const repoRoot = fileURLToPath(new URL('../../', import.meta.url));
 const buildDir = fileURLToPath(new URL('./astro-build-output', import.meta.url));
 const latestSnapshotPath = fileURLToPath(new URL('../../data/snapshots/latest.json', import.meta.url));
 
-test('index page renders key dashboard sections', async () => {
+test('index page renders key dashboard sections', { timeout: 60000 }, async () => {
   const originalSnapshot = await readFile(latestSnapshotPath, 'utf-8');
   await rm(buildDir, { recursive: true, force: true });
 

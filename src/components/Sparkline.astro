@@ -9,9 +9,10 @@ interface TrendPoint {
 interface Props {
   label: string;
   points: TrendPoint[];
+  eyebrow?: string;
 }
 
-const { label, points } = Astro.props as Props;
+const { label, points, eyebrow = "Daily snapshots" } = Astro.props as Props;
 const hasPoints = points?.length > 0;
 
 const values = hasPoints ? points.map((p) => p.value) : [];
@@ -34,7 +35,7 @@ const first = hasPoints ? points[0] : undefined;
 ---
 <article class="sparkline-card">
   <div class="sparkline-heading">
-    <p class="sparkline-eyebrow">30-day trend</p>
+    <p class="sparkline-eyebrow">{eyebrow}</p>
     <p class="sparkline-title">{label}</p>
   </div>
   {hasPoints ? (
