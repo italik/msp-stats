@@ -1,5 +1,11 @@
 if (typeof process.loadEnvFile === "function") {
-  process.loadEnvFile();
+  try {
+    process.loadEnvFile();
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+      throw error;
+    }
+  }
 }
 
 export const env = {
