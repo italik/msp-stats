@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-26T08:55:25.663Z",
+  "generatedAt": "2026-03-26T09:04:03.095Z",
   "overall": {
-    "lastUpdated": "2026-03-26T08:55:25.663Z"
+    "lastUpdated": "2026-03-26T09:04:03.095Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -15,7 +15,7 @@
       {
         "id": "tickets-handled",
         "label": "Tickets handled",
-        "value": "254",
+        "value": "256",
         "context": "Closed in period"
       },
       {
@@ -27,7 +27,7 @@
       {
         "id": "ticket-volume",
         "label": "Ticket volume",
-        "value": "249",
+        "value": "258",
         "context": "Opened in period"
       },
       {
@@ -54,17 +54,17 @@
       },
       "resolvedTickets": {
         "label": "Resolved tickets",
-        "value": "254",
+        "value": "256",
         "context": "Resolved in period"
       },
       "ticketsHandled": {
         "label": "Tickets handled",
-        "value": "254",
+        "value": "256",
         "context": "Closed in period"
       },
       "ticketVolume": {
         "label": "Ticket volume",
-        "value": "249",
+        "value": "258",
         "context": "Opened in period"
       }
     },
@@ -72,19 +72,19 @@
       {
         "id": "tickets-handled",
         "label": "Tickets handled",
-        "value": "254",
+        "value": "256",
         "context": "Closed in period"
       },
       {
         "id": "ticket-volume",
         "label": "Ticket volume",
-        "value": "249",
+        "value": "258",
         "context": "Opened in period"
       },
       {
         "id": "resolved-tickets",
         "label": "Resolved tickets",
-        "value": "254",
+        "value": "256",
         "context": "Resolved in period"
       },
       {
@@ -216,19 +216,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-26T08:55:23.707Z",
+      "lastSuccessfulRefresh": "2026-03-26T09:04:00.738Z",
       "note": "HaloPSA reports 304, 352, 353, 349, and 350 live"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-26T08:55:25.663Z",
+      "lastSuccessfulRefresh": "2026-03-26T09:04:03.094Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-03-26T08:55:25.663Z",
+      "lastSuccessfulRefresh": "2026-03-26T09:04:03.095Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
