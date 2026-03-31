@@ -99,6 +99,8 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     const tooltipIds = [...html.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
     expect(tooltipIds.length).toBeGreaterThanOrEqual(10);
     expect(new Set(tooltipIds).size).toBe(tooltipIds.length);
+    expect(html).toContain('style="--sparkline-x: 75%; --sparkline-y: 0%;"');
+    expect(html).toContain('style="--sparkline-x: 0%; --sparkline-y: 100%;"');
     expect(html).toContain('Tickets opened');
     expect(html).toContain('Tickets resolved');
     expect(html).toContain('how consistently');
