@@ -140,7 +140,7 @@ test('sparkline requires explicit display mode wiring', async () => {
   expect(sparklineSource).not.toContain('displayMode ??');
   expect(sparklineSource).not.toContain('label.toLowerCase().includes("attainment")');
 
-  expect(serviceSource).toContain('displayMode="percent"');
-  expect(serviceSource).toContain('displayMode="count"');
-  expect(securitySource).toContain('displayMode="count"');
+  expect((serviceSource.match(/displayMode="percent"/g) ?? []).length).toBe(1);
+  expect((serviceSource.match(/displayMode="count"/g) ?? []).length).toBe(2);
+  expect((securitySource.match(/displayMode="count"/g) ?? []).length).toBe(2);
 });
