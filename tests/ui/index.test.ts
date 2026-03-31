@@ -113,8 +113,12 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     expect(html).toContain('Low');
     expect(html).toContain('data-trend-point-date');
     expect(html).toContain('data-trend-point-value');
-    expect(html).toContain('24 Mar 2026');
     expect(html).not.toMatch(/<button[^>]*class="sparkline-marker"/);
+    expect((html.match(/class="sparkline-inspector"/g) ?? []).length).toBe(3);
+    expect((html.match(/>Inspect daily values</g) ?? []).length).toBe(3);
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>SLA attainment<\/p>[\s\S]*?class="sparkline-inspector"[\s\S]*?Inspect daily values[\s\S]*?20 Mar 2026[\s\S]*?98.2%/
+    );
     const tooltipIds = firstBuildTooltipIds;
     const rebuiltTooltipIds = [...rebuiltHtml.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
     expect(tooltipIds.length).toBeGreaterThanOrEqual(10);
@@ -148,6 +152,8 @@ test('sparkline requires explicit display mode wiring', async () => {
   expect(sparklineSource).not.toContain('displayMode ??');
   expect(sparklineSource).not.toContain('label.toLowerCase().includes("attainment")');
   expect(sparklineSource).not.toContain('randomUUID');
+  expect(sparklineSource).toContain('class="sparkline-inspector"');
+  expect(sparklineSource).toContain('Inspect daily values');
   expect(sparklineSource).not.toMatch(/<button[\s\S]*class="sparkline-marker"/);
 
   expect((serviceSource.match(/displayMode="percent"/g) ?? []).length).toBe(1);

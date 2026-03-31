@@ -45,7 +45,7 @@ if (!displayMode) {
 const resolvedDisplayMode: TrendDisplayMode = displayMode;
 const trendSummary = hasPoints ? summarizeTrendPoints(points) : null;
 const sparklineInstanceId = buildSparklineInstanceId(label, eyebrow, points);
-const sparklineDataId = `${sparklineInstanceId}-data`;
+const sparklineInspectorHintId = `${sparklineInstanceId}-inspector-hint`;
 
 const values = hasPoints ? points.map((p) => p.value) : [];
 const min = hasPoints ? Math.min(...values) : 0;
@@ -85,7 +85,7 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
           viewBox="0 0 100 40"
           role="img"
           aria-label={`${label} trend over ${eyebrow.toLowerCase()}`}
-          aria-describedby={sparklineDataId}
+          aria-describedby={sparklineInspectorHintId}
         >
           <polyline points={polylinePoints} />
         </svg>
@@ -111,11 +111,9 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
           })}
         </div>
       </div>
-      <ul class="sparkline-point-list" id={sparklineDataId}>
-        {chartPoints.map((point) => (
-          <li>{`${point.pointDateLabel}: ${point.pointValueLabel}`}</li>
-        ))}
-      </ul>
+      <p class="sparkline-assistive-text" id={sparklineInspectorHintId}>
+        Use Inspect daily values for exact dates and values.
+      </p>
       {trendSummary && (
         <dl class="sparkline-summary">
           <div>
@@ -136,6 +134,17 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
           </div>
         </dl>
       )}
+      <details class="sparkline-inspector">
+        <summary>Inspect daily values</summary>
+        <ul class="sparkline-inspector-list">
+          {chartPoints.map((point) => (
+            <li>
+              <span>{point.pointDateLabel}</span>
+              <strong>{point.pointValueLabel}</strong>
+            </li>
+          ))}
+        </ul>
+      </details>
     </>
   ) : (
     <p class="sparkline-empty">No trend data yet</p>
@@ -256,7 +265,7 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     transform: translateX(-50%) translateY(0);
   }
 
-  .sparkline-point-list {
+  .sparkline-assistive-text {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -266,6 +275,61 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     clip: rect(0, 0, 0, 0);
     white-space: nowrap;
     border: 0;
+  }
+
+  .sparkline-inspector {
+    margin: 0;
+    border-top: 1px solid rgba(20, 32, 51, 0.08);
+    padding-top: 8px;
+  }
+
+  .sparkline-inspector summary {
+    position: relative;
+    list-style: none;
+    cursor: pointer;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: rgba(20, 32, 51, 0.68);
+    padding-right: 16px;
+  }
+
+  .sparkline-inspector summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .sparkline-inspector summary::after {
+    content: "+";
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+
+  .sparkline-inspector[open] summary::after {
+    content: "-";
+  }
+
+  .sparkline-inspector-list {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+
+  .sparkline-inspector-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    font-size: 0.86rem;
+    color: rgba(20, 32, 51, 0.72);
+  }
+
+  .sparkline-inspector-list strong {
+    font-size: 0.9rem;
+    color: rgba(20, 32, 51, 0.9);
   }
 
   .sparkline-tooltip-date {
