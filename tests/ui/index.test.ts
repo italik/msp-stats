@@ -17,18 +17,18 @@ const snapshotWithTrends = {
     trends: {
       ...partialSnapshot.service.trends,
       slaAttainment: [
-        { date: '2026-03-20', value: 98.1 },
+        { date: '2026-03-20', value: 98.2 },
         { date: '2026-03-21', value: 98.4 },
-        { date: '2026-03-22', value: 98.2 },
-        { date: '2026-03-23', value: 98.8 },
-        { date: '2026-03-24', value: 98.5 }
+        { date: '2026-03-22', value: 98.5 },
+        { date: '2026-03-23', value: 98.3 },
+        { date: '2026-03-24', value: 98.6 }
       ],
       ticketsOpened: [
-        { date: '2026-03-20', value: 17 },
-        { date: '2026-03-21', value: 14 },
-        { date: '2026-03-22', value: 18 },
-        { date: '2026-03-23', value: 16 },
-        { date: '2026-03-24', value: 15 }
+        { date: '2026-03-20', value: 301 },
+        { date: '2026-03-21', value: 299 },
+        { date: '2026-03-22', value: 300 },
+        { date: '2026-03-23', value: 298 },
+        { date: '2026-03-24', value: 297 }
       ],
       ticketsResolved: [
         { date: '2026-03-20', value: 13 },
@@ -80,10 +80,10 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
       "Tickets opened and tickets resolved show yesterday's service activity. SLA attainment shows the rolling 30-day result captured on each publish day."
     );
     expect(normalizedHtml).toMatch(
-      /<p class="sparkline-title"[^>]*>SLA attainment<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>98.5%<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>\+0.4 pts<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>98.8%<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>98.1%<\/dd>/
+      /<p class="sparkline-title"[^>]*>SLA attainment<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>98.6%<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>\+0.4 pts<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>98.6%<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>98.2%<\/dd>/
     );
     expect(normalizedHtml).toMatch(
-      /<p class="sparkline-title"[^>]*>Tickets opened<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>15<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>-2<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>18<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>14<\/dd>/
+      /<p class="sparkline-title"[^>]*>Tickets opened<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>297<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>-4<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>301<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>297<\/dd>/
     );
     expect(normalizedHtml).toMatch(
       /<p class="sparkline-title"[^>]*>Tickets resolved<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>18<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>\+5<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>18<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>12<\/dd>/
@@ -112,7 +112,7 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     const tooltipIds = [...html.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
     expect(tooltipIds.length).toBeGreaterThanOrEqual(10);
     expect(new Set(tooltipIds).size).toBe(tooltipIds.length);
-    expect(html).toContain('style="--sparkline-x: 75%; --sparkline-y: 0%;"');
+    expect(html).toContain('style="--sparkline-x: 100%; --sparkline-y: 0%;"');
     expect(html).toContain('style="--sparkline-x: 0%; --sparkline-y: 100%;"');
     expect(html).toContain('Tickets opened');
     expect(html).toContain('Tickets resolved');
