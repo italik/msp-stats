@@ -24,6 +24,7 @@ const hasPoints = points?.length > 0;
 const resolvedDisplayMode: TrendDisplayMode =
   displayMode ?? (label.toLowerCase().includes("attainment") ? "percent" : "count");
 const trendSummary = hasPoints ? summarizeTrendPoints(points) : null;
+const sparklineInstanceId = `sparkline-${globalThis.crypto.randomUUID()}`;
 
 const values = hasPoints ? points.map((p) => p.value) : [];
 const min = hasPoints ? Math.min(...values) : 0;
@@ -63,12 +64,13 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
         </svg>
         <div class="sparkline-marker-layer">
           {chartPoints.map((point, idx) => {
-            const pointId = `sparkline-point-${idx}-${point.date}`;
+            const pointId = `${sparklineInstanceId}-point-${idx}`;
+            const pointY = (point.y / 40) * 100;
             return (
               <button
                 type="button"
                 class="sparkline-marker"
-                style={`--sparkline-x: ${point.x}%; --sparkline-y: ${point.y}%;`}
+                style={`--sparkline-x: ${point.x}%; --sparkline-y: ${pointY}%;`}
                 data-trend-point-date={point.date}
                 data-trend-point-value={point.value}
                 aria-describedby={pointId}

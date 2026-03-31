@@ -22,6 +22,20 @@ const snapshotWithTrends = {
         { date: '2026-03-22', value: 98.2 },
         { date: '2026-03-23', value: 98.8 },
         { date: '2026-03-24', value: 98.5 }
+      ],
+      ticketsOpened: [
+        { date: '2026-03-20', value: 17 },
+        { date: '2026-03-21', value: 14 },
+        { date: '2026-03-22', value: 18 },
+        { date: '2026-03-23', value: 16 },
+        { date: '2026-03-24', value: 15 }
+      ],
+      ticketsResolved: [
+        { date: '2026-03-20', value: 13 },
+        { date: '2026-03-21', value: 15 },
+        { date: '2026-03-22', value: 12 },
+        { date: '2026-03-23', value: 17 },
+        { date: '2026-03-24', value: 18 }
       ]
     }
   },
@@ -82,7 +96,11 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     expect(html).toContain('Low');
     expect(html).toContain('data-trend-point-date');
     expect(html).toContain('data-trend-point-value');
-    expect(html).toContain('sparkline-tooltip-shell');
+    const tooltipIds = [...html.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
+    expect(tooltipIds.length).toBeGreaterThanOrEqual(10);
+    expect(new Set(tooltipIds).size).toBe(tooltipIds.length);
+    expect(html).toContain('Tickets opened');
+    expect(html).toContain('Tickets resolved');
     expect(html).toContain('how consistently');
     expect(html).toContain('we keep customer estates up to date');
     expect(html).not.toContain('Open Critical Vulnerabilities');
