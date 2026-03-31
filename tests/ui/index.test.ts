@@ -69,12 +69,22 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     await writeFile(latestSnapshotPath, JSON.stringify(snapshotWithTrends, null, 2));
     await execFileAsync('npm', ['run', 'build', '--', '--outDir', buildDir], { cwd: repoRoot });
     const html = await readFile(path.join(buildDir, 'index.html'), 'utf-8');
+    const normalizedHtml = html.replace(/\s+/g, ' ');
     expect(html).toContain('Trust, measured daily');
     expect(html).toContain('How we measure ourselves');
     expect(html).toContain('Service Performance');
     expect(html).toContain('Tickets opened');
     expect(html).toContain('Tickets resolved');
     expect(html).not.toContain('Tickets handled');
+    expect(normalizedHtml).toContain(
+      "Tickets opened and tickets resolved show yesterday's service activity. SLA attainment shows the rolling 30-day result captured on each publish day."
+    );
+    expect(html).toContain('98.5%');
+    expect(html).toContain('98.8%');
+    expect(html).toContain('15');
+    expect(html).toContain('18');
+    expect(html).toContain('+0.4 pts');
+    expect(html).toContain('+5');
     expect(html).not.toContain('Security Posture');
     expect(html).toContain('Security integrations are in progress');
     expect(html).toContain('Last updated');

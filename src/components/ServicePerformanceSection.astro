@@ -37,15 +37,19 @@ const hasTrends = slaTrend.length > 0 || openedTrend.length > 0 || resolvedTrend
   <div class="trend-block">
     <p class="trend-title">Recent trend</p>
     <p class="trend-note">
-      Tickets opened and tickets resolved reflect yesterday. SLA attainment reflects the rolling
-      30-day window captured on each publish day.
+      Tickets opened and tickets resolved show yesterday's service activity. SLA attainment shows
+      the rolling 30-day result captured on each publish day.
     </p>
     <div class="sparkline-grid">
       {slaTrend.length ? (
-        <Sparkline label="SLA attainment" points={slaTrend} />
+        <Sparkline label="SLA attainment" points={slaTrend} displayMode="percent" />
       ) : null}
-      {openedTrend.length ? <Sparkline label="Tickets opened" points={openedTrend} /> : null}
-      {resolvedTrend.length ? <Sparkline label="Tickets resolved" points={resolvedTrend} /> : null}
+      {openedTrend.length ? (
+        <Sparkline label="Tickets opened" points={openedTrend} displayMode="count" />
+      ) : null}
+      {resolvedTrend.length ? (
+        <Sparkline label="Tickets resolved" points={resolvedTrend} displayMode="count" />
+      ) : null}
       {!hasTrends && <p class="trend-placeholder">Trend data will appear once service history is available.</p>}
     </div>
   </div>
