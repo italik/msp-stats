@@ -16,12 +16,17 @@ interface Props {
   label: string;
   points: TrendPoint[];
   eyebrow?: string;
-  displayMode?: TrendDisplayMode;
+  displayMode: TrendDisplayMode;
 }
 
 const { label, points, eyebrow = "Up to 30 published days", displayMode } = Astro.props as Props;
 const hasPoints = points?.length > 0;
-const resolvedDisplayMode: TrendDisplayMode = displayMode ?? "count";
+
+if (!displayMode) {
+  throw new Error(`Sparkline requires displayMode`);
+}
+
+const resolvedDisplayMode: TrendDisplayMode = displayMode;
 const trendSummary = hasPoints ? summarizeTrendPoints(points) : null;
 const sparklineInstanceId = `sparkline-${globalThis.crypto.randomUUID()}`;
 

@@ -43,9 +43,9 @@ const hasTrends = criticalTrend.length > 0 || highTrend.length > 0;
     <p class="trend-title">Recent trend</p>
     <div class="sparkline-grid">
       {criticalTrend.length ? (
-        <Sparkline label="Open critical vulnerabilities" points={criticalTrend} />
+        <Sparkline label="Open critical vulnerabilities" points={criticalTrend} displayMode="count" />
       ) : null}
-      {highTrend.length ? <Sparkline label="Open high vulnerabilities" points={highTrend} /> : null}
+      {highTrend.length ? <Sparkline label="Open high vulnerabilities" points={highTrend} displayMode="count" /> : null}
       {!hasTrends && <p class="trend-placeholder">Trend data will appear once available.</p>}
     </div>
   </div>

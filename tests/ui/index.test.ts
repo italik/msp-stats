@@ -128,12 +128,19 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
   }
 });
 
-test('sparkline source does not special-case attainment labels', async () => {
-  const sparklineSource = await readFile(
-    fileURLToPath(new URL('../../src/components/Sparkline.astro', import.meta.url)),
-    'utf-8'
-  );
+test('sparkline requires explicit display mode wiring', async () => {
+  const [sparklineSource, serviceSource, securitySource] = await Promise.all([
+    readFile(fileURLToPath(new URL('../../src/components/Sparkline.astro', import.meta.url)), 'utf-8'),
+    readFile(fileURLToPath(new URL('../../src/components/ServicePerformanceSection.astro', import.meta.url)), 'utf-8'),
+    readFile(fileURLToPath(new URL('../../src/components/SecurityPostureSection.astro', import.meta.url)), 'utf-8')
+  ]);
 
+  expect(sparklineSource).toContain('displayMode: TrendDisplayMode;');
+  expect(sparklineSource).not.toContain('displayMode?: TrendDisplayMode;');
+  expect(sparklineSource).not.toContain('displayMode ??');
   expect(sparklineSource).not.toContain('label.toLowerCase().includes("attainment")');
-  expect(sparklineSource).toContain('displayMode ??');
+
+  expect(serviceSource).toContain('displayMode="percent"');
+  expect(serviceSource).toContain('displayMode="count"');
+  expect(securitySource).toContain('displayMode="count"');
 });
