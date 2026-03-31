@@ -21,8 +21,7 @@ interface Props {
 
 const { label, points, eyebrow = "Up to 30 published days", displayMode } = Astro.props as Props;
 const hasPoints = points?.length > 0;
-const resolvedDisplayMode: TrendDisplayMode =
-  displayMode ?? (label.toLowerCase().includes("attainment") ? "percent" : "count");
+const resolvedDisplayMode: TrendDisplayMode = displayMode ?? "count";
 const trendSummary = hasPoints ? summarizeTrendPoints(points) : null;
 const sparklineInstanceId = `sparkline-${globalThis.crypto.randomUUID()}`;
 

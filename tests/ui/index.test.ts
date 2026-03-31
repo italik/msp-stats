@@ -79,12 +79,15 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     expect(normalizedHtml).toContain(
       "Tickets opened and tickets resolved show yesterday's service activity. SLA attainment shows the rolling 30-day result captured on each publish day."
     );
-    expect(html).toContain('98.5%');
-    expect(html).toContain('98.8%');
-    expect(html).toContain('15');
-    expect(html).toContain('18');
-    expect(html).toContain('+0.4 pts');
-    expect(html).toContain('+5');
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>SLA attainment<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>98.5%<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>\+0.4 pts<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>98.8%<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>98.1%<\/dd>/
+    );
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>Tickets opened<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>15<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>-2<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>18<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>14<\/dd>/
+    );
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>Tickets resolved<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>18<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>\+5<\/dd>[\s\S]*?<dt[^>]*>High<\/dt> <dd[^>]*>18<\/dd>[\s\S]*?<dt[^>]*>Low<\/dt> <dd[^>]*>12<\/dd>/
+    );
     expect(html).not.toContain('Security Posture');
     expect(html).toContain('Security integrations are in progress');
     expect(html).toContain('Last updated');
@@ -123,4 +126,14 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     await writeFile(latestSnapshotPath, originalSnapshot);
     await rm(buildDir, { recursive: true, force: true });
   }
+});
+
+test('sparkline source does not special-case attainment labels', async () => {
+  const sparklineSource = await readFile(
+    fileURLToPath(new URL('../../src/components/Sparkline.astro', import.meta.url)),
+    'utf-8'
+  );
+
+  expect(sparklineSource).not.toContain('label.toLowerCase().includes("attainment")');
+  expect(sparklineSource).toContain('displayMode ??');
 });
