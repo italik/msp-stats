@@ -61,6 +61,52 @@ const snapshotWithTrends = {
   }
 };
 
+const snapshotWithLiveSecurity = {
+  ...partialSnapshot,
+  service: {
+    ...partialSnapshot.service,
+    trends: {}
+  },
+  security: {
+    ...partialSnapshot.security,
+    metrics: [
+      {
+        id: 'devices-fully-patched',
+        label: 'Devices fully patched',
+        value: '1,200',
+        context: 'Across managed fleet'
+      }
+    ],
+    trends: {
+      openCriticalVulnerabilities: [
+        { date: '2026-03-20', value: 11 },
+        { date: '2026-03-21', value: 11 },
+        { date: '2026-03-22', value: 11 },
+        { date: '2026-03-23', value: 11 },
+        { date: '2026-03-24', value: 11 }
+      ],
+      openHighVulnerabilities: [
+        { date: '2026-03-24', value: 37 }
+      ]
+    }
+  },
+  sources: [
+    partialSnapshot.sources[0],
+    {
+      name: 'Qualys',
+      status: 'current',
+      lastSuccessfulRefresh: '2026-03-24T12:00:00Z',
+      note: 'Validated live feed'
+    },
+    {
+      name: 'Datto RMM',
+      status: 'current',
+      lastSuccessfulRefresh: '2026-03-24T11:45:00Z',
+      note: 'Validated live feed'
+    }
+  ]
+};
+
 test('index page renders key dashboard sections', { timeout: 60000 }, async () => {
   const originalSnapshot = await readFile(latestSnapshotPath, 'utf-8');
   await rm(buildDir, { recursive: true, force: true });
@@ -134,6 +180,42 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     expect(html).not.toContain('Critical Vulnerability Trend');
     expect(html).not.toContain('Trust Index');
     expect(html).toContain('Years supporting businesses since 1999');
+  } finally {
+    await writeFile(latestSnapshotPath, originalSnapshot);
+    await rm(buildDir, { recursive: true, force: true });
+  }
+});
+
+test('index page renders live security sparklines and centers flat series', { timeout: 60000 }, async () => {
+  const originalSnapshot = await readFile(latestSnapshotPath, 'utf-8');
+  await rm(buildDir, { recursive: true, force: true });
+
+  try {
+    await writeFile(latestSnapshotPath, JSON.stringify(snapshotWithLiveSecurity, null, 2));
+    await execFileAsync('npm', ['run', 'build', '--', '--outDir', buildDir], { cwd: repoRoot });
+    const html = await readFile(path.join(buildDir, 'index.html'), 'utf-8');
+    const normalizedHtml = html.replace(/\s+/g, ' ');
+
+    expect(html).toContain('Security Posture');
+    expect(html).toContain('Open critical vulnerabilities');
+    expect(html).toContain('Open high vulnerabilities');
+    expect(html).toContain('Patch compliance');
+    expect(html).toContain('Devices fully patched');
+    expect(html).not.toContain('Coming Soon');
+    expect((html.match(/class="sparkline-inspector"/g) ?? []).length).toBe(2);
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>Open critical vulnerabilities<\/p>[\s\S]*?points="0,20 25,20 50,20 75,20 100,20"/
+    );
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>Open high vulnerabilities<\/p>[\s\S]*?points="50,20"/
+    );
+    expect(html).toContain('style="--sparkline-x: 50%; --sparkline-y: 50%;"');
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>Open critical vulnerabilities<\/p>[\s\S]*?Inspect daily values[\s\S]*?20 Mar 2026[\s\S]*?11/
+    );
+    expect(normalizedHtml).toMatch(
+      /<p class="sparkline-title"[^>]*>Open high vulnerabilities<\/p>[\s\S]*?<dt[^>]*>Latest<\/dt> <dd[^>]*>37<\/dd>[\s\S]*?<dt[^>]*>Change<\/dt> <dd[^>]*>0<\/dd>/
+    );
   } finally {
     await writeFile(latestSnapshotPath, originalSnapshot);
     await rm(buildDir, { recursive: true, force: true });

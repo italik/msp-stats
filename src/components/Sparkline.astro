@@ -50,12 +50,13 @@ const sparklineInspectorHintId = `${sparklineInstanceId}-inspector-hint`;
 const values = hasPoints ? points.map((p) => p.value) : [];
 const min = hasPoints ? Math.min(...values) : 0;
 const max = hasPoints ? Math.max(...values) : 0;
+const isFlatSeries = max === min;
 const range = max - min || 1;
 
 const chartPoints = hasPoints
   ? points.map((point, idx) => {
       const x = points.length === 1 ? 50 : (idx / (points.length - 1)) * 100;
-      const y = 40 - ((point.value - min) / range) * 40;
+      const y = isFlatSeries ? 20 : 40 - ((point.value - min) / range) * 40;
       const pointDateLabel = formatAsOf(point.date);
       const pointValueLabel = formatTrendValue(point.value, resolvedDisplayMode);
 
