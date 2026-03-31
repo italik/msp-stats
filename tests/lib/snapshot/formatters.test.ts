@@ -39,6 +39,8 @@ describe("snapshot formatters", () => {
   it("formatTrendDelta formats percent and count deltas", () => {
     expect(formatTrendDelta(1.25, "percent")).toBe("+1.3 pts");
     expect(formatTrendDelta(-12, "count")).toBe("-12");
+    expect(formatTrendDelta(0, "percent")).toBe("0.0 pts");
+    expect(formatTrendDelta(0, "count")).toBe("0");
   });
 
   it("keeps existing formatter exports working", () => {

@@ -98,6 +98,10 @@ export function formatTrendValue(value: number, mode: TrendDisplayMode): string 
 }
 
 export function formatTrendDelta(value: number, mode: TrendDisplayMode): string {
+  if (value === 0) {
+    return mode === "percent" ? `${percentFormatter.format(0)} pts` : countFormatter.format(0);
+  }
+
   if (mode === "percent") {
     return `${signedPercentFormatter.format(value)} pts`;
   }
