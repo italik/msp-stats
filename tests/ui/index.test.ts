@@ -69,6 +69,10 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     await writeFile(latestSnapshotPath, JSON.stringify(snapshotWithTrends, null, 2));
     await execFileAsync('npm', ['run', 'build', '--', '--outDir', buildDir], { cwd: repoRoot });
     const html = await readFile(path.join(buildDir, 'index.html'), 'utf-8');
+    const firstBuildTooltipIds = [...html.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
+    await rm(buildDir, { recursive: true, force: true });
+    await execFileAsync('npm', ['run', 'build', '--', '--outDir', buildDir], { cwd: repoRoot });
+    const rebuiltHtml = await readFile(path.join(buildDir, 'index.html'), 'utf-8');
     const normalizedHtml = html.replace(/\s+/g, ' ');
     expect(html).toContain('Trust, measured daily');
     expect(html).toContain('How we measure ourselves');
@@ -109,9 +113,13 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     expect(html).toContain('Low');
     expect(html).toContain('data-trend-point-date');
     expect(html).toContain('data-trend-point-value');
-    const tooltipIds = [...html.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
+    expect(html).toContain('24 Mar 2026');
+    expect(html).not.toMatch(/<button[^>]*class="sparkline-marker"/);
+    const tooltipIds = firstBuildTooltipIds;
+    const rebuiltTooltipIds = [...rebuiltHtml.matchAll(/id="(sparkline-[^"]+)"/g)].map((match) => match[1]);
     expect(tooltipIds.length).toBeGreaterThanOrEqual(10);
     expect(new Set(tooltipIds).size).toBe(tooltipIds.length);
+    expect(rebuiltTooltipIds).toEqual(tooltipIds);
     expect(html).toContain('style="--sparkline-x: 100%; --sparkline-y: 0%;"');
     expect(html).toContain('style="--sparkline-x: 0%; --sparkline-y: 100%;"');
     expect(html).toContain('Tickets opened');
@@ -139,6 +147,8 @@ test('sparkline requires explicit display mode wiring', async () => {
   expect(sparklineSource).not.toContain('displayMode?: TrendDisplayMode;');
   expect(sparklineSource).not.toContain('displayMode ??');
   expect(sparklineSource).not.toContain('label.toLowerCase().includes("attainment")');
+  expect(sparklineSource).not.toContain('randomUUID');
+  expect(sparklineSource).not.toMatch(/<button[\s\S]*class="sparkline-marker"/);
 
   expect((serviceSource.match(/displayMode="percent"/g) ?? []).length).toBe(1);
   expect((serviceSource.match(/displayMode="count"/g) ?? []).length).toBe(2);

@@ -19,6 +19,22 @@ interface Props {
   displayMode: TrendDisplayMode;
 }
 
+function toStableSlug(value: string): string {
+  const slug = value
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "");
+
+  return slug || "trend";
+}
+
+function buildSparklineInstanceId(label: string, eyebrow: string, points: TrendPoint[]): string {
+  const firstPointDate = points[0]?.date ?? "no-points";
+  const lastPointDate = points[points.length - 1]?.date ?? "no-points";
+
+  return `sparkline-${toStableSlug(label)}-${toStableSlug(eyebrow)}-${toStableSlug(firstPointDate)}-${toStableSlug(lastPointDate)}-${points.length}`;
+}
+
 const { label, points, eyebrow = "Up to 30 published days", displayMode } = Astro.props as Props;
 const hasPoints = points?.length > 0;
 
@@ -28,7 +44,8 @@ if (!displayMode) {
 
 const resolvedDisplayMode: TrendDisplayMode = displayMode;
 const trendSummary = hasPoints ? summarizeTrendPoints(points) : null;
-const sparklineInstanceId = `sparkline-${globalThis.crypto.randomUUID()}`;
+const sparklineInstanceId = buildSparklineInstanceId(label, eyebrow, points);
+const sparklineDataId = `${sparklineInstanceId}-data`;
 
 const values = hasPoints ? points.map((p) => p.value) : [];
 const min = hasPoints ? Math.min(...values) : 0;
@@ -39,11 +56,16 @@ const chartPoints = hasPoints
   ? points.map((point, idx) => {
       const x = points.length === 1 ? 50 : (idx / (points.length - 1)) * 100;
       const y = 40 - ((point.value - min) / range) * 40;
+      const pointDateLabel = formatAsOf(point.date);
+      const pointValueLabel = formatTrendValue(point.value, resolvedDisplayMode);
 
       return {
         ...point,
         x,
-        y
+        y,
+        pointDateLabel,
+        pointValueLabel,
+        tooltipId: `${sparklineInstanceId}-point-${toStableSlug(point.date)}-${idx}`
       };
     })
   : [];
@@ -63,35 +85,37 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
           viewBox="0 0 100 40"
           role="img"
           aria-label={`${label} trend over ${eyebrow.toLowerCase()}`}
+          aria-describedby={sparklineDataId}
         >
           <polyline points={polylinePoints} />
         </svg>
-        <div class="sparkline-marker-layer">
+        <div class="sparkline-marker-layer" aria-hidden="true">
           {chartPoints.map((point, idx) => {
-            const pointId = `${sparklineInstanceId}-point-${idx}`;
             const pointY = (point.y / 40) * 100;
             return (
-              <button
-                type="button"
+              <span
                 class="sparkline-marker"
                 style={`--sparkline-x: ${point.x}%; --sparkline-y: ${pointY}%;`}
                 data-trend-point-date={point.date}
                 data-trend-point-value={point.value}
-                aria-describedby={pointId}
-                aria-label={`${formatTrendValue(point.value, resolvedDisplayMode)} on ${formatAsOf(point.date)}`}
               >
                 <svg class="sparkline-point-icon" viewBox="0 0 8 8" aria-hidden="true">
                   <circle cx="4" cy="4" r="3" />
                 </svg>
-                <span class="sparkline-tooltip-shell" id={pointId} role="tooltip">
-                  <span class="sparkline-tooltip-date">{formatAsOf(point.date)}</span>
-                  <span class="sparkline-tooltip-value">{formatTrendValue(point.value, resolvedDisplayMode)}</span>
+                <span class="sparkline-tooltip-shell" id={point.tooltipId} role="tooltip">
+                  <span class="sparkline-tooltip-date">{point.pointDateLabel}</span>
+                  <span class="sparkline-tooltip-value">{point.pointValueLabel}</span>
                 </span>
-              </button>
+              </span>
             );
           })}
         </div>
       </div>
+      <ul class="sparkline-point-list" id={sparklineDataId}>
+        {chartPoints.map((point) => (
+          <li>{`${point.pointDateLabel}: ${point.pointValueLabel}`}</li>
+        ))}
+      </ul>
       {trendSummary && (
         <dl class="sparkline-summary">
           <div>
@@ -169,6 +193,7 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
   .sparkline-marker-layer {
     position: absolute;
     inset: 0;
+    pointer-events: none;
   }
 
   .sparkline-marker {
@@ -180,11 +205,9 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     flex-direction: column;
     align-items: center;
     gap: 6px;
-    padding: 0;
-    border: 0;
-    background: transparent;
     color: inherit;
     cursor: pointer;
+    pointer-events: auto;
   }
 
   .sparkline-point-icon {
@@ -202,9 +225,7 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     transform-origin: center;
   }
 
-  .sparkline-marker:hover .sparkline-point-icon circle,
-  .sparkline-marker:focus-visible .sparkline-point-icon circle,
-  .sparkline-marker:focus-within .sparkline-point-icon circle {
+  .sparkline-marker:hover .sparkline-point-icon circle {
     fill: var(--color-accent);
     stroke-width: 1.2;
     transform: scale(1.15);
@@ -230,11 +251,21 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     pointer-events: none;
   }
 
-  .sparkline-marker:hover .sparkline-tooltip-shell,
-  .sparkline-marker:focus-visible .sparkline-tooltip-shell,
-  .sparkline-marker:focus-within .sparkline-tooltip-shell {
+  .sparkline-marker:hover .sparkline-tooltip-shell {
     opacity: 1;
     transform: translateX(-50%) translateY(0);
+  }
+
+  .sparkline-point-list {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   .sparkline-tooltip-date {

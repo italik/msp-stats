@@ -34,6 +34,8 @@ const signedPercentFormatter = new Intl.NumberFormat("en-GB", {
   signDisplay: "always"
 });
 
+const zeroPercentDelta = percentFormatter.format(0);
+
 export function parseNumericValue(value: string | number): number {
   if (typeof value === "number") {
     return value;
@@ -99,10 +101,14 @@ export function formatTrendValue(value: number, mode: TrendDisplayMode): string 
 
 export function formatTrendDelta(value: number, mode: TrendDisplayMode): string {
   if (value === 0) {
-    return mode === "percent" ? `${percentFormatter.format(0)} pts` : countFormatter.format(0);
+    return mode === "percent" ? `${zeroPercentDelta} pts` : countFormatter.format(0);
   }
 
   if (mode === "percent") {
+    if (percentFormatter.format(Math.abs(value)) === zeroPercentDelta) {
+      return `${zeroPercentDelta} pts`;
+    }
+
     return `${signedPercentFormatter.format(value)} pts`;
   }
 
