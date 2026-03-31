@@ -82,6 +82,7 @@ test('index page renders key dashboard sections', { timeout: 60000 }, async () =
     expect(html).toContain('Low');
     expect(html).toContain('data-trend-point-date');
     expect(html).toContain('data-trend-point-value');
+    expect(html).toContain('sparkline-tooltip-shell');
     expect(html).toContain('how consistently');
     expect(html).toContain('we keep customer estates up to date');
     expect(html).not.toContain('Open Critical Vulnerabilities');

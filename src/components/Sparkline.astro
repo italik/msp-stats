@@ -60,20 +60,31 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
           aria-label={`${label} trend over ${eyebrow.toLowerCase()}`}
         >
           <polyline points={polylinePoints} />
-          {chartPoints.map((point) => (
-            <circle
-              cx={point.x}
-              cy={point.y}
-              r="2.8"
-              class="sparkline-point"
-              data-trend-point-date={point.date}
-              data-trend-point-value={point.value}
-              aria-hidden="true"
-            >
-              <title>{`${formatTrendValue(point.value, resolvedDisplayMode)} on ${formatAsOf(point.date)}`}</title>
-            </circle>
-          ))}
         </svg>
+        <div class="sparkline-marker-layer">
+          {chartPoints.map((point, idx) => {
+            const pointId = `sparkline-point-${idx}-${point.date}`;
+            return (
+              <button
+                type="button"
+                class="sparkline-marker"
+                style={`--sparkline-x: ${point.x}%; --sparkline-y: ${point.y}%;`}
+                data-trend-point-date={point.date}
+                data-trend-point-value={point.value}
+                aria-describedby={pointId}
+                aria-label={`${formatTrendValue(point.value, resolvedDisplayMode)} on ${formatAsOf(point.date)}`}
+              >
+                <svg class="sparkline-point-icon" viewBox="0 0 8 8" aria-hidden="true">
+                  <circle cx="4" cy="4" r="3" />
+                </svg>
+                <span class="sparkline-tooltip-shell" id={pointId} role="tooltip">
+                  <span class="sparkline-tooltip-date">{formatAsOf(point.date)}</span>
+                  <span class="sparkline-tooltip-value">{formatTrendValue(point.value, resolvedDisplayMode)}</span>
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
       {trendSummary && (
         <dl class="sparkline-summary">
@@ -134,10 +145,13 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     letter-spacing: -0.01em;
   }
 
+  .sparkline-plot {
+    position: relative;
+  }
+
   .sparkline-chart {
     width: 100%;
     height: auto;
-    overflow: visible;
   }
 
   .sparkline-chart polyline {
@@ -146,7 +160,34 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     stroke-width: 2;
   }
 
-  .sparkline-point {
+  .sparkline-marker-layer {
+    position: absolute;
+    inset: 0;
+  }
+
+  .sparkline-marker {
+    position: absolute;
+    left: var(--sparkline-x);
+    top: var(--sparkline-y);
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .sparkline-point-icon {
+    width: 10px;
+    height: 10px;
+    overflow: visible;
+  }
+
+  .sparkline-point-icon circle {
     fill: #fff;
     stroke: var(--color-accent);
     stroke-width: 1.6;
@@ -155,11 +196,51 @@ const polylinePoints = hasPoints ? chartPoints.map((point) => `${point.x},${poin
     transform-origin: center;
   }
 
-  .sparkline-point:hover,
-  .sparkline-point:focus-visible {
+  .sparkline-marker:hover .sparkline-point-icon circle,
+  .sparkline-marker:focus-visible .sparkline-point-icon circle,
+  .sparkline-marker:focus-within .sparkline-point-icon circle {
     fill: var(--color-accent);
     stroke-width: 1.2;
     transform: scale(1.15);
+  }
+
+  .sparkline-tooltip-shell {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    min-width: max-content;
+    padding: 8px 10px;
+    border-radius: 10px;
+    background: rgba(20, 32, 51, 0.96);
+    color: #fff;
+    box-shadow: 0 12px 24px rgba(20, 32, 51, 0.18);
+    display: grid;
+    gap: 2px;
+    text-align: center;
+    white-space: nowrap;
+    opacity: 0;
+    transform: translateX(-50%) translateY(4px);
+    transition: opacity 0.14s ease, transform 0.14s ease;
+    pointer-events: none;
+  }
+
+  .sparkline-marker:hover .sparkline-tooltip-shell,
+  .sparkline-marker:focus-visible .sparkline-tooltip-shell,
+  .sparkline-marker:focus-within .sparkline-tooltip-shell {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  .sparkline-tooltip-date {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(255, 255, 255, 0.72);
+  }
+
+  .sparkline-tooltip-value {
+    font-size: 0.9rem;
+    font-weight: 700;
   }
 
   .sparkline-summary {
