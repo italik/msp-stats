@@ -16,6 +16,7 @@ describe("daily publish workflow", () => {
     expect(workflow).toContain(
       "gh workflow run daily-publish.yml --ref main -f deploy_only=true"
     );
+    expect(workflow).toContain("actions/configure-pages@v5");
     expect(workflow).toContain("if: env.DEPLOY_ONLY == 'true'");
     expect(workflow).toContain("if: env.DEPLOY_ONLY != 'true'");
 
@@ -23,11 +24,13 @@ describe("daily publish workflow", () => {
     const dispatchIndex = workflow.indexOf(
       "gh workflow run daily-publish.yml --ref main -f deploy_only=true"
     );
+    const configurePagesIndex = workflow.indexOf("actions/configure-pages@v5");
     const uploadIndex = workflow.indexOf("actions/upload-pages-artifact@v4");
     const deployIndex = workflow.indexOf("actions/deploy-pages@v5");
 
     expect(commitIndex).toBeGreaterThan(-1);
     expect(dispatchIndex).toBeGreaterThan(commitIndex);
+    expect(uploadIndex).toBeGreaterThan(configurePagesIndex);
     expect(uploadIndex).toBeGreaterThan(dispatchIndex);
     expect(deployIndex).toBeGreaterThan(uploadIndex);
   });
