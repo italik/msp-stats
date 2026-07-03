@@ -10,6 +10,7 @@ env:
 
 permissions:
   contents: write
+  pages: write
 
 jobs:
   publish:
@@ -63,3 +64,8 @@ jobs:
             git -C ../msp-stats-gh-pages commit -m "chore: publish site"
             git -C ../msp-stats-gh-pages push origin gh-pages
           fi
+      - name: Request Pages branch build
+        id: request_pages_build
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api --method POST repos/${GITHUB_REPOSITORY}/pages/builds
