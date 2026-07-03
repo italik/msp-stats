@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-03T07:46:25.157Z",
+  "generatedAt": "2026-07-03T07:50:40.052Z",
   "overall": {
-    "lastUpdated": "2026-07-03T07:46:25.157Z"
+    "lastUpdated": "2026-07-03T07:50:40.052Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -271,19 +271,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-07-03T07:46:20.906Z",
+      "lastSuccessfulRefresh": "2026-07-03T07:50:36.268Z",
       "note": "HaloPSA reports 304, 352, 353, 349, and 350 live"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-07-03T07:46:25.156Z",
+      "lastSuccessfulRefresh": "2026-07-03T07:50:40.050Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-07-03T07:46:25.157Z",
+      "lastSuccessfulRefresh": "2026-07-03T07:50:40.051Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
