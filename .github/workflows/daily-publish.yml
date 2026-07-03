@@ -4,27 +4,17 @@ on:
   schedule:
     - cron: "15 5 * * *"
   workflow_dispatch:
-    inputs:
-      deploy_only:
-        description: "Build and deploy the committed snapshot without refreshing data"
-        required: false
-        default: false
-        type: boolean
 
 env:
   FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
 
 permissions:
-  actions: write
   contents: write
-  pages: write
-  id-token: write
 
 jobs:
   publish:
     runs-on: ubuntu-latest
     env:
-      DEPLOY_ONLY: ${{ github.event_name == 'workflow_dispatch' && inputs.deploy_only == true }}
       HALOPSA_BASE_URL: ${{ secrets.HALOPSA_BASE_URL }}
       HALOPSA_CLIENT_ID: ${{ secrets.HALOPSA_CLIENT_ID }}
       HALOPSA_CLIENT_SECRET: ${{ secrets.HALOPSA_CLIENT_SECRET }}
@@ -34,16 +24,12 @@ jobs:
         with:
           node-version: "22.x"
           cache: npm
-      - uses: actions/configure-pages@v5
-        if: env.DEPLOY_ONLY == 'true'
       - name: Install deps
         run: npm ci
       - name: Refresh snapshot and site
-        if: env.DEPLOY_ONLY != 'true'
         run: npm run publish:daily
       - name: Commit refreshed snapshot
         id: snapshot_commit
-        if: env.DEPLOY_ONLY != 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
@@ -56,26 +42,24 @@ jobs:
             git push
             echo "snapshot_changed=true" >> "$GITHUB_OUTPUT"
           fi
-      - name: Dispatch deploy-only run
-        if: env.DEPLOY_ONLY != 'true' && steps.snapshot_commit.outputs.snapshot_changed == 'true'
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: gh workflow run daily-publish.yml --ref main -f deploy_only=true
-      - name: Build committed snapshot
-        if: env.DEPLOY_ONLY == 'true'
-        run: npm run build
-      - uses: actions/upload-pages-artifact@v4
-        if: env.DEPLOY_ONLY == 'true'
-        with:
-          path: dist
-
-  deploy:
-    if: github.event_name == 'workflow_dispatch' && inputs.deploy_only == true
-    needs: publish
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v5
+      - name: Publish site to gh-pages branch
+        id: branch_deploy
+        run: |
+          git fetch origin gh-pages --depth=1 || true
+          rm -rf ../msp-stats-gh-pages
+          if git rev-parse --verify origin/gh-pages; then
+            git worktree add -B gh-pages ../msp-stats-gh-pages origin/gh-pages
+          else
+            git worktree add --detach ../msp-stats-gh-pages
+            git -C ../msp-stats-gh-pages switch --orphan gh-pages
+          fi
+          find ../msp-stats-gh-pages -mindepth 1 -maxdepth 1 ! -name .git -exec rm -rf {} +
+          cp -a dist/. ../msp-stats-gh-pages/
+          touch ../msp-stats-gh-pages/.nojekyll
+          git -C ../msp-stats-gh-pages add --all
+          if git -C ../msp-stats-gh-pages diff --cached --quiet; then
+            echo "No site changes to publish."
+          else
+            git -C ../msp-stats-gh-pages commit -m "chore: publish site"
+            git -C ../msp-stats-gh-pages push origin gh-pages
+          fi
