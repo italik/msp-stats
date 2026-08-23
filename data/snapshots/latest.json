@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-08-22T05:39:52.812Z",
+  "generatedAt": "2026-08-23T05:42:54.945Z",
   "overall": {
-    "lastUpdated": "2026-08-22T05:39:52.812Z"
+    "lastUpdated": "2026-08-23T05:42:54.945Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -15,19 +15,19 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "15",
+        "value": "7",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "12",
+        "value": "6",
         "context": "Yesterday"
       },
       {
         "id": "sla-attainment",
         "label": "SLA attainment",
-        "value": "97.9%",
+        "value": "98.6%",
         "context": "Rolling 30 days"
       },
       {
@@ -49,17 +49,17 @@
     "current": {
       "slaAttainment": {
         "label": "SLA attainment",
-        "value": "97.9%",
+        "value": "98.6%",
         "context": "Rolling 30 days"
       },
       "resolvedTickets": {
         "label": "Tickets resolved",
-        "value": "12",
+        "value": "6",
         "context": "Yesterday"
       },
       "ticketVolume": {
         "label": "Tickets opened",
-        "value": "15",
+        "value": "7",
         "context": "Yesterday"
       }
     },
@@ -67,34 +67,30 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "15",
+        "value": "7",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "12",
+        "value": "6",
         "context": "Yesterday"
       },
       {
         "id": "first-response-median",
-        "label": "Average first response",
+        "label": "Median first response",
         "value": "33m",
         "context": "Rolling 30 days"
       },
       {
         "id": "resolution-median",
-        "label": "Average time to resolution",
-        "value": "0.45h",
+        "label": "Median time to resolution",
+        "value": "5.2h",
         "context": "Rolling 30 days"
       }
     ],
     "trends": {
       "slaAttainment": [
-        {
-          "date": "2026-07-24",
-          "value": 98.6
-        },
         {
           "date": "2026-07-25",
           "value": 98.5
@@ -210,13 +206,13 @@
         {
           "date": "2026-08-22",
           "value": 97.9
+        },
+        {
+          "date": "2026-08-23",
+          "value": 98.6
         }
       ],
       "ticketsOpened": [
-        {
-          "date": "2026-07-23",
-          "value": 22
-        },
         {
           "date": "2026-07-24",
           "value": 13
@@ -332,13 +328,13 @@
         {
           "date": "2026-08-21",
           "value": 15
+        },
+        {
+          "date": "2026-08-22",
+          "value": 7
         }
       ],
       "ticketsResolved": [
-        {
-          "date": "2026-07-23",
-          "value": 23
-        },
         {
           "date": "2026-07-24",
           "value": 5
@@ -454,6 +450,10 @@
         {
           "date": "2026-08-21",
           "value": 12
+        },
+        {
+          "date": "2026-08-22",
+          "value": 6
         }
       ]
     }
@@ -527,10 +527,6 @@
     "trends": {
       "openCriticalVulnerabilities": [
         {
-          "date": "2026-07-24",
-          "value": 12
-        },
-        {
           "date": "2026-07-25",
           "value": 12
         },
@@ -644,15 +640,15 @@
         },
         {
           "date": "2026-08-22",
+          "value": 12
+        },
+        {
+          "date": "2026-08-23",
           "value": 12
         }
       ],
       "openHighVulnerabilities": [
         {
-          "date": "2026-07-24",
-          "value": 21
-        },
-        {
           "date": "2026-07-25",
           "value": 21
         },
@@ -766,6 +762,10 @@
         },
         {
           "date": "2026-08-22",
+          "value": 21
+        },
+        {
+          "date": "2026-08-23",
           "value": 21
         }
       ]
@@ -775,19 +775,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-08-22T05:39:43.269Z",
-      "note": "HaloPSA reports 304, 352, 353, 349, and 350 live"
+      "lastSuccessfulRefresh": "2026-08-23T05:42:50.431Z",
+      "note": "Using HaloPSA fixture payload; live report fetch failed: HaloPSA report payload did not include loaded report rows"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-08-22T05:39:52.811Z",
+      "lastSuccessfulRefresh": "2026-08-23T05:42:54.944Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-08-22T05:39:52.812Z",
+      "lastSuccessfulRefresh": "2026-08-23T05:42:54.944Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
