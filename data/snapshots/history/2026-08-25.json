@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-07-26T07:45:15.666Z",
+  "generatedAt": "2026-08-25T05:45:15.007Z",
   "overall": {
-    "lastUpdated": "2026-07-26T07:45:15.666Z"
+    "lastUpdated": "2026-08-25T05:45:15.007Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -15,19 +15,19 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "21",
+        "value": "7",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "15",
+        "value": "6",
         "context": "Yesterday"
       },
       {
         "id": "sla-attainment",
         "label": "SLA attainment",
-        "value": "98.6%",
+        "value": "98.1%",
         "context": "Rolling 30 days"
       },
       {
@@ -49,17 +49,17 @@
     "current": {
       "slaAttainment": {
         "label": "SLA attainment",
-        "value": "98.6%",
+        "value": "98.1%",
         "context": "Rolling 30 days"
       },
       "resolvedTickets": {
         "label": "Tickets resolved",
-        "value": "15",
+        "value": "6",
         "context": "Yesterday"
       },
       "ticketVolume": {
         "label": "Tickets opened",
-        "value": "21",
+        "value": "7",
         "context": "Yesterday"
       }
     },
@@ -67,365 +67,393 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "21",
+        "value": "7",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "15",
+        "value": "6",
         "context": "Yesterday"
       },
       {
         "id": "first-response-median",
-        "label": "Median first response",
-        "value": "39m",
+        "label": "Average first response",
+        "value": "33m",
         "context": "Rolling 30 days"
       },
       {
         "id": "resolution-median",
-        "label": "Median time to resolution",
-        "value": "5.2h",
+        "label": "Average time to resolution",
+        "value": "0.82h",
         "context": "Rolling 30 days"
       }
     ],
     "trends": {
       "slaAttainment": [
         {
-          "date": "2026-03-24",
-          "value": 99.8
-        },
-        {
-          "date": "2026-03-25",
-          "value": 98.4
-        },
-        {
-          "date": "2026-03-26",
-          "value": 98.4
-        },
-        {
-          "date": "2026-07-02",
-          "value": 98.5
-        },
-        {
-          "date": "2026-07-03",
-          "value": 98.5
-        },
-        {
-          "date": "2026-07-04",
-          "value": 98.4
-        },
-        {
-          "date": "2026-07-05",
+          "date": "2026-07-27",
           "value": 98.6
         },
         {
-          "date": "2026-07-06",
-          "value": 98.6
-        },
-        {
-          "date": "2026-07-07",
-          "value": 98.3
-        },
-        {
-          "date": "2026-07-08",
-          "value": 98.3
-        },
-        {
-          "date": "2026-07-09",
-          "value": 98.3
-        },
-        {
-          "date": "2026-07-10",
+          "date": "2026-07-28",
           "value": 98.5
         },
         {
-          "date": "2026-07-11",
+          "date": "2026-07-29",
           "value": 98.5
         },
         {
-          "date": "2026-07-12",
-          "value": 98.6
-        },
-        {
-          "date": "2026-07-13",
-          "value": 98.6
-        },
-        {
-          "date": "2026-07-14",
-          "value": 98.3
-        },
-        {
-          "date": "2026-07-15",
-          "value": 98.3
-        },
-        {
-          "date": "2026-07-16",
+          "date": "2026-07-30",
           "value": 98.5
         },
         {
-          "date": "2026-07-17",
+          "date": "2026-07-31",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-01",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-02",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-03",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-04",
           "value": 98.8
         },
         {
-          "date": "2026-07-18",
-          "value": 98.9
+          "date": "2026-08-05",
+          "value": 98.7
         },
         {
-          "date": "2026-07-19",
+          "date": "2026-08-06",
           "value": 98.6
         },
         {
-          "date": "2026-07-20",
-          "value": 98.6
-        },
-        {
-          "date": "2026-07-21",
-          "value": 98.8
-        },
-        {
-          "date": "2026-07-22",
-          "value": 98.9
-        },
-        {
-          "date": "2026-07-23",
-          "value": 98.8
-        },
-        {
-          "date": "2026-07-24",
-          "value": 98.6
-        },
-        {
-          "date": "2026-07-25",
+          "date": "2026-08-07",
           "value": 98.5
         },
         {
-          "date": "2026-07-26",
+          "date": "2026-08-08",
+          "value": 98.4
+        },
+        {
+          "date": "2026-08-09",
           "value": 98.6
+        },
+        {
+          "date": "2026-08-10",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-11",
+          "value": 98.3
+        },
+        {
+          "date": "2026-08-12",
+          "value": 98.3
+        },
+        {
+          "date": "2026-08-13",
+          "value": 98.1
+        },
+        {
+          "date": "2026-08-14",
+          "value": 98.1
+        },
+        {
+          "date": "2026-08-15",
+          "value": 98.1
+        },
+        {
+          "date": "2026-08-16",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-17",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-18",
+          "value": 98
+        },
+        {
+          "date": "2026-08-19",
+          "value": 98
+        },
+        {
+          "date": "2026-08-20",
+          "value": 98
+        },
+        {
+          "date": "2026-08-21",
+          "value": 98
+        },
+        {
+          "date": "2026-08-22",
+          "value": 97.9
+        },
+        {
+          "date": "2026-08-23",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-24",
+          "value": 98.6
+        },
+        {
+          "date": "2026-08-25",
+          "value": 98.1
         }
       ],
       "ticketsOpened": [
         {
-          "date": "2026-03-24",
-          "value": 584
-        },
-        {
-          "date": "2026-03-25",
-          "value": 264
-        },
-        {
-          "date": "2026-07-01",
-          "value": 94
-        },
-        {
-          "date": "2026-07-02",
-          "value": 22
-        },
-        {
-          "date": "2026-07-03",
-          "value": 13
-        },
-        {
-          "date": "2026-07-04",
-          "value": 13
-        },
-        {
-          "date": "2026-07-05",
-          "value": 24
-        },
-        {
-          "date": "2026-07-06",
-          "value": 30
-        },
-        {
-          "date": "2026-07-07",
+          "date": "2026-07-26",
           "value": 14
         },
         {
-          "date": "2026-07-08",
-          "value": 27
+          "date": "2026-07-27",
+          "value": 14
         },
         {
-          "date": "2026-07-09",
+          "date": "2026-07-28",
           "value": 20
         },
         {
-          "date": "2026-07-10",
-          "value": 10
+          "date": "2026-07-29",
+          "value": 16
         },
         {
-          "date": "2026-07-11",
-          "value": 15
+          "date": "2026-07-30",
+          "value": 36
         },
         {
-          "date": "2026-07-12",
-          "value": 88
+          "date": "2026-07-31",
+          "value": 6
         },
         {
-          "date": "2026-07-13",
-          "value": 11
-        },
-        {
-          "date": "2026-07-14",
-          "value": 21
-        },
-        {
-          "date": "2026-07-15",
-          "value": 18
-        },
-        {
-          "date": "2026-07-16",
-          "value": 18
-        },
-        {
-          "date": "2026-07-17",
+          "date": "2026-08-01",
           "value": 17
         },
         {
-          "date": "2026-07-18",
-          "value": 25
+          "date": "2026-08-02",
+          "value": 27
         },
         {
-          "date": "2026-07-19",
-          "value": 22
-        },
-        {
-          "date": "2026-07-20",
-          "value": 19
-        },
-        {
-          "date": "2026-07-21",
+          "date": "2026-08-03",
           "value": 15
         },
         {
-          "date": "2026-07-22",
-          "value": 14
+          "date": "2026-08-04",
+          "value": 16
         },
         {
-          "date": "2026-07-23",
-          "value": 22
+          "date": "2026-08-05",
+          "value": 10
         },
         {
-          "date": "2026-07-24",
+          "date": "2026-08-06",
+          "value": 9
+        },
+        {
+          "date": "2026-08-07",
+          "value": 4
+        },
+        {
+          "date": "2026-08-08",
+          "value": 29
+        },
+        {
+          "date": "2026-08-09",
           "value": 13
         },
         {
-          "date": "2026-07-25",
+          "date": "2026-08-10",
+          "value": 12
+        },
+        {
+          "date": "2026-08-11",
           "value": 21
+        },
+        {
+          "date": "2026-08-12",
+          "value": 10
+        },
+        {
+          "date": "2026-08-13",
+          "value": 9
+        },
+        {
+          "date": "2026-08-14",
+          "value": 12
+        },
+        {
+          "date": "2026-08-15",
+          "value": 9
+        },
+        {
+          "date": "2026-08-16",
+          "value": 4
+        },
+        {
+          "date": "2026-08-17",
+          "value": 9
+        },
+        {
+          "date": "2026-08-18",
+          "value": 16
+        },
+        {
+          "date": "2026-08-19",
+          "value": 15
+        },
+        {
+          "date": "2026-08-20",
+          "value": 8
+        },
+        {
+          "date": "2026-08-21",
+          "value": 15
+        },
+        {
+          "date": "2026-08-22",
+          "value": 7
+        },
+        {
+          "date": "2026-08-23",
+          "value": 9
+        },
+        {
+          "date": "2026-08-24",
+          "value": 7
         }
       ],
       "ticketsResolved": [
         {
-          "date": "2026-03-23",
-          "value": 128
+          "date": "2026-07-26",
+          "value": 41
         },
         {
-          "date": "2026-03-24",
-          "value": 588
+          "date": "2026-07-27",
+          "value": 16
         },
         {
-          "date": "2026-03-25",
-          "value": 258
-        },
-        {
-          "date": "2026-07-01",
-          "value": 95
-        },
-        {
-          "date": "2026-07-02",
+          "date": "2026-07-28",
           "value": 23
         },
         {
-          "date": "2026-07-03",
-          "value": 8
-        },
-        {
-          "date": "2026-07-04",
-          "value": 6
-        },
-        {
-          "date": "2026-07-05",
-          "value": 49
-        },
-        {
-          "date": "2026-07-06",
-          "value": 38
-        },
-        {
-          "date": "2026-07-07",
-          "value": 27
-        },
-        {
-          "date": "2026-07-08",
-          "value": 28
-        },
-        {
-          "date": "2026-07-09",
-          "value": 26
-        },
-        {
-          "date": "2026-07-10",
-          "value": 3
-        },
-        {
-          "date": "2026-07-11",
-          "value": 6
-        },
-        {
-          "date": "2026-07-12",
-          "value": 117
-        },
-        {
-          "date": "2026-07-13",
-          "value": 13
-        },
-        {
-          "date": "2026-07-14",
-          "value": 18
-        },
-        {
-          "date": "2026-07-15",
-          "value": 20
-        },
-        {
-          "date": "2026-07-16",
-          "value": 42
-        },
-        {
-          "date": "2026-07-17",
-          "value": 11
-        },
-        {
-          "date": "2026-07-18",
+          "date": "2026-07-29",
           "value": 17
         },
         {
-          "date": "2026-07-19",
-          "value": 45
+          "date": "2026-07-30",
+          "value": 30
         },
         {
-          "date": "2026-07-20",
-          "value": 23
+          "date": "2026-07-31",
+          "value": 3
         },
         {
-          "date": "2026-07-21",
-          "value": 43
+          "date": "2026-08-01",
+          "value": 6
         },
         {
-          "date": "2026-07-22",
-          "value": 34
+          "date": "2026-08-02",
+          "value": 56
         },
         {
-          "date": "2026-07-23",
-          "value": 23
+          "date": "2026-08-03",
+          "value": 17
         },
         {
-          "date": "2026-07-24",
+          "date": "2026-08-04",
+          "value": 17
+        },
+        {
+          "date": "2026-08-05",
+          "value": 17
+        },
+        {
+          "date": "2026-08-06",
           "value": 5
         },
         {
-          "date": "2026-07-25",
-          "value": 15
+          "date": "2026-08-07",
+          "value": 2
+        },
+        {
+          "date": "2026-08-08",
+          "value": 9
+        },
+        {
+          "date": "2026-08-09",
+          "value": 20
+        },
+        {
+          "date": "2026-08-10",
+          "value": 5
+        },
+        {
+          "date": "2026-08-11",
+          "value": 24
+        },
+        {
+          "date": "2026-08-12",
+          "value": 12
+        },
+        {
+          "date": "2026-08-13",
+          "value": 8
+        },
+        {
+          "date": "2026-08-14",
+          "value": 11
+        },
+        {
+          "date": "2026-08-15",
+          "value": 2
+        },
+        {
+          "date": "2026-08-16",
+          "value": 7
+        },
+        {
+          "date": "2026-08-17",
+          "value": 5
+        },
+        {
+          "date": "2026-08-18",
+          "value": 14
+        },
+        {
+          "date": "2026-08-19",
+          "value": 11
+        },
+        {
+          "date": "2026-08-20",
+          "value": 5
+        },
+        {
+          "date": "2026-08-21",
+          "value": 12
+        },
+        {
+          "date": "2026-08-22",
+          "value": 6
+        },
+        {
+          "date": "2026-08-23",
+          "value": 14
+        },
+        {
+          "date": "2026-08-24",
+          "value": 6
         }
       ]
     }
@@ -499,229 +527,245 @@
     "trends": {
       "openCriticalVulnerabilities": [
         {
-          "date": "2026-03-24",
+          "date": "2026-07-27",
           "value": 12
         },
         {
-          "date": "2026-03-25",
+          "date": "2026-07-28",
           "value": 12
         },
         {
-          "date": "2026-03-26",
+          "date": "2026-07-29",
           "value": 12
         },
         {
-          "date": "2026-07-02",
+          "date": "2026-07-30",
           "value": 12
         },
         {
-          "date": "2026-07-03",
+          "date": "2026-07-31",
           "value": 12
         },
         {
-          "date": "2026-07-04",
+          "date": "2026-08-01",
           "value": 12
         },
         {
-          "date": "2026-07-05",
+          "date": "2026-08-02",
           "value": 12
         },
         {
-          "date": "2026-07-06",
+          "date": "2026-08-03",
           "value": 12
         },
         {
-          "date": "2026-07-07",
+          "date": "2026-08-04",
           "value": 12
         },
         {
-          "date": "2026-07-08",
+          "date": "2026-08-05",
           "value": 12
         },
         {
-          "date": "2026-07-09",
+          "date": "2026-08-06",
           "value": 12
         },
         {
-          "date": "2026-07-10",
+          "date": "2026-08-07",
           "value": 12
         },
         {
-          "date": "2026-07-11",
+          "date": "2026-08-08",
           "value": 12
         },
         {
-          "date": "2026-07-12",
+          "date": "2026-08-09",
           "value": 12
         },
         {
-          "date": "2026-07-13",
+          "date": "2026-08-10",
           "value": 12
         },
         {
-          "date": "2026-07-14",
+          "date": "2026-08-11",
           "value": 12
         },
         {
-          "date": "2026-07-15",
+          "date": "2026-08-12",
           "value": 12
         },
         {
-          "date": "2026-07-16",
+          "date": "2026-08-13",
           "value": 12
         },
         {
-          "date": "2026-07-17",
+          "date": "2026-08-14",
           "value": 12
         },
         {
-          "date": "2026-07-18",
+          "date": "2026-08-15",
           "value": 12
         },
         {
-          "date": "2026-07-19",
+          "date": "2026-08-16",
           "value": 12
         },
         {
-          "date": "2026-07-20",
+          "date": "2026-08-17",
           "value": 12
         },
         {
-          "date": "2026-07-21",
+          "date": "2026-08-18",
           "value": 12
         },
         {
-          "date": "2026-07-22",
+          "date": "2026-08-19",
           "value": 12
         },
         {
-          "date": "2026-07-23",
+          "date": "2026-08-20",
           "value": 12
         },
         {
-          "date": "2026-07-24",
+          "date": "2026-08-21",
           "value": 12
         },
         {
-          "date": "2026-07-25",
+          "date": "2026-08-22",
           "value": 12
         },
         {
-          "date": "2026-07-26",
+          "date": "2026-08-23",
+          "value": 12
+        },
+        {
+          "date": "2026-08-24",
+          "value": 12
+        },
+        {
+          "date": "2026-08-25",
           "value": 12
         }
       ],
       "openHighVulnerabilities": [
         {
-          "date": "2026-03-24",
+          "date": "2026-07-27",
           "value": 21
         },
         {
-          "date": "2026-03-25",
+          "date": "2026-07-28",
           "value": 21
         },
         {
-          "date": "2026-03-26",
+          "date": "2026-07-29",
           "value": 21
         },
         {
-          "date": "2026-07-02",
+          "date": "2026-07-30",
           "value": 21
         },
         {
-          "date": "2026-07-03",
+          "date": "2026-07-31",
           "value": 21
         },
         {
-          "date": "2026-07-04",
+          "date": "2026-08-01",
           "value": 21
         },
         {
-          "date": "2026-07-05",
+          "date": "2026-08-02",
           "value": 21
         },
         {
-          "date": "2026-07-06",
+          "date": "2026-08-03",
           "value": 21
         },
         {
-          "date": "2026-07-07",
+          "date": "2026-08-04",
           "value": 21
         },
         {
-          "date": "2026-07-08",
+          "date": "2026-08-05",
           "value": 21
         },
         {
-          "date": "2026-07-09",
+          "date": "2026-08-06",
           "value": 21
         },
         {
-          "date": "2026-07-10",
+          "date": "2026-08-07",
           "value": 21
         },
         {
-          "date": "2026-07-11",
+          "date": "2026-08-08",
           "value": 21
         },
         {
-          "date": "2026-07-12",
+          "date": "2026-08-09",
           "value": 21
         },
         {
-          "date": "2026-07-13",
+          "date": "2026-08-10",
           "value": 21
         },
         {
-          "date": "2026-07-14",
+          "date": "2026-08-11",
           "value": 21
         },
         {
-          "date": "2026-07-15",
+          "date": "2026-08-12",
           "value": 21
         },
         {
-          "date": "2026-07-16",
+          "date": "2026-08-13",
           "value": 21
         },
         {
-          "date": "2026-07-17",
+          "date": "2026-08-14",
           "value": 21
         },
         {
-          "date": "2026-07-18",
+          "date": "2026-08-15",
           "value": 21
         },
         {
-          "date": "2026-07-19",
+          "date": "2026-08-16",
           "value": 21
         },
         {
-          "date": "2026-07-20",
+          "date": "2026-08-17",
           "value": 21
         },
         {
-          "date": "2026-07-21",
+          "date": "2026-08-18",
           "value": 21
         },
         {
-          "date": "2026-07-22",
+          "date": "2026-08-19",
           "value": 21
         },
         {
-          "date": "2026-07-23",
+          "date": "2026-08-20",
           "value": 21
         },
         {
-          "date": "2026-07-24",
+          "date": "2026-08-21",
           "value": 21
         },
         {
-          "date": "2026-07-25",
+          "date": "2026-08-22",
           "value": 21
         },
         {
-          "date": "2026-07-26",
+          "date": "2026-08-23",
+          "value": 21
+        },
+        {
+          "date": "2026-08-24",
+          "value": 21
+        },
+        {
+          "date": "2026-08-25",
           "value": 21
         }
       ]
@@ -731,19 +775,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-07-26T07:45:09.687Z",
-      "note": "Using HaloPSA fixture payload; live report fetch failed: HaloPSA report payload did not include loaded report rows"
+      "lastSuccessfulRefresh": "2026-08-25T05:45:10.703Z",
+      "note": "HaloPSA reports 304, 352, 353, 349, and 350 live"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-07-26T07:45:15.665Z",
+      "lastSuccessfulRefresh": "2026-08-25T05:45:15.006Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-07-26T07:45:15.666Z",
+      "lastSuccessfulRefresh": "2026-08-25T05:45:15.007Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
