@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-15T10:02:37.786Z",
+  "generatedAt": "2026-09-16T09:54:34.796Z",
   "overall": {
-    "lastUpdated": "2026-09-15T10:02:37.786Z"
+    "lastUpdated": "2026-09-16T09:54:34.796Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -15,13 +15,13 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "67",
+        "value": "46",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "59",
+        "value": "42",
         "context": "Yesterday"
       },
       {
@@ -54,12 +54,12 @@
       },
       "resolvedTickets": {
         "label": "Tickets resolved",
-        "value": "59",
+        "value": "42",
         "context": "Yesterday"
       },
       "ticketVolume": {
         "label": "Tickets opened",
-        "value": "67",
+        "value": "46",
         "context": "Yesterday"
       }
     },
@@ -67,34 +67,30 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "67",
+        "value": "46",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "59",
+        "value": "42",
         "context": "Yesterday"
       },
       {
         "id": "first-response-median",
         "label": "Average first response",
-        "value": "53m",
+        "value": "51m",
         "context": "Rolling 30 days"
       },
       {
         "id": "resolution-median",
         "label": "Average time to resolution",
-        "value": "1.51h",
+        "value": "0.82h",
         "context": "Rolling 30 days"
       }
     ],
     "trends": {
       "slaAttainment": [
-        {
-          "date": "2026-08-17",
-          "value": 98.6
-        },
         {
           "date": "2026-08-18",
           "value": 98
@@ -210,13 +206,13 @@
         {
           "date": "2026-09-15",
           "value": 98.9
+        },
+        {
+          "date": "2026-09-16",
+          "value": 98.9
         }
       ],
       "ticketsOpened": [
-        {
-          "date": "2026-08-16",
-          "value": 4
-        },
         {
           "date": "2026-08-17",
           "value": 9
@@ -332,13 +328,13 @@
         {
           "date": "2026-09-14",
           "value": 67
+        },
+        {
+          "date": "2026-09-15",
+          "value": 46
         }
       ],
       "ticketsResolved": [
-        {
-          "date": "2026-08-16",
-          "value": 7
-        },
         {
           "date": "2026-08-17",
           "value": 5
@@ -454,6 +450,10 @@
         {
           "date": "2026-09-14",
           "value": 59
+        },
+        {
+          "date": "2026-09-15",
+          "value": 42
         }
       ]
     }
@@ -527,10 +527,6 @@
     "trends": {
       "openCriticalVulnerabilities": [
         {
-          "date": "2026-08-17",
-          "value": 12
-        },
-        {
           "date": "2026-08-18",
           "value": 12
         },
@@ -644,15 +640,15 @@
         },
         {
           "date": "2026-09-15",
+          "value": 12
+        },
+        {
+          "date": "2026-09-16",
           "value": 12
         }
       ],
       "openHighVulnerabilities": [
         {
-          "date": "2026-08-17",
-          "value": 21
-        },
-        {
           "date": "2026-08-18",
           "value": 21
         },
@@ -766,6 +762,10 @@
         },
         {
           "date": "2026-09-15",
+          "value": 21
+        },
+        {
+          "date": "2026-09-16",
           "value": 21
         }
       ]
@@ -775,19 +775,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-09-15T10:02:23.707Z",
+      "lastSuccessfulRefresh": "2026-09-16T09:54:27.283Z",
       "note": "HaloPSA reports 304, 352, 353, 349, and 350 live"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-09-15T10:02:37.784Z",
+      "lastSuccessfulRefresh": "2026-09-16T09:54:34.795Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-09-15T10:02:37.786Z",
+      "lastSuccessfulRefresh": "2026-09-16T09:54:34.796Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
