@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-27T10:32:05.708Z",
+  "generatedAt": "2026-09-28T11:39:26.061Z",
   "overall": {
-    "lastUpdated": "2026-09-27T10:32:05.708Z"
+    "lastUpdated": "2026-09-28T11:39:26.061Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -15,13 +15,13 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "22",
+        "value": "62",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "15",
+        "value": "90",
         "context": "Yesterday"
       },
       {
@@ -54,12 +54,12 @@
       },
       "resolvedTickets": {
         "label": "Tickets resolved",
-        "value": "15",
+        "value": "90",
         "context": "Yesterday"
       },
       "ticketVolume": {
         "label": "Tickets opened",
-        "value": "22",
+        "value": "62",
         "context": "Yesterday"
       }
     },
@@ -67,19 +67,19 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "22",
+        "value": "62",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "15",
+        "value": "90",
         "context": "Yesterday"
       },
       {
         "id": "first-response-median",
         "label": "Median first response",
-        "value": "57m",
+        "value": "56m",
         "context": "Rolling 30 days"
       },
       {
@@ -91,10 +91,6 @@
     ],
     "trends": {
       "slaAttainment": [
-        {
-          "date": "2026-08-29",
-          "value": 98.2
-        },
         {
           "date": "2026-08-30",
           "value": 98.6
@@ -210,13 +206,13 @@
         {
           "date": "2026-09-27",
           "value": 98.6
+        },
+        {
+          "date": "2026-09-28",
+          "value": 98.6
         }
       ],
       "ticketsOpened": [
-        {
-          "date": "2026-08-28",
-          "value": 21
-        },
         {
           "date": "2026-08-29",
           "value": 31
@@ -332,13 +328,13 @@
         {
           "date": "2026-09-26",
           "value": 22
+        },
+        {
+          "date": "2026-09-27",
+          "value": 62
         }
       ],
       "ticketsResolved": [
-        {
-          "date": "2026-08-28",
-          "value": 6
-        },
         {
           "date": "2026-08-29",
           "value": 7
@@ -454,6 +450,10 @@
         {
           "date": "2026-09-26",
           "value": 15
+        },
+        {
+          "date": "2026-09-27",
+          "value": 90
         }
       ]
     }
@@ -527,10 +527,6 @@
     "trends": {
       "openCriticalVulnerabilities": [
         {
-          "date": "2026-08-29",
-          "value": 12
-        },
-        {
           "date": "2026-08-30",
           "value": 12
         },
@@ -644,15 +640,15 @@
         },
         {
           "date": "2026-09-27",
+          "value": 12
+        },
+        {
+          "date": "2026-09-28",
           "value": 12
         }
       ],
       "openHighVulnerabilities": [
         {
-          "date": "2026-08-29",
-          "value": 21
-        },
-        {
           "date": "2026-08-30",
           "value": 21
         },
@@ -766,6 +762,10 @@
         },
         {
           "date": "2026-09-27",
+          "value": 21
+        },
+        {
+          "date": "2026-09-28",
           "value": 21
         }
       ]
@@ -775,19 +775,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-09-27T10:32:01.508Z",
+      "lastSuccessfulRefresh": "2026-09-28T11:39:21.143Z",
       "note": "Using HaloPSA fixture payload; live report fetch failed: HaloPSA report payload did not include loaded report rows"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-09-27T10:32:05.706Z",
+      "lastSuccessfulRefresh": "2026-09-28T11:39:26.060Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-09-27T10:32:05.707Z",
+      "lastSuccessfulRefresh": "2026-09-28T11:39:26.061Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
