@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-11-15T12:41:41.959Z",
+  "generatedAt": "2026-11-16T13:35:35.563Z",
   "overall": {
-    "lastUpdated": "2026-11-15T12:41:41.959Z"
+    "lastUpdated": "2026-11-16T13:35:35.563Z"
   },
   "summary": {
     "title": "Trust, measured daily",
@@ -15,13 +15,13 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "33",
+        "value": "94",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "24",
+        "value": "131",
         "context": "Yesterday"
       },
       {
@@ -54,12 +54,12 @@
       },
       "resolvedTickets": {
         "label": "Tickets resolved",
-        "value": "24",
+        "value": "131",
         "context": "Yesterday"
       },
       "ticketVolume": {
         "label": "Tickets opened",
-        "value": "33",
+        "value": "94",
         "context": "Yesterday"
       }
     },
@@ -67,13 +67,13 @@
       {
         "id": "ticket-volume",
         "label": "Tickets opened",
-        "value": "33",
+        "value": "94",
         "context": "Yesterday"
       },
       {
         "id": "resolved-tickets",
         "label": "Tickets resolved",
-        "value": "24",
+        "value": "131",
         "context": "Yesterday"
       },
       {
@@ -91,10 +91,6 @@
     ],
     "trends": {
       "slaAttainment": [
-        {
-          "date": "2026-10-17",
-          "value": 98.2
-        },
         {
           "date": "2026-10-18",
           "value": 98.6
@@ -210,13 +206,13 @@
         {
           "date": "2026-11-15",
           "value": 98.6
+        },
+        {
+          "date": "2026-11-16",
+          "value": 98.6
         }
       ],
       "ticketsOpened": [
-        {
-          "date": "2026-10-16",
-          "value": 40
-        },
         {
           "date": "2026-10-17",
           "value": 25
@@ -332,13 +328,13 @@
         {
           "date": "2026-11-14",
           "value": 33
+        },
+        {
+          "date": "2026-11-15",
+          "value": 94
         }
       ],
       "ticketsResolved": [
-        {
-          "date": "2026-10-16",
-          "value": 33
-        },
         {
           "date": "2026-10-17",
           "value": 21
@@ -454,6 +450,10 @@
         {
           "date": "2026-11-14",
           "value": 24
+        },
+        {
+          "date": "2026-11-15",
+          "value": 131
         }
       ]
     }
@@ -527,10 +527,6 @@
     "trends": {
       "openCriticalVulnerabilities": [
         {
-          "date": "2026-10-17",
-          "value": 12
-        },
-        {
           "date": "2026-10-18",
           "value": 12
         },
@@ -644,15 +640,15 @@
         },
         {
           "date": "2026-11-15",
+          "value": 12
+        },
+        {
+          "date": "2026-11-16",
           "value": 12
         }
       ],
       "openHighVulnerabilities": [
         {
-          "date": "2026-10-17",
-          "value": 21
-        },
-        {
           "date": "2026-10-18",
           "value": 21
         },
@@ -766,6 +762,10 @@
         },
         {
           "date": "2026-11-15",
+          "value": 21
+        },
+        {
+          "date": "2026-11-16",
           "value": 21
         }
       ]
@@ -775,19 +775,19 @@
     {
       "name": "HaloPSA",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-11-15T12:41:37.594Z",
+      "lastSuccessfulRefresh": "2026-11-16T13:35:25.120Z",
       "note": "Using HaloPSA fixture payload; live report fetch failed: HaloPSA report payload did not include loaded report rows"
     },
     {
       "name": "Qualys",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-11-15T12:41:41.957Z",
+      "lastSuccessfulRefresh": "2026-11-16T13:35:35.561Z",
       "note": "Using Qualys fixture payload"
     },
     {
       "name": "Datto RMM",
       "status": "current",
-      "lastSuccessfulRefresh": "2026-11-15T12:41:41.958Z",
+      "lastSuccessfulRefresh": "2026-11-16T13:35:35.562Z",
       "note": "Using Datto RMM fixture payload"
     }
   ],
